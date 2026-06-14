@@ -72,22 +72,34 @@ export default function WritingPage() {
   const submitEssay = async () => {
     if (!essay.trim()) return;
     setLoading(true);
+    setFeedback("");
     try {
-      const r = await fetch("/api/knowledge/content", {
+      const resp = await fetch("/api/ai/chat", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ topic: prompt, paraphrase: essay, action: "score" }),
+        body: JSON.stringify({
+          messages: [
+            { role: "system", content: "你是CET-4/6英语作文批改专家。请对以下作文评分批改：① 整体评分(15分制) ② 优点 ③ 需改进处 ④ 语法修正 ⑤ 高分替换词 ⑥ 范文参考。中文回复。" },
+            { role: "user", content: `题目：${prompt}\n\n学生作文：\n${essay}` },
+          ],
+          stream: true,
+        }),
       });
-      if (r.ok) {
-        const d = await r.json();
-        setFeedback(d.score?.feedback || d.feedback || "作文已提交，AI正在评估…");
-        const rec = saveTrainingRecord({
-          module: "writing", title: prompt, question: "作文批改",
-          userAnswer: essay.slice(0, 200), correctAnswer: "参考AI反馈",
-          isCorrect: true, explanation: d.score?.feedback || "",
-        });
-        setWriteRecordId(rec.id);
+      const reader = resp.body?.getReader();
+      if (!reader) { setFeedback("无法连接AI服务"); setLoading(false); return; }
+      const decoder = new TextDecoder(); let reply = "";
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const chunk = decoder.decode(value, { stream: true });
+        for (const line of chunk.split("\n").filter(l => l.startsWith("data: "))) {
+          const data = line.slice(6);
+          if (data === "[DONE]") continue;
+          try { const j = JSON.parse(data); reply += j.choices?.[0]?.delta?.content || ""; setFeedback(reply); } catch {}
+        }
       }
-    } catch {}
+      const rec = saveTrainingRecord({ module: "writing", title: prompt, question: "作文批改", userAnswer: essay.slice(0, 200), correctAnswer: "参考AI反馈", isCorrect: true, explanation: reply.slice(0, 500) });
+      setWriteRecordId(rec.id);
+    } catch { if (!feedback) setFeedback("AI批改暂不可用，请稍后重试"); }
     setLoading(false);
   };
 
