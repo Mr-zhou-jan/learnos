@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { GraduationCap, Link2, Sparkles, User, LogOut, AlertCircle, ArrowRight, Check, Mail, UserPlus, Lock, Eye, EyeOff } from "lucide-react";
+import { GraduationCap, Link2, Sparkles, User, LogOut, AlertCircle, ArrowRight, Check, Download, Mail, UserPlus, Lock, Eye, EyeOff } from "lucide-react";
 import { getCurrentUser, getAllUsers, switchUser, loginWithEmail, registerWithEmail, findUserByEmail, isValidEmail, isValidPassword, logout, type UserInfo } from "@/lib/user-store";
 
 type Step = "auth" | "verifyEmail" | "input" | "extracting";
@@ -544,6 +544,30 @@ export default function LandingPage() {
                 </div>
               </div>
             )}
+          </div>
+
+          {/* 数据导入 */}
+          <div className="mt-5 pt-4 border-t border-zinc-100">
+            <label className="text-xs text-zinc-400 cursor-pointer hover:text-primary-500 transition-colors flex items-center gap-1 justify-center">
+              <Download className="w-3 h-3" /> 导入备份数据
+              <input type="file" accept=".json" className="hidden" onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                try {
+                  const text = await file.text();
+                  const backup = JSON.parse(text);
+                  if (backup.data) {
+                    for (const [key, value] of Object.entries(backup.data)) {
+                      localStorage.setItem(key, typeof value === "string" ? value : JSON.stringify(value));
+                    }
+                    alert("数据导入成功！请刷新页面。");
+                    window.location.reload();
+                  } else {
+                    setAuthError("无效的备份文件格式");
+                  }
+                } catch { setAuthError("文件解析失败，请检查是否为 LearnOS 备份文件"); }
+              }} />
+            </label>
           </div>
 
           <p className="text-center text-xs text-zinc-400 mt-6">

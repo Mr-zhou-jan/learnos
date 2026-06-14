@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { BookmarkX, CalendarCheck, ChevronDown, ChevronRight, Compass, Ellipsis, Globe, GraduationCap, LayoutDashboard, LogOut, MessageSquare, Target, User } from "lucide-react";
+import { BookmarkX, CalendarCheck, ChevronDown, Compass, Download, Ellipsis, Globe, GraduationCap, LayoutDashboard, LogOut, MessageSquare, Target, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ClickTranslate from "@/components/english/ClickTranslate";
 import { getCurrentUser, logout } from "@/lib/user-store";
@@ -32,6 +32,22 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [showMore, setShowMore] = useState(false);
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
+
+  // 导出全部学习数据
+  const handleExport = () => {
+    const data: Record<string, any> = {};
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith("learnos_")) {
+        try { data[key] = JSON.parse(localStorage.getItem(key) || ""); } catch { data[key] = localStorage.getItem(key); }
+      }
+    }
+    const blob = new Blob([JSON.stringify({ version: 1, exportedAt: new Date().toISOString(), data })], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = `learnos-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click(); URL.revokeObjectURL(url);
+  };
 
   const NavLink = ({ href, label, icon: Icon }: { href: string; label: string; icon: any }) => (
     <Link key={href} href={href}
@@ -90,6 +106,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <p className="text-sm font-medium truncate">{user?.name || "学习者"}</p>
             <p className="text-xs text-zinc-500 truncate">{user?.email || "Lv.1 新生"}</p>
           </div>
+          <button onClick={handleExport}
+            className="p-1.5 rounded-lg hover:bg-primary-50 text-zinc-400 hover:text-primary-500 transition-colors"
+            title="导出学习数据">
+            <Download className="w-3.5 h-3.5" />
+          </button>
           <button onClick={() => { logout(); router.push("/"); }}
             className="p-1.5 rounded-lg hover:bg-red-50 text-zinc-400 hover:text-red-500 transition-colors"
             title="切换账号">
