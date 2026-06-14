@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { BookmarkX, CalendarCheck, ChevronDown, Compass, Download, Ellipsis, Globe, GraduationCap, LayoutDashboard, LogOut, MessageSquare, Target, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ClickTranslate from "@/components/english/ClickTranslate";
+import ErrorBoundary from "@/components/shared/ErrorBoundary";
 import { getCurrentUser, logout } from "@/lib/user-store";
 
 // 主菜单：用户最常用的 4 项
@@ -120,7 +121,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       </aside>
 
       <main className="flex-1 overflow-auto">
-        <div className="animate-fade-in">{children}</div>
+        <ErrorBoundary><div className="animate-fade-in">{children}</div></ErrorBoundary>
       </main>
       <ClickTranslate />
     </div>
