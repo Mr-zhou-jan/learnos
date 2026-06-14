@@ -1,0 +1,22 @@
+{
+  "version": "1.0",
+  "questions": [
+    {
+      "id": "gold-001",
+      "exam": "cet4",
+      "section": "word_bank",
+      "stem": "The new policy is intended to ______ the gap between rich and poor.",
+      "options": [
+        "A. widen",
+        "B. narrow",
+        "C. measure",
+        "D. ignore"
+      ],
+      "answer_key": 1,
+      "ability_tags": [
+        "LEX"
+      ],
+      "explanation": "narrow the gap 是固定搭配，意为缩小差距"
+    }
+  ]
+}

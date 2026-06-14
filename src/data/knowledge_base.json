@@ -1,0 +1,885 @@
+{
+  "courses": [
+    {
+      "id": "english",
+      "name": "英语 (CET-4/6)",
+      "description": "四级六级核心词汇、语法体系、听说读写译全面提升",
+      "icon": "Globe",
+      "color": "bg-blue-500",
+      "knowledgeNodes": [
+        {
+          "id": "eng-vocab",
+          "parentId": null,
+          "title": "词汇积累",
+          "description": "CET-4核心4000词，CET-6核心5500词，掌握词根词缀记忆法",
+          "orderIndex": 0
+        },
+        {
+          "id": "eng-vocab-core",
+          "parentId": "eng-vocab",
+          "title": "四级核心词汇",
+          "description": "高频2000词，按词频排序，每天50词，40天完成一轮",
+          "orderIndex": 0
+        },
+        {
+          "id": "eng-vocab-adv",
+          "parentId": "eng-vocab",
+          "title": "六级进阶词汇",
+          "description": "在四级基础上新增1500词，重点掌握学术词汇和熟词僻义",
+          "orderIndex": 1
+        },
+        {
+          "id": "eng-vocab-root",
+          "parentId": "eng-vocab",
+          "title": "词根词缀",
+          "description": "掌握50个常见词根和30个词缀，举一反三扩大词汇量",
+          "orderIndex": 2
+        },
+        {
+          "id": "eng-vocab-collocation",
+          "parentId": "eng-vocab",
+          "title": "高频词组搭配",
+          "description": "动词短语、介词搭配、固定表达，考试中占15%分值",
+          "orderIndex": 3
+        },
+        {
+          "id": "eng-grammar",
+          "parentId": null,
+          "title": "语法体系",
+          "description": "从时态语态到三大从句，构建完整语法框架",
+          "orderIndex": 1
+        },
+        {
+          "id": "eng-grammar-tense",
+          "parentId": "eng-grammar",
+          "title": "时态与语态",
+          "description": "16种时态用法辨析，主动被动转换，重点掌握完成时和进行时",
+          "orderIndex": 0
+        },
+        {
+          "id": "eng-grammar-clause",
+          "parentId": "eng-grammar",
+          "title": "三大从句",
+          "description": "名词性从句、定语从句、状语从句的识别与运用",
+          "orderIndex": 1
+        },
+        {
+          "id": "eng-grammar-subjunctive",
+          "parentId": "eng-grammar",
+          "title": "虚拟语气",
+          "description": "条件句中的虚拟、wish/as if/建议类动词后的虚拟语气",
+          "orderIndex": 2
+        },
+        {
+          "id": "eng-grammar-inversion",
+          "parentId": "eng-grammar",
+          "title": "倒装与强调",
+          "description": "部分倒装、完全倒装、强调句型的构成与判断",
+          "orderIndex": 3
+        },
+        {
+          "id": "eng-listening",
+          "parentId": null,
+          "title": "听力理解",
+          "description": "短对话到短文理解，训练关键词捕捉和推理能力",
+          "orderIndex": 2
+        },
+        {
+          "id": "eng-listening-short",
+          "parentId": "eng-listening",
+          "title": "短对话理解",
+          "description": "8个短对话，常见场景（校园、生活、工作），注意转折词和语气",
+          "orderIndex": 0
+        },
+        {
+          "id": "eng-listening-long",
+          "parentId": "eng-listening",
+          "title": "长对话与短文",
+          "description": "2篇长对话+3篇短文，训练主旨把握和细节记忆",
+          "orderIndex": 1
+        },
+        {
+          "id": "eng-listening-dictation",
+          "parentId": "eng-listening",
+          "title": "听写与复述",
+          "description": "精听训练，逐句听写培养语感，影子跟读提升口语",
+          "orderIndex": 2
+        },
+        {
+          "id": "eng-reading",
+          "parentId": null,
+          "title": "阅读理解",
+          "description": "快速阅读、仔细阅读、选词填空三大题型",
+          "orderIndex": 3
+        },
+        {
+          "id": "eng-reading-fast",
+          "parentId": "eng-reading",
+          "title": "快速阅读（匹配）",
+          "description": "10个句子匹配文章段落，训练定位关键词和同义替换",
+          "orderIndex": 0
+        },
+        {
+          "id": "eng-reading-careful",
+          "parentId": "eng-reading",
+          "title": "仔细阅读",
+          "description": "2篇选择题，考查推理判断、主旨大意、作者态度",
+          "orderIndex": 1
+        },
+        {
+          "id": "eng-reading-bank",
+          "parentId": "eng-reading",
+          "title": "选词填空",
+          "description": "15选10，先判断词性再根据上下文选词，语法+语义双重要求",
+          "orderIndex": 2
+        },
+        {
+          "id": "eng-writing",
+          "parentId": null,
+          "title": "写作翻译",
+          "description": "议论文、应用文写作，中英互译技巧",
+          "orderIndex": 4
+        },
+        {
+          "id": "eng-writing-essay",
+          "parentId": "eng-writing",
+          "title": "议论文写作",
+          "description": "三段式结构（观点-论证-总结），常用句型模板，逻辑连接词",
+          "orderIndex": 0
+        },
+        {
+          "id": "eng-writing-translation",
+          "parentId": "eng-writing",
+          "title": "中译英",
+          "description": "处理中文长句拆分、无主语句、文化负载词的翻译策略",
+          "orderIndex": 1
+        },
+        {
+          "id": "eng-writing-letter",
+          "parentId": "eng-writing",
+          "title": "应用文写作",
+          "description": "书信、通知、演讲稿等格式，正式与非正式语体切换",
+          "orderIndex": 2
+        }
+      ]
+    },
+    {
+      "id": "cpp",
+      "name": "C++程序设计",
+      "description": "从基础语法到面向对象，指针与STL，面向工程实践",
+      "icon": "Cpu",
+      "color": "bg-purple-500",
+      "knowledgeNodes": [
+        {
+          "id": "cpp-basic",
+          "parentId": null,
+          "title": "基础语法",
+          "description": "变量、类型、控制流、函数等C++核心语法",
+          "orderIndex": 0
+        },
+        {
+          "id": "cpp-basic-types",
+          "parentId": "cpp-basic",
+          "title": "数据类型与变量",
+          "description": "int/float/char/string/bool，const与constexpr，auto类型推导",
+          "orderIndex": 0
+        },
+        {
+          "id": "cpp-basic-control",
+          "parentId": "cpp-basic",
+          "title": "控制流程",
+          "description": "if/switch分支，for/while/do-while循环，break/continue跳转",
+          "orderIndex": 1
+        },
+        {
+          "id": "cpp-basic-func",
+          "parentId": "cpp-basic",
+          "title": "函数",
+          "description": "函数声明与定义、参数传递（值/引用/指针）、重载、默认参数、内联函数",
+          "orderIndex": 2
+        },
+        {
+          "id": "cpp-basic-array",
+          "parentId": "cpp-basic",
+          "title": "数组与字符串",
+          "description": "一维/多维数组，C风格字符串与std::string，数组与指针关系",
+          "orderIndex": 3
+        },
+        {
+          "id": "cpp-oop",
+          "parentId": null,
+          "title": "面向对象",
+          "description": "封装、继承、多态三大特性，类设计的艺术",
+          "orderIndex": 1
+        },
+        {
+          "id": "cpp-oop-class",
+          "parentId": "cpp-oop",
+          "title": "类与对象",
+          "description": "成员变量/函数、访问控制(public/private/protected)、构造/析构函数",
+          "orderIndex": 0
+        },
+        {
+          "id": "cpp-oop-inherit",
+          "parentId": "cpp-oop",
+          "title": "继承与多态",
+          "description": "单继承/多继承、虚函数与纯虚函数、抽象类与接口、dynamic_cast",
+          "orderIndex": 1
+        },
+        {
+          "id": "cpp-oop-operator",
+          "parentId": "cpp-oop",
+          "title": "运算符重载",
+          "description": "算术/比较/赋值/下标运算符重载，友元函数，流运算符重载",
+          "orderIndex": 2
+        },
+        {
+          "id": "cpp-oop-design",
+          "parentId": "cpp-oop",
+          "title": "设计原则",
+          "description": "单一职责、开闭原则、里氏替换、依赖倒置，常用设计模式入门",
+          "orderIndex": 3
+        },
+        {
+          "id": "cpp-pointer",
+          "parentId": null,
+          "title": "指针与引用",
+          "description": "C++最核心也最容易出错的知识，深入理解内存模型",
+          "orderIndex": 2
+        },
+        {
+          "id": "cpp-pointer-basic",
+          "parentId": "cpp-pointer",
+          "title": "指针基础",
+          "description": "取地址与解引用、指针运算、const指针、void指针、函数指针",
+          "orderIndex": 0
+        },
+        {
+          "id": "cpp-pointer-ref",
+          "parentId": "cpp-pointer",
+          "title": "引用",
+          "description": "左值引用与右值引用、移动语义、完美转发、引用折叠",
+          "orderIndex": 1
+        },
+        {
+          "id": "cpp-pointer-memory",
+          "parentId": "cpp-pointer",
+          "title": "动态内存管理",
+          "description": "new/delete、内存泄漏与野指针、RAII原则、智能指针(unique_ptr/shared_ptr/weak_ptr)",
+          "orderIndex": 2
+        },
+        {
+          "id": "cpp-stl",
+          "parentId": null,
+          "title": "STL标准库",
+          "description": "容器、迭代器、算法三大组件，高效开发的基石",
+          "orderIndex": 3
+        },
+        {
+          "id": "cpp-stl-container",
+          "parentId": "cpp-stl",
+          "title": "容器",
+          "description": "vector/list/deque/set/map/unordered_map，选择原则与性能对比",
+          "orderIndex": 0
+        },
+        {
+          "id": "cpp-stl-iterator",
+          "parentId": "cpp-stl",
+          "title": "迭代器",
+          "description": "输入/输出/前向/双向/随机访问迭代器，迭代器失效问题",
+          "orderIndex": 1
+        },
+        {
+          "id": "cpp-stl-algo",
+          "parentId": "cpp-stl",
+          "title": "算法",
+          "description": "sort/find/copy/transform/accumulate，Lambda表达式与函数对象",
+          "orderIndex": 2
+        },
+        {
+          "id": "cpp-adv",
+          "parentId": null,
+          "title": "高级特性",
+          "description": "模板、异常、命名空间、C++11/14/17/20新特性",
+          "orderIndex": 4
+        },
+        {
+          "id": "cpp-adv-template",
+          "parentId": "cpp-adv",
+          "title": "模板编程",
+          "description": "函数模板与类模板、模板特化、变参模板、SFINAE与concepts",
+          "orderIndex": 0
+        },
+        {
+          "id": "cpp-adv-exception",
+          "parentId": "cpp-adv",
+          "title": "异常处理",
+          "description": "try-catch-throw、标准异常类、异常安全保证、noexcept",
+          "orderIndex": 1
+        },
+        {
+          "id": "cpp-adv-modern",
+          "parentId": "cpp-adv",
+          "title": "现代C++特性",
+          "description": "auto/decltype/lambda/range-for/smart_ptr/move语义/constexpr",
+          "orderIndex": 2
+        }
+      ]
+    },
+    {
+      "id": "physics",
+      "name": "大学物理",
+      "description": "力学、热学、电磁学、光学、近代物理五大模块",
+      "icon": "BookOpen",
+      "color": "bg-indigo-500",
+      "knowledgeNodes": [
+        {
+          "id": "phy-mechanics",
+          "parentId": null,
+          "title": "力学",
+          "description": "从质点运动到刚体转动，经典力学的完整体系",
+          "orderIndex": 0
+        },
+        {
+          "id": "phy-mech-kinematics",
+          "parentId": "phy-mechanics",
+          "title": "质点运动学",
+          "description": "位置/速度/加速度，直线运动与曲线运动，抛体运动，相对运动",
+          "orderIndex": 0
+        },
+        {
+          "id": "phy-mech-newton",
+          "parentId": "phy-mechanics",
+          "title": "牛顿运动定律",
+          "description": "牛顿三定律，惯性参考系，常见力（重力/弹力/摩擦力），隔离法受力分析",
+          "orderIndex": 1
+        },
+        {
+          "id": "phy-mech-momentum",
+          "parentId": "phy-mechanics",
+          "title": "动量与能量",
+          "description": "动量定理与动量守恒，功与动能定理，势能与机械能守恒定律",
+          "orderIndex": 2
+        },
+        {
+          "id": "phy-mech-rigid",
+          "parentId": "phy-mechanics",
+          "title": "刚体转动",
+          "description": "转动惯量、力矩、角动量守恒、刚体定轴转动定律",
+          "orderIndex": 3
+        },
+        {
+          "id": "phy-thermo",
+          "parentId": null,
+          "title": "热学",
+          "description": "气体动理论与热力学，微观与宏观的统一",
+          "orderIndex": 1
+        },
+        {
+          "id": "phy-thermo-gas",
+          "parentId": "phy-thermo",
+          "title": "气体动理论",
+          "description": "理想气体状态方程、压强与温度的微观解释、麦克斯韦速率分布",
+          "orderIndex": 0
+        },
+        {
+          "id": "phy-thermo-law",
+          "parentId": "phy-thermo",
+          "title": "热力学定律",
+          "description": "热力学第一定律(内能/功/热量)、第二定律(熵增/不可逆)、卡诺循环",
+          "orderIndex": 1
+        },
+        {
+          "id": "phy-em",
+          "parentId": null,
+          "title": "电磁学",
+          "description": "电场、磁场、电磁感应，麦克斯韦方程组的物理意义",
+          "orderIndex": 2
+        },
+        {
+          "id": "phy-em-electrostatic",
+          "parentId": "phy-em",
+          "title": "静电场",
+          "description": "库仑定律、电场强度与电势、高斯定理、电容与静电场能量",
+          "orderIndex": 0
+        },
+        {
+          "id": "phy-em-magnetic",
+          "parentId": "phy-em",
+          "title": "稳恒磁场",
+          "description": "毕奥-萨伐尔定律、安培环路定理、洛伦兹力、霍尔效应",
+          "orderIndex": 1
+        },
+        {
+          "id": "phy-em-induction",
+          "parentId": "phy-em",
+          "title": "电磁感应",
+          "description": "法拉第电磁感应定律、动生与感生电动势、自感与互感、位移电流",
+          "orderIndex": 2
+        },
+        {
+          "id": "phy-wave",
+          "parentId": null,
+          "title": "振动与波动",
+          "description": "从简谐振动到机械波，理解波的本质",
+          "orderIndex": 3
+        },
+        {
+          "id": "phy-wave-harmonic",
+          "parentId": "phy-wave",
+          "title": "简谐振动",
+          "description": "弹簧振子、单摆、复摆，振幅/周期/相位，阻尼振动与受迫振动",
+          "orderIndex": 0
+        },
+        {
+          "id": "phy-wave-mech",
+          "parentId": "phy-wave",
+          "title": "机械波",
+          "description": "横波与纵波、波长/频率/波速、波的干涉与衍射、驻波",
+          "orderIndex": 1
+        },
+        {
+          "id": "phy-optics",
+          "parentId": null,
+          "title": "光学",
+          "description": "几何光学与波动光学的统一理解",
+          "orderIndex": 4
+        },
+        {
+          "id": "phy-optics-geo",
+          "parentId": "phy-optics",
+          "title": "几何光学",
+          "description": "反射与折射定律、全反射、薄透镜成像公式、光学仪器",
+          "orderIndex": 0
+        },
+        {
+          "id": "phy-optics-wave",
+          "parentId": "phy-optics",
+          "title": "波动光学",
+          "description": "杨氏双缝干涉、薄膜干涉、单缝衍射、光栅方程、马吕斯定律(偏振)",
+          "orderIndex": 1
+        },
+        {
+          "id": "phy-modern",
+          "parentId": null,
+          "title": "近代物理",
+          "description": "相对论与量子物理入门，打开现代物理的大门",
+          "orderIndex": 5
+        },
+        {
+          "id": "phy-modern-relativity",
+          "parentId": "phy-modern",
+          "title": "狭义相对论基础",
+          "description": "光速不变原理、同时性的相对性、时间膨胀与长度收缩、质能方程E=mc²",
+          "orderIndex": 0
+        },
+        {
+          "id": "phy-modern-quantum",
+          "parentId": "phy-modern",
+          "title": "量子物理入门",
+          "description": "黑体辐射与普朗克假设、光电效应、康普顿散射、波粒二象性、不确定关系",
+          "orderIndex": 1
+        }
+      ]
+    },
+    {
+      "id": "engmech",
+      "name": "工程力学",
+      "description": "静力学基础、材料力学、应力分析，从理论到工程应用",
+      "icon": "Hammer",
+      "color": "bg-orange-500",
+      "knowledgeNodes": [
+        {
+          "id": "em-statics",
+          "parentId": null,
+          "title": "静力学基础",
+          "description": "力系的简化与平衡，静定结构的受力分析",
+          "orderIndex": 0
+        },
+        {
+          "id": "em-statics-force",
+          "parentId": "em-statics",
+          "title": "力系简化",
+          "description": "力的平移定理、平面力系向一点简化、主矢与主矩",
+          "orderIndex": 0
+        },
+        {
+          "id": "em-statics-equilibrium",
+          "parentId": "em-statics",
+          "title": "平衡方程",
+          "description": "平面任意力系的平衡条件(ΣFx=0, ΣFy=0, ΣM=0)，静定与超静定概念",
+          "orderIndex": 1
+        },
+        {
+          "id": "em-statics-friction",
+          "parentId": "em-statics",
+          "title": "摩擦",
+          "description": "静摩擦力与动摩擦力、摩擦角与自锁、滚动摩擦",
+          "orderIndex": 2
+        },
+        {
+          "id": "em-statics-truss",
+          "parentId": "em-statics",
+          "title": "桁架与重心",
+          "description": "节点法/截面法求桁架内力，重心与形心的计算",
+          "orderIndex": 3
+        },
+        {
+          "id": "em-material",
+          "parentId": null,
+          "title": "材料力学",
+          "description": "四种基本变形：拉压、剪切、扭转、弯曲",
+          "orderIndex": 1
+        },
+        {
+          "id": "em-material-tension",
+          "parentId": "em-material",
+          "title": "轴向拉伸与压缩",
+          "description": "正应力与线应变、胡克定律(E=σ/ε)、拉压超静定、应力集中",
+          "orderIndex": 0
+        },
+        {
+          "id": "em-material-shear",
+          "parentId": "em-material",
+          "title": "剪切与挤压",
+          "description": "剪切胡克定律、剪切强度条件、挤压强度计算，螺栓/铆钉/键的强度分析",
+          "orderIndex": 1
+        },
+        {
+          "id": "em-material-torsion",
+          "parentId": "em-material",
+          "title": "扭转",
+          "description": "扭矩图、圆轴扭转的切应力分布、扭转角计算、扭转强度与刚度条件",
+          "orderIndex": 2
+        },
+        {
+          "id": "em-material-bending",
+          "parentId": "em-material",
+          "title": "弯曲",
+          "description": "剪力图与弯矩图、纯弯曲正应力公式(σ=My/Iz)、弯曲切应力、挠曲线近似微分方程",
+          "orderIndex": 3
+        },
+        {
+          "id": "em-stress",
+          "parentId": null,
+          "title": "应力状态与强度理论",
+          "description": "组合变形的分析方法和失效判据",
+          "orderIndex": 2
+        },
+        {
+          "id": "em-stress-state",
+          "parentId": "em-stress",
+          "title": "应力状态分析",
+          "description": "平面应力状态、主应力与主平面、莫尔应力圆、广义胡克定律",
+          "orderIndex": 0
+        },
+        {
+          "id": "em-stress-theory",
+          "parentId": "em-stress",
+          "title": "四大强度理论",
+          "description": "最大拉应力/最大拉应变/最大切应力/畸变能密度理论，各理论的适用范围",
+          "orderIndex": 1
+        },
+        {
+          "id": "em-stress-combined",
+          "parentId": "em-stress",
+          "title": "组合变形",
+          "description": "拉弯组合、弯扭组合的强度校核，截面核心的概念",
+          "orderIndex": 2
+        },
+        {
+          "id": "em-stress-buckling",
+          "parentId": "em-stress",
+          "title": "压杆稳定",
+          "description": "欧拉公式、临界力与临界应力、柔度与长度系数、提高压杆稳定性的措施",
+          "orderIndex": 3
+        }
+      ]
+    },
+    {
+      "id": "measurement",
+      "name": "互换性与测量技术",
+      "description": "公差配合、几何公差、表面粗糙度与精密测量",
+      "icon": "Ruler",
+      "color": "bg-teal-500",
+      "knowledgeNodes": [
+        {
+          "id": "mt-basic",
+          "parentId": null,
+          "title": "互换性基础",
+          "description": "公差基本概念、标准化体系与优先数系",
+          "orderIndex": 0
+        },
+        {
+          "id": "mt-basic-concept",
+          "parentId": "mt-basic",
+          "title": "互换性概念",
+          "description": "完全互换与不完全互换、标准化意义、互换性在批量生产中的作用",
+          "orderIndex": 0
+        },
+        {
+          "id": "mt-basic-standard",
+          "parentId": "mt-basic",
+          "title": "标准与优先数系",
+          "description": "GB/T国家标准体系、优先数和优先数系(R5/R10/R20/R40)的应用",
+          "orderIndex": 1
+        },
+        {
+          "id": "mt-dimension",
+          "parentId": null,
+          "title": "尺寸公差与配合",
+          "description": "公差带、基本偏差、配合制度的选择与计算",
+          "orderIndex": 1
+        },
+        {
+          "id": "mt-dim-term",
+          "parentId": "mt-dimension",
+          "title": "基本术语",
+          "description": "公称尺寸/实际尺寸/极限尺寸，上偏差/下偏差/公差，最大/最小过盈与间隙",
+          "orderIndex": 0
+        },
+        {
+          "id": "mt-dim-zone",
+          "parentId": "mt-dimension",
+          "title": "公差带与配合",
+          "description": "标准公差等级(IT01~IT18)、基本偏差系列、基孔制与基轴制的选择",
+          "orderIndex": 1
+        },
+        {
+          "id": "mt-dim-select",
+          "parentId": "mt-dimension",
+          "title": "配合选用",
+          "description": "间隙配合/过渡配合/过盈配合的特征与应用场景，类比法与计算法选配合",
+          "orderIndex": 2
+        },
+        {
+          "id": "mt-geometric",
+          "parentId": null,
+          "title": "几何公差 (形位公差)",
+          "description": "形状、方向、位置、跳动四类公差的标注与检测",
+          "orderIndex": 2
+        },
+        {
+          "id": "mt-geo-form",
+          "parentId": "mt-geometric",
+          "title": "形状公差",
+          "description": "直线度/平面度/圆度/圆柱度，公差带的形状与评定方法",
+          "orderIndex": 0
+        },
+        {
+          "id": "mt-geo-orientation",
+          "parentId": "mt-geometric",
+          "title": "方向公差",
+          "description": "平行度/垂直度/倾斜度，基准的选择与公差带定义",
+          "orderIndex": 1
+        },
+        {
+          "id": "mt-geo-position",
+          "parentId": "mt-geometric",
+          "title": "位置公差",
+          "description": "位置度/同轴度/对称度，最大实体要求(MMR)与最小实体要求(LMR)",
+          "orderIndex": 2
+        },
+        {
+          "id": "mt-geo-runout",
+          "parentId": "mt-geometric",
+          "title": "跳动公差",
+          "description": "圆跳动(径向/端面/斜向)与全跳动，综合控制形状与位置误差",
+          "orderIndex": 3
+        },
+        {
+          "id": "mt-roughness",
+          "parentId": null,
+          "title": "表面粗糙度",
+          "description": "评定参数、标注方法与选用的工程考量",
+          "orderIndex": 3
+        },
+        {
+          "id": "mt-rough-param",
+          "parentId": "mt-roughness",
+          "title": "评定参数",
+          "description": "Ra(轮廓算术平均偏差)/Rz(微观不平度十点高度)/Rsm等参数的含义与适用性",
+          "orderIndex": 0
+        },
+        {
+          "id": "mt-rough-mark",
+          "parentId": "mt-roughness",
+          "title": "标注与选用",
+          "description": "表面粗糙度符号与标注规则，根据功能要求(配合/摩擦/密封/美观)选择参数值",
+          "orderIndex": 1
+        },
+        {
+          "id": "mt-measure",
+          "parentId": null,
+          "title": "测量技术基础",
+          "description": "测量方法、量具使用与误差分析",
+          "orderIndex": 4
+        },
+        {
+          "id": "mt-measure-tool",
+          "parentId": "mt-measure",
+          "title": "常用量具量仪",
+          "description": "游标卡尺(0.02mm)/千分尺(0.01mm)/百分表/三坐标测量机(CMM)的原理与使用",
+          "orderIndex": 0
+        },
+        {
+          "id": "mt-measure-error",
+          "parentId": "mt-measure",
+          "title": "测量误差分析",
+          "description": "系统误差/随机误差/粗大误差，不确定度评定，测量数据的统计处理",
+          "orderIndex": 1
+        }
+      ]
+    },
+    {
+      "id": "finance",
+      "name": "金融投资基础",
+      "description": "从货币时间价值到投资组合，建立科学的投资思维",
+      "icon": "TrendingUp",
+      "color": "bg-emerald-500",
+      "knowledgeNodes": [
+        {
+          "id": "fin-basic",
+          "parentId": null,
+          "title": "基础概念",
+          "description": "金融最核心的概念：货币时间价值、风险与收益",
+          "orderIndex": 0
+        },
+        {
+          "id": "fin-basic-tvm",
+          "parentId": "fin-basic",
+          "title": "货币时间价值",
+          "description": "终值(FV)与现值(PV)、单利与复利、年金(普通/预付/永续)的计算",
+          "orderIndex": 0
+        },
+        {
+          "id": "fin-basic-risk",
+          "parentId": "fin-basic",
+          "title": "风险与收益",
+          "description": "期望收益率与标准差、夏普比率、系统风险(β)与非系统风险、CAPM模型入门",
+          "orderIndex": 1
+        },
+        {
+          "id": "fin-basic-allocation",
+          "parentId": "fin-basic",
+          "title": "资产配置",
+          "description": "大类资产(股票/债券/现金/黄金)、风险承受能力评估、再平衡策略",
+          "orderIndex": 2
+        },
+        {
+          "id": "fin-tools",
+          "parentId": null,
+          "title": "投资工具",
+          "description": "股票、债券、基金、衍生品的特点与适用场景",
+          "orderIndex": 1
+        },
+        {
+          "id": "fin-tools-stock",
+          "parentId": "fin-tools",
+          "title": "股票",
+          "description": "普通股与优先股、A股/港股/美股市场、IPO与二级市场交易、股息与分红",
+          "orderIndex": 0
+        },
+        {
+          "id": "fin-tools-bond",
+          "parentId": "fin-tools",
+          "title": "债券",
+          "description": "国债/企业债/可转债、票面利率与到期收益率、久期与凸性、信用评级",
+          "orderIndex": 1
+        },
+        {
+          "id": "fin-tools-fund",
+          "parentId": "fin-tools",
+          "title": "基金与ETF",
+          "description": "主动基金vs指数基金、ETF的交易机制、管理费与跟踪误差、定投策略",
+          "orderIndex": 2
+        },
+        {
+          "id": "fin-tools-derivative",
+          "parentId": "fin-tools",
+          "title": "衍生品入门",
+          "description": "期货与期权的基本概念、保证金交易、套期保值与投机",
+          "orderIndex": 3
+        },
+        {
+          "id": "fin-analysis",
+          "parentId": null,
+          "title": "分析方法",
+          "description": "基本面、技术面、量化分析三大流派",
+          "orderIndex": 2
+        },
+        {
+          "id": "fin-analysis-fundamental",
+          "parentId": "fin-analysis",
+          "title": "基本面分析",
+          "description": "财务报表(利润表/资产负债表/现金流量表)、PE/PB/ROE估值指标、行业分析",
+          "orderIndex": 0
+        },
+        {
+          "id": "fin-analysis-technical",
+          "parentId": "fin-analysis",
+          "title": "技术分析",
+          "description": "K线与均线系统、MACD/RSI/布林带指标、支撑与阻力、趋势与形态",
+          "orderIndex": 1
+        },
+        {
+          "id": "fin-analysis-quant",
+          "parentId": "fin-analysis",
+          "title": "量化分析入门",
+          "description": "因子选股、回测框架、统计套利概念、机器学习在金融中的应用前景",
+          "orderIndex": 2
+        },
+        {
+          "id": "fin-risk",
+          "parentId": null,
+          "title": "风险管理",
+          "description": "识别、度量与控制投资风险",
+          "orderIndex": 3
+        },
+        {
+          "id": "fin-risk-var",
+          "parentId": "fin-risk",
+          "title": "风险度量",
+          "description": "VaR(在险价值)、最大回撤、波动率、压力测试与情景分析",
+          "orderIndex": 0
+        },
+        {
+          "id": "fin-risk-diversify",
+          "parentId": "fin-risk",
+          "title": "分散化与对冲",
+          "description": "马科维茨投资组合理论、有效前沿、相关性矩阵、股指期货对冲",
+          "orderIndex": 1
+        },
+        {
+          "id": "fin-strategy",
+          "parentId": null,
+          "title": "投资策略与心理",
+          "description": "经典投资策略与行为金融学",
+          "orderIndex": 4
+        },
+        {
+          "id": "fin-strategy-value",
+          "parentId": "fin-strategy",
+          "title": "价值投资",
+          "description": "格雷厄姆与巴菲特理念、安全边际、护城河分析、内在价值估算(DCF/DDM)",
+          "orderIndex": 0
+        },
+        {
+          "id": "fin-strategy-index",
+          "parentId": "fin-strategy",
+          "title": "指数投资与定投",
+          "description": "有效市场假说、长期复利效应、微笑曲线、止盈策略",
+          "orderIndex": 1
+        },
+        {
+          "id": "fin-strategy-behavior",
+          "parentId": "fin-strategy",
+          "title": "行为金融学",
+          "description": "损失厌恶、过度自信、锚定效应、羊群行为，如何避免常见的投资心理陷阱",
+          "orderIndex": 2
+        }
+      ]
+    }
+  ],
+  "totalNodes": 118
+}

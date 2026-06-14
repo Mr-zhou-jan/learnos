@@ -1,0 +1,28 @@
+# LearnOS VidKB-CET 能力约束清单
+version: "1.0"
+project: "vidkb-cet"
+scope: "视频驱动的CET-4/6英语学习系统"
+
+invariants:
+  - "每道题必须有 source_refs 追溯到视频时间戳"
+  - "AI生成内容必须经过规则校验器过滤"
+  - "不提供公网爬取，仅用户自有内容"
+  - "题型模板配置化，不硬编码在业务逻辑"
+
+dimensions:
+  LEX: { name: "词汇辨识与搭配", cet: [4,6], weight: 0.15 }
+  GRAM: { name: "语法与句法", cet: [4,6], weight: 0.15 }
+  DISC: { name: "语篇理解", cet: [4,6], weight: 0.15 }
+  LIST: { name: "听力加工", cet: [4,6], weight: 0.10 }
+  TRANS: { name: "翻译", cet: [4,6], weight: 0.15 }
+  WRITE: { name: "写作表达", cet: [4,6], weight: 0.10 }
+  SPEED: { name: "阅读/听力量速", cet: [4,6], weight: 0.10 }
+  META: { name: "元认知/错题模式", cet: [4,6], weight: 0.10 }
+
+non_goals:
+  - "全自动替考"
+  - "未经审核直接发布题库"
+  - "批量爬取版权内容"
+  - "听力全真模考 (MVP)"
+  - "社交功能"
+  - "付费墙"

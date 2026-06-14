@@ -1,0 +1,166 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   LearnOS 全局样式 — 面向公开发布品质
+   ============================================================ */
+
+/* ---------- 基础层 ---------- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-zinc-50 text-zinc-900;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* 自定义滚动条 */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #a1a1aa; }
+
+  /* 聚焦环 */
+  *:focus-visible {
+    @apply outline-2 outline-offset-2 outline-primary-500;
+  }
+}
+
+/* ---------- 组件层 ---------- */
+@layer components {
+  /* 卡片 */
+  .card {
+    @apply bg-white border border-zinc-200 rounded-2xl p-5 shadow-sm;
+    transition: box-shadow 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  }
+  .card-hover {
+    @apply card cursor-pointer;
+  }
+  .card-hover:hover {
+    @apply shadow-md border-primary-200;
+    transform: translateY(-1px);
+  }
+  .card-hover:active { transform: translateY(0); }
+
+  /* 按钮 */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5
+           bg-primary-500 text-white rounded-xl font-semibold text-sm
+           shadow-sm shadow-primary-200
+           transition-all duration-200 ease-out
+           hover:bg-primary-600 hover:shadow-md hover:shadow-primary-300
+           active:scale-[0.97] active:shadow-sm
+           disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2
+           bg-white text-zinc-700 border border-zinc-200 rounded-xl font-medium text-sm
+           transition-all duration-200 ease-out
+           hover:bg-zinc-50 hover:border-zinc-300 hover:text-zinc-900
+           active:scale-[0.97]
+           disabled:opacity-40 disabled:cursor-not-allowed;
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2
+           border-2 border-primary-200 text-primary-600 rounded-xl font-medium text-sm
+           transition-all duration-200 ease-out
+           hover:bg-primary-50 hover:border-primary-400
+           active:scale-[0.97];
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 px-3 py-2
+           text-zinc-500 rounded-lg font-medium text-sm
+           transition-all duration-150 ease-out
+           hover:bg-zinc-100 hover:text-zinc-700
+           active:scale-[0.97];
+  }
+
+  /* 标签 */
+  .badge {
+    @apply inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold
+           bg-zinc-100 text-zinc-600 border border-zinc-200;
+  }
+  .badge-primary { @apply bg-primary-50 text-primary-700 border-primary-200; }
+  .badge-success { @apply bg-emerald-50 text-emerald-700 border-emerald-200; }
+  .badge-warning { @apply bg-amber-50 text-amber-700 border-amber-200; }
+  .badge-danger  { @apply bg-red-50 text-red-700 border-red-200; }
+
+  /* 骨架屏 */
+  .skeleton {
+    @apply relative overflow-hidden rounded-lg bg-zinc-200;
+  }
+  .skeleton::after {
+    content: "";
+    @apply absolute inset-0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.5) 50%, transparent 100%);
+    animation: shimmer 1.5s infinite;
+  }
+
+  /* Tab */
+  .tab-bar {
+    @apply flex gap-1 bg-zinc-100 p-1 rounded-xl;
+  }
+  .tab-item {
+    @apply flex-1 py-2.5 px-3 rounded-lg text-sm font-medium
+           transition-all duration-200 ease-out
+           text-zinc-500 hover:text-zinc-700;
+  }
+  .tab-item.active {
+    @apply bg-white shadow-sm text-zinc-900;
+  }
+
+  /* 输入框 */
+  .input {
+    @apply w-full px-4 py-3 border border-zinc-200 rounded-xl text-sm bg-white
+           placeholder:text-zinc-400
+           transition-all duration-200 ease-out
+           focus:border-primary-400 focus:ring-4 focus:ring-primary-50 focus:outline-none
+           disabled:bg-zinc-50 disabled:text-zinc-400;
+  }
+  .input-error {
+    @apply border-red-300 focus:border-red-400 focus:ring-red-50;
+  }
+
+  /* 动画工具类 */
+  .animate-slide-up  { animation: slideUp 0.3s ease-out; }
+  .animate-slide-down{ animation: slideDown 0.3s ease-out; }
+  .animate-fade-in   { animation: fadeIn 0.25s ease-out; }
+  .animate-scale-in  { animation: scaleIn 0.2s ease-out; }
+}
+
+/* ---------- 关键帧 ---------- */
+@keyframes shimmer {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ---------- 工具类 ---------- */
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .animate-spin-slow { animation: spin-slow 3s linear infinite; }
+}

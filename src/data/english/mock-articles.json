@@ -1,0 +1,272 @@
+[
+  {
+    "id": "cet4-001",
+    "title": "The Rise of Remote Work",
+    "difficulty": "cet4",
+    "topic": "科技与社会",
+    "wordCount": 320,
+    "paragraphs": [
+      "The COVID-19 pandemic has fundamentally changed the way people work. Before 2020, only a small percentage of employees worked from home regularly. However, lockdowns and social distancing measures forced companies worldwide to adopt remote work almost overnight.",
+      "Studies show that remote work has both advantages and disadvantages. On the positive side, employees save time and money on commuting, and many report better work-life balance. Companies can also reduce office costs and hire talent from anywhere in the world.",
+      "However, challenges remain. Some workers struggle with feelings of isolation and find it difficult to separate work from personal life. Communication can become more complicated when teams are not in the same physical space. Additionally, not all jobs can be done remotely.",
+      "Experts predict that the future of work will be hybrid — a combination of office and remote work. This model allows employees to enjoy flexibility while maintaining face-to-face collaboration. Companies that embrace this trend may have a competitive advantage in attracting top talent."
+    ],
+    "questions": [
+      {
+        "id": "q1",
+        "type": "multiple_choice",
+        "questionText": "What is the main idea of the passage?",
+        "options": [
+          "A. Remote work is better than office work",
+          "B. The pandemic changed work patterns and the future is likely hybrid",
+          "C. Companies should close their offices",
+          "D. Working from home is only temporary"
+        ],
+        "correctIndex": 1,
+        "explanation": "The passage mainly discusses how the pandemic changed work and predicts a hybrid future.",
+        "sourceIndex": 3,
+        "sourceText": "Experts predict that the future of work will be hybrid"
+      },
+      {
+        "id": "q2",
+        "type": "multiple_choice",
+        "questionText": "Which is NOT mentioned as an advantage of remote work?",
+        "options": [
+          "A. Saving commuting time",
+          "B. Better work-life balance",
+          "C. Higher salary",
+          "D. Reduced office costs"
+        ],
+        "correctIndex": 2,
+        "explanation": "Higher salary is not mentioned. The passage mentions commuting savings, work-life balance, and reduced office costs.",
+        "sourceIndex": 1,
+        "sourceText": "employees save time and money on commuting"
+      },
+      {
+        "id": "q3",
+        "type": "multiple_choice",
+        "questionText": "What does 'hybrid' mean in the last paragraph?",
+        "options": [
+          "A. Completely online",
+          "B. Completely offline",
+          "C. A mixture of different elements",
+          "D. Traditional"
+        ],
+        "correctIndex": 2,
+        "explanation": "Hybrid means a combination — the article explains it as 'a combination of office and remote work'.",
+        "sourceIndex": 3,
+        "sourceText": "hybrid — a combination of office and remote work"
+      },
+      {
+        "id": "q4",
+        "type": "multiple_choice",
+        "questionText": "What challenge of remote work is mentioned?",
+        "options": [
+          "A. Higher office costs",
+          "B. Feelings of isolation",
+          "C. Less flexible hours",
+          "D. Lower productivity"
+        ],
+        "correctIndex": 1,
+        "explanation": "Paragraph 3 explicitly mentions 'feelings of isolation' as a challenge.",
+        "sourceIndex": 2,
+        "sourceText": "Some workers struggle with feelings of isolation"
+      },
+      {
+        "id": "q5",
+        "type": "multiple_choice",
+        "questionText": "What does the author suggest about the future of work?",
+        "options": [
+          "A. All jobs will become remote",
+          "B. Office work will disappear",
+          "C. A mixed model will become common",
+          "D. Remote work will be banned"
+        ],
+        "correctIndex": 2,
+        "explanation": "The final paragraph predicts that hybrid — a mixed model — will be the future.",
+        "sourceIndex": 3,
+        "sourceText": "the future of work will be hybrid"
+      }
+    ]
+  },
+  {
+    "id": "cet4-002",
+    "title": "The Benefits of Reading",
+    "difficulty": "cet4",
+    "topic": "教育",
+    "wordCount": 280,
+    "paragraphs": [
+      "Reading is one of the most beneficial habits a person can develop. It not only provides knowledge but also improves mental health, enhances empathy, and strengthens cognitive abilities. In an age dominated by short videos and social media, the value of deep reading is often overlooked.",
+      "Research has shown that regular reading can reduce stress levels by up to 68%. Just six minutes of reading can slow down the heart rate and ease muscle tension. This makes reading an effective and accessible way to relax after a long day.",
+      "Furthermore, reading fiction has been linked to increased empathy. When we read stories, we put ourselves in the characters’ shoes and experience their emotions. This ability to understand others’ perspectives is crucial for building meaningful relationships.",
+      "For students, reading extensively in English is particularly important. It expands vocabulary, improves grammar intuitively, and exposes learners to different writing styles. Many successful English learners attribute their progress to reading books, articles, and news in English regularly."
+    ],
+    "questions": [
+      {
+        "id": "q1",
+        "type": "multiple_choice",
+        "questionText": "According to the passage, reading can reduce stress by up to ___%.",
+        "options": [
+          "A. 50",
+          "B. 68",
+          "C. 80",
+          "D. 45"
+        ],
+        "correctIndex": 1,
+        "explanation": "Paragraph 2 states 'regular reading can reduce stress levels by up to 68%'.",
+        "sourceIndex": 1,
+        "sourceText": "reduce stress levels by up to 68%"
+      },
+      {
+        "id": "q2",
+        "type": "multiple_choice",
+        "questionText": "How does reading fiction help with empathy?",
+        "options": [
+          "A. It teaches people to be more emotional",
+          "B. It helps readers understand others’ perspectives",
+          "C. It makes people more introverted",
+          "D. It improves memory"
+        ],
+        "correctIndex": 1,
+        "explanation": "Paragraph 3 explains that we put ourselves in characters’ shoes and understand their perspectives.",
+        "sourceIndex": 2,
+        "sourceText": "put ourselves in the characters’ shoes and experience their emotions"
+      },
+      {
+        "id": "q3",
+        "type": "multiple_choice",
+        "questionText": "Why is reading in English important for students?",
+        "options": [
+          "A. It helps pass exams easily",
+          "B. It expands vocabulary and improves grammar",
+          "C. It is required by schools",
+          "D. It helps make friends"
+        ],
+        "correctIndex": 1,
+        "explanation": "Paragraph 4 states it 'expands vocabulary, improves grammar intuitively'.",
+        "sourceIndex": 3,
+        "sourceText": "expands vocabulary, improves grammar intuitively"
+      },
+      {
+        "id": "q4",
+        "type": "multiple_choice",
+        "questionText": "The word 'overlooked' in paragraph 1 means ___?",
+        "options": [
+          "A. Emphasized",
+          "B. Ignored",
+          "C. Celebrated",
+          "D. Examined"
+        ],
+        "correctIndex": 1,
+        "explanation": "Overlooked means ignored or not given enough attention.",
+        "sourceIndex": 0,
+        "sourceText": "the value of deep reading is often overlooked"
+      },
+      {
+        "id": "q5",
+        "type": "multiple_choice",
+        "questionText": "What is the author’s attitude towards reading?",
+        "options": [
+          "A. Neutral",
+          "B. Negative",
+          "C. Positive and encouraging",
+          "D. Critical"
+        ],
+        "correctIndex": 2,
+        "explanation": "The author presents multiple benefits of reading and encourages students to read more.",
+        "sourceIndex": 3,
+        "sourceText": "Many successful English learners attribute their progress to reading"
+      }
+    ]
+  },
+  {
+    "id": "cet6-001",
+    "title": "Artificial Intelligence in Healthcare",
+    "difficulty": "cet6",
+    "topic": "科技",
+    "wordCount": 350,
+    "paragraphs": [
+      "Artificial Intelligence is rapidly transforming the healthcare industry. From diagnosing diseases to developing new drugs, AI-powered tools are increasingly being integrated into medical practice. The global AI in healthcare market is expected to reach $188 billion by 2030, reflecting its growing significance.",
+      "One of the most promising applications is in medical imaging. AI algorithms can analyze X-rays, CT scans, and MRIs with remarkable accuracy, sometimes outperforming human radiologists. For instance, a study published in Nature found that an AI system detected breast cancer in mammograms more accurately than expert radiologists.",
+      "AI is also accelerating drug discovery. Traditional drug development takes an average of 10–15 years and costs billions of dollars. AI can analyze millions of molecular compounds in days, identifying promising candidates for further testing. During the COVID-19 pandemic, AI helped researchers rapidly screen existing drugs.",
+      "However, the integration of AI in healthcare raises important ethical concerns. Patient data privacy, algorithmic bias, and the question of liability when AI makes mistakes are critical issues that need to be addressed. Experts emphasize that AI should augment rather than replace human medical professionals."
+    ],
+    "questions": [
+      {
+        "id": "q1",
+        "type": "multiple_choice",
+        "questionText": "What is the main purpose of the passage?",
+        "options": [
+          "A. To warn against using AI in medicine",
+          "B. To describe AI’s applications and challenges in healthcare",
+          "C. To promote a specific AI product",
+          "D. To compare AI with human doctors"
+        ],
+        "correctIndex": 1,
+        "explanation": "The passage covers both applications (imaging, drug discovery) and challenges (ethics).",
+        "sourceIndex": 0,
+        "sourceText": "AI-powered tools are increasingly being integrated into medical practice"
+      },
+      {
+        "id": "q2",
+        "type": "multiple_choice",
+        "questionText": "According to the passage, AI in medical imaging ___?",
+        "options": [
+          "A. Is less accurate than radiologists",
+          "B. Can only analyze X-rays",
+          "C. Sometimes outperforms human radiologists",
+          "D. Has been banned"
+        ],
+        "correctIndex": 2,
+        "explanation": "Paragraph 2 says AI 'sometimes outperforming human radiologists'.",
+        "sourceIndex": 1,
+        "sourceText": "sometimes outperforming human radiologists"
+      },
+      {
+        "id": "q3",
+        "type": "multiple_choice",
+        "questionText": "How does AI accelerate drug discovery?",
+        "options": [
+          "A. By replacing all human researchers",
+          "B. By analyzing millions of compounds quickly",
+          "C. By reducing drug prices",
+          "D. By eliminating clinical trials"
+        ],
+        "correctIndex": 1,
+        "explanation": "Paragraph 3 says AI can analyze millions of molecular compounds in days.",
+        "sourceIndex": 2,
+        "sourceText": "AI can analyze millions of molecular compounds in days"
+      },
+      {
+        "id": "q4",
+        "type": "multiple_choice",
+        "questionText": "The word 'augment' in the last paragraph means ___?",
+        "options": [
+          "A. Replace",
+          "B. Ignore",
+          "C. Enhance",
+          "D. Control"
+        ],
+        "correctIndex": 2,
+        "explanation": "Augment means to enhance or supplement — AI should assist, not replace, doctors.",
+        "sourceIndex": 3,
+        "sourceText": "AI should augment rather than replace human medical professionals"
+      },
+      {
+        "id": "q5",
+        "type": "multiple_choice",
+        "questionText": "Which ethical concern is NOT mentioned?",
+        "options": [
+          "A. Patient data privacy",
+          "B. Algorithmic bias",
+          "C. Liability for AI errors",
+          "D. High cost of AI"
+        ],
+        "correctIndex": 3,
+        "explanation": "The last paragraph mentions privacy, bias, and liability — but not the high cost of AI.",
+        "sourceIndex": 3,
+        "sourceText": "Patient data privacy, algorithmic bias, and the question of liability"
+      }
+    ]
+  }
+]

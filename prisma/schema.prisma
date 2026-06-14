@@ -1,0 +1,376 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================
+// Layer 1: User Layer
+// ============================================================
+model User {
+  id             String   @id @default(uuid())
+  email          String   @unique
+  name           String?
+  avatar         String?
+  educationLevel String?  // 教育水平
+  learningStyle  String?  // 学习风格: visual/auditory/kinesthetic/reading
+  dailyTimeMin   Int      @default(30) // 每日可用学习时间(分钟)
+  xp             Int      @default(0)
+  level          Int      @default(1)
+  streak         Int      @default(0)
+  lastActiveAt   DateTime?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  goals           Goal[]
+  learningPaths   LearningPath[]
+  dailyTasks      DailyTask[]
+  practiceRecords PracticeRecord[]
+  memoryCards     MemoryCard[]
+  reviewLogs      ReviewLog[]
+  masteryScores   MasteryScore[]
+  streakRecords   StreakRecord[]
+  aiFeedbacks     AIFeedback[]
+  feynmanSessions FeynmanSession[]
+  userCourses     UserCourse[]
+}
+
+// ============================================================
+// Layer 2: Goal Layer
+// ============================================================
+model Goal {
+  id          String   @id @default(uuid())
+  userId      String
+  name        String   // 目标名称: "CET4 550分"
+  description String?
+  targetScore Float?   // 目标分数
+  deadline    DateTime? // 截止日期
+  dailyTime   Int      @default(30) // 每日时间
+  status      String   @default("active") // active/paused/completed/archived
+  priority    Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  learningPaths  LearningPath[]
+  subGoals       SubGoal[]
+
+  @@index([userId, status])
+}
+
+model SubGoal {
+  id          String  @id @default(uuid())
+  goalId      String
+  name        String  // 子目标: "词汇", "语法", "阅读"
+  weight      Float   @default(1.0) // 权重
+  targetScore Float?
+  orderIndex  Int     @default(0)
+
+  goal          Goal             @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  knowledgeNodes KnowledgeNode[]
+}
+
+// ============================================================
+// Layer 3: Learning Path (规划层)
+// ============================================================
+model LearningPath {
+  id          String   @id @default(uuid())
+  userId      String
+  goalId      String
+  totalSteps  Int      @default(0)
+  completedSteps Int   @default(0)
+  currentStep Int      @default(0)
+  status      String   @default("active")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user  User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  goal  Goal    @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  steps PathStep[]
+
+  @@index([userId, status])
+}
+
+model PathStep {
+  id             String   @id @default(uuid())
+  pathId         String
+  knowledgeNodeId String?
+  stepType       String   // study/practice/review/exam
+  orderIndex     Int      @default(0)
+  estimatedMin   Int      @default(15)
+  status         String   @default("pending") // pending/in_progress/completed/skipped
+  completedAt    DateTime?
+  createdAt      DateTime @default(now())
+
+  path          LearningPath  @relation(fields: [pathId], references: [id], onDelete: Cascade)
+}
+
+// ============================================================
+// Layer 4: Knowledge Graph (知识图谱)
+// ============================================================
+model Course {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  icon        String?
+  color       String?
+  subjectType String?  // english/math/cpp/physics/mechanics/general
+  isSystem    Boolean  @default(false) // 系统预置?
+
+  knowledgeNodes KnowledgeNode[]
+  userCourses    UserCourse[]
+}
+
+model KnowledgeNode {
+  id          String   @id @default(uuid())
+  courseId    String
+  subGoalId   String?
+  parentId    String?
+  title       String
+  description String?
+  content     String?  // AI生成的学习内容
+  nodeType    String   @default("concept") // concept/skill/formula/project
+  difficulty  Float    @default(0.5) // 0-1 难度
+  orderIndex  Int      @default(0)
+  prerequisites String? // 前置知识节点ID列表(JSON)
+
+  course         Course          @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  subGoal        SubGoal?        @relation(fields: [subGoalId], references: [id], onDelete: SetNull)
+  parent         KnowledgeNode?  @relation("KnowledgeTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children       KnowledgeNode[] @relation("KnowledgeTree")
+  masteryScores  MasteryScore[]
+  learningRecords LearningRecord[]
+  reviewTasks    ReviewTask[]
+  memoryCards    MemoryCard[]
+  practiceRecords PracticeRecord[]
+  feynmanSessions FeynmanSession[]
+
+  @@index([courseId])
+  @@index([parentId])
+  @@index([subGoalId])
+}
+
+// ============================================================
+// Layer 5: Daily Tasks
+// ============================================================
+model DailyTask {
+  id              String   @id @default(uuid())
+  userId          String
+  knowledgeNodeId String?
+  taskType        String   // vocab/grammar/reading/listening/practice/review/project
+  title           String
+  description     String?
+  estimatedMin    Int      @default(15)
+  actualMin       Int?
+  status          String   @default("pending") // pending/in_progress/completed/skipped
+  priority        Int      @default(0)
+  scheduledDate   DateTime @default(now())
+  completedAt     DateTime?
+  createdAt       DateTime @default(now())
+
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  knowledgeNode KnowledgeNode? @relation(fields: [knowledgeNodeId], references: [id], onDelete: SetNull)
+
+  @@index([userId, scheduledDate, status])
+}
+
+// ============================================================
+// Layer 6: Practice Records
+// ============================================================
+model PracticeRecord {
+  id              String   @id @default(uuid())
+  userId          String
+  knowledgeNodeId String?
+  practiceType    String   // quiz/feynman/recall/compression/reverse/arena
+  score           Float?
+  durationSec     Int      @default(0)
+  details         String?  // JSON: 详细答题记录
+  createdAt       DateTime @default(now())
+
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  knowledgeNode KnowledgeNode? @relation(fields: [knowledgeNodeId], references: [id], onDelete: SetNull)
+
+  @@index([userId, createdAt])
+  @@index([knowledgeNodeId, createdAt])
+}
+
+// ============================================================
+// Layer 7: Memory Engine (FSRS)
+// ============================================================
+model MemoryCard {
+  id              String   @id @default(uuid())
+  userId          String
+  knowledgeNodeId String
+  front           String   // 正面: 问题/概念
+  back            String   // 背面: 答案/解释
+  difficulty      Float    @default(0.3) // FSRS: D (0-1)
+  stability       Float    @default(2.5) // FSRS: S (天)
+  retrievability  Float    @default(1.0) // FSRS: R (0-1)
+  interval        Int      @default(0)   // 当前间隔(天)
+  reps            Int      @default(0)   // 复习次数
+  lapses          Int      @default(0)   // 遗忘次数
+  lastReviewAt    DateTime?
+  nextReviewAt    DateTime?
+  status          String   @default("new") // new/learning/review/relearning
+  createdAt       DateTime @default(now())
+
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  knowledgeNode KnowledgeNode @relation(fields: [knowledgeNodeId], references: [id], onDelete: Cascade)
+  reviewLogs    ReviewLog[]
+
+  @@index([userId, nextReviewAt])
+  @@index([userId, status])
+}
+
+model ReviewLog {
+  id           String   @id @default(uuid())
+  userId       String
+  memoryCardId String
+  rating       Int      // 1=Again 2=Hard 3=Good 4=Easy
+  elapsedDays  Int      @default(0) // 距上次复习天数
+  scheduledDays Int     @default(0) // 安排的间隔
+  reviewedAt   DateTime @default(now())
+
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  memoryCard MemoryCard @relation(fields: [memoryCardId], references: [id], onDelete: Cascade)
+
+  @@index([userId, reviewedAt])
+}
+
+// ============================================================
+// Layer 8: Mastery Scores
+// ============================================================
+model MasteryScore {
+  id              String   @id @default(uuid())
+  userId          String
+  knowledgeNodeId String
+  overallScore    Float    @default(0) // 综合 0-100
+  accuracyScore   Float?   // 正确率维度
+  recallScore     Float?   // 主动回忆维度
+  transferScore   Float?   // 迁移应用维度
+  growthScore     Float?   // 成长维度
+  level           String   @default("F") // S/A/B/C/D/F
+  breakdown       String?  // JSON: 详细分项
+  updatedAt       DateTime @updatedAt
+
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  knowledgeNode KnowledgeNode @relation(fields: [knowledgeNodeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, knowledgeNodeId])
+}
+
+// ============================================================
+// Layer 9: Learning Records (历史)
+// ============================================================
+model LearningRecord {
+  id              String   @id @default(uuid())
+  userId          String
+  knowledgeNodeId String
+  duration        Int      @default(0) // 秒
+  result          String?  // JSON
+  recordType      String   @default("study")
+  createdAt       DateTime @default(now())
+
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  knowledgeNode KnowledgeNode @relation(fields: [knowledgeNodeId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+// ============================================================
+// Layer 10: Review Tasks (旧版兼容)
+// ============================================================
+model ReviewTask {
+  id              String   @id @default(uuid())
+  userId          String
+  knowledgeNodeId String
+  nextReviewTime  DateTime
+  reviewCount     Int      @default(0)
+  status          String   @default("pending")
+  ease            Float?
+  interval        Int      @default(0)
+  createdAt       DateTime @default(now())
+
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  knowledgeNode KnowledgeNode @relation(fields: [knowledgeNodeId], references: [id], onDelete: Cascade)
+
+  @@index([userId, nextReviewTime])
+}
+
+// ============================================================
+// Layer 11: Motivation
+// ============================================================
+model StreakRecord {
+  id        String   @id @default(uuid())
+  userId    String
+  date      DateTime
+  durationMin Int    @default(0)
+  tasksCompleted Int @default(0)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, date])
+  @@index([userId, date])
+}
+
+model UserAchievement {
+  id          String   @id @default(uuid())
+  userId      String
+  achievement String
+  unlockedAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, achievement])
+}
+
+// ============================================================
+// Layer 12: AI Coach
+// ============================================================
+model AIFeedback {
+  id          String   @id @default(uuid())
+  userId      String
+  type        String   // daily_summary/weakness_alert/progress_update/motivation
+  title       String
+  content     String
+  actionable  Boolean  @default(false) // 是否需要行动
+  read        Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+// ============================================================
+// Existing models (kept for compatibility)
+// ============================================================
+model FeynmanSession {
+  id              String   @id @default(uuid())
+  userId          String
+  knowledgeNodeId String
+  attempt         Int      @default(1)
+  score           Float?
+  feedback        String?
+  createdAt       DateTime @default(now())
+
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  knowledgeNode KnowledgeNode @relation(fields: [knowledgeNodeId], references: [id], onDelete: Cascade)
+}
+
+model UserCourse {
+  id        String   @id @default(uuid())
+  userId    String
+  courseId  String
+  progress  Float    @default(0)
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, courseId])
+}

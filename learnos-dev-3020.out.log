@@ -1,0 +1,112 @@
+
+> learnos@0.1.0 dev
+> next dev -p 3020
+
+   ▲ Next.js 15.5.19
+   - Local:        http://localhost:3020
+   - Network:      http://172.18.0.1:3020
+   - Environments: .env.local
+   - Experiments (use with caution):
+     · serverActions
+
+ ✓ Starting...
+ ✓ Ready in 3.2s
+ ○ Compiling / ...
+ ✓ Compiled / in 1222ms (574 modules)
+ GET / 200 in 1538ms
+ ✓ Compiled in 471ms (246 modules)
+ GET / 200 in 126ms
+ GET / 200 in 155ms
+ ✓ Compiled /api/knowledge/resolve-short in 238ms (580 modules)
+ GET /api/knowledge/resolve-short?url=https%3A%2F%2Fb23.tv%2FRPO9VHV 200 in 27911ms
+ ✓ Compiled /api/knowledge/from-video in 136ms (582 modules)
+ POST /api/knowledge/from-video 200 in 30820ms
+ ✓ Compiled /quiz in 269ms (599 modules)
+ GET /quiz?courses=custom-bb4f134d&names=%E8%8B%B1%E8%AF%AD%E5%9B%9B%E5%85%AD%E7%BA%A7 200 in 348ms
+ ✓ Compiled /api/quiz in 119ms (601 modules)
+ POST /api/quiz 200 in 120915ms
+ ✓ Compiled /plan in 348ms (591 modules)
+ GET /plan?name=%E8%8B%B1%E8%AF%AD%E5%9B%9B%E5%85%AD%E7%BA%A7 200 in 467ms
+ ✓ Compiled /api/plan in 162ms (611 modules)
+ POST /api/plan 200 in 12228ms
+ POST /api/plan 200 in 12563ms
+ ✓ Compiled /training in 376ms (723 modules)
+ GET /training 200 in 485ms
+ ✓ Compiled /cockpit in 225ms (732 modules)
+ GET /cockpit 200 in 301ms
+ ✓ Compiled /goals in 167ms (741 modules)
+ GET /goals 200 in 220ms
+ GET /cockpit 200 in 34ms
+ GET /goals 200 in 25ms
+ ✓ Compiled /today in 287ms (752 modules)
+ GET /today 200 in 357ms
+ ✓ Compiled /feynman in 333ms (767 modules)
+ GET /feynman 200 in 417ms
+ ✓ Compiled /api/knowledge/content in 202ms (769 modules)
+ POST /api/knowledge/content 200 in 6774ms
+ POST /api/knowledge/content 200 in 8010ms
+ ✓ Compiled /courses in 345ms (770 modules)
+ GET /courses 200 in 459ms
+ ✓ Compiled /courses/[id] in 288ms (779 modules)
+ GET /courses/english 200 in 822ms
+ GET /feynman?courseId=english 200 in 32ms
+ POST /api/knowledge/content 200 in 7908ms
+ POST /api/knowledge/content 200 in 8389ms
+ ✓ Compiled /memory in 273ms (784 modules)
+ GET /memory 200 in 363ms
+ ✓ Compiled /evaluation in 355ms (807 modules)
+ GET /evaluation 200 in 606ms
+ ✓ Compiled in 174ms (325 modules)
+ GET /evaluation 200 in 64ms
+ GET /evaluation 200 in 27ms
+ ✓ Compiled /coach in 433ms (816 modules)
+ GET /coach 200 in 507ms
+ GET /coach 200 in 32ms
+ GET /memory 200 in 39ms
+ GET /cockpit 200 in 32ms
+ GET /today 200 in 34ms
+ ✓ Compiled /knowledge in 446ms (773 modules)
+ GET /knowledge 200 in 580ms
+ GET /knowledge 200 in 30ms
+ ✓ Compiled in 171ms (330 modules)
+ GET /knowledge 200 in 50ms
+ ✓ Compiled in 174ms (330 modules)
+ GET /knowledge 200 in 55ms
+ GET /knowledge 200 in 151ms
+ ✓ Compiled in 419ms (751 modules)
+ GET /knowledge 200 in 346ms
+ GET /knowledge 200 in 35ms
+ GET /knowledge 200 in 36ms
+ ✓ Compiled in 171ms (330 modules)
+ GET /knowledge 200 in 43ms
+ GET /knowledge 200 in 146ms
+ ✓ Compiled in 399ms (751 modules)
+ GET /knowledge 200 in 338ms
+ GET /knowledge 200 in 35ms
+ ✓ Compiled in 164ms (330 modules)
+ GET /knowledge 200 in 92ms
+ ✓ Compiled in 775ms (756 modules)
+ GET /knowledge 200 in 642ms
+ GET /knowledge 200 in 35ms
+ GET /knowledge 200 in 34ms
+ GET /knowledge 200 in 32ms
+ ✓ Compiled in 413ms (756 modules)
+ GET /knowledge 200 in 76ms
+ ✓ Compiled /api/knowledge/from-video in 186ms (444 modules)
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 1048ms (1123 modules)
+ GET /knowledge 500 in 1612ms
+ GET /knowledge 200 in 94ms
+ GET /knowledge 200 in 33ms
+ GET /knowledge 200 in 40ms
+ GET /knowledge 200 in 156ms
+ POST /api/knowledge/from-video 200 in 29551ms
+ ○ Compiling /english ...
+ ✓ Compiled /english in 618ms (1004 modules)
+ GET /english 200 in 763ms
+ GET /english 200 in 937ms
+ ✓ Compiled / in 215ms (540 modules)
+ GET / 200 in 412ms
+ GET /english 200 in 102ms
+ GET /knowledge 200 in 153ms
+ GET /english 200 in 78ms
