@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import ClickTranslate from "@/components/english/ClickTranslate";
 import AvatarCropper from "@/components/shared/AvatarCropper";
 import { getCurrentUser, getAllUsers, switchUser, logout } from "@/lib/user-store";
+import { syncAllToCloud } from "@/lib/cloud-store";
 
 const MAIN_NAV = [
   { href: "/cockpit", label: "驾驶舱", icon: LayoutDashboard },
@@ -70,6 +71,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       const saved = localStorage.getItem(`learnos_avatar_${user.id}`);
       if (saved) setAvatar(saved); else setAvatar("");
     }
+  }, [user]);
+
+  // 定期同步所有用户数据到云端（每60秒）
+  useEffect(() => {
+    if (!user) return;
+    const interval = setInterval(() => { syncAllToCloud(user.id).catch(() => {}); }, 60000);
+    return () => clearInterval(interval);
   }, [user]);
 
   useEffect(() => {

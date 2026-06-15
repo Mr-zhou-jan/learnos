@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { GraduationCap, Link2, Sparkles, User, LogOut, AlertCircle, ArrowRight, Check, Download, Mail, UserPlus, Lock, Eye, EyeOff, Shield, Zap, TrendingUp } from "lucide-react";
 import { getCurrentUser, getAllUsers, switchUser, loginWithEmail, registerWithEmail, findUserByEmail, isValidEmail, isValidPassword, logout, type UserInfo } from "@/lib/user-store";
+import { restoreFromCloud, syncAllToCloud } from "@/lib/cloud-store";
 
 type Step = "auth" | "verifyEmail" | "input" | "extracting";
 type AuthTab = "login" | "register";
@@ -87,15 +88,21 @@ export default function LandingPage() {
     try {
       const valid = await verifyEmail(email.trim());
       if (!valid) { setAuthLoading(false); return; }
-      const existingUser = findUserByEmail(email.trim());
-      if (!existingUser) { setAuthError("该邮箱尚未注册，请切换到「注册」创建账号"); setAuthLoading(false); return; }
       const user = await loginWithEmail(email.trim(), password);
-      if (!user) { setAuthError("密码错误，请重试"); setAuthLoading(false); return; }
+      if (!user) {
+        const exists = findUserByEmail(email.trim());
+        setAuthError(exists ? "密码错误，请重试" : "该邮箱尚未注册。如之前注册过，数据已从云端恢复，请重试");
+        setAuthLoading(false); return;
+      }
       setCurrentUserState(user);
       setUserName(user.name);
       setAllUsers(getAllUsers());
       setPassword("");
       setStep("input");
+      // 从云端恢复所有学习数据
+      restoreFromCloud(user.id).then(n => { if (n > 0) console.log(`已从云端恢复 ${n} 条数据`); });
+      // 同步本地数据到云端
+      setTimeout(() => syncAllToCloud(user.id), 2000);
     } catch { setAuthError("登录失败，请重试"); }
     setAuthLoading(false);
   };
@@ -161,6 +168,8 @@ export default function LandingPage() {
       setAllUsers(getAllUsers());
       setPassword("");
       setStep("input");
+      // 新注册用户同步数据到云端
+      setTimeout(() => syncAllToCloud(user.id), 2000);
     } catch { setAuthError("注册失败，请重试"); }
     setAuthLoading(false);
   };
