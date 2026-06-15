@@ -138,15 +138,15 @@ function QuizContent() {
   if(loading)return<div className="min-h-screen flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-primary-500"/></div>;
   if(submitted){const c=answers.filter(a=>a.correct).length;const s=answers.length>0?Math.round((c/answers.length)*100):0;const bd:Record<string,{correct:number;total:number}>={};answers.forEach(a=>{if(!bd[a.nodeTitle])bd[a.nodeTitle]={correct:0,total:0};bd[a.nodeTitle].total++;if(a.correct)bd[a.nodeTitle].correct++;});
     return(<div className="min-h-screen bg-zinc-50 flex items-center justify-center p-6"><div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8 animate-bounce-in"><div className="text-center"><GraduationCap className="w-14 h-14 text-primary-400 mx-auto mb-4"/><h2 className="text-2xl font-bold">诊断完成</h2><div className="mt-4"><span className={cn("text-6xl font-extrabold",s>=80?"text-emerald-600":s>=50?"text-amber-600":"text-red-600")}>{s}</span><span className="text-zinc-300 text-2xl ml-1">/100</span></div><p className="text-zinc-500 mt-2">答对 {c}/{answers.length} 题</p></div><div className="mt-6 space-y-1 max-h-48 overflow-y-auto">{Object.entries(bd).slice(0,8).map(([t,d])=>(<div key={t} className="flex justify-between py-1.5 px-2 rounded-lg hover:bg-zinc-50"><span className="text-sm truncate max-w-[200px]">{t}</span><span className={cn("text-sm font-bold",d.correct===d.total?"text-emerald-600":d.correct===0?"text-red-600":"text-amber-600")}>{d.correct}/{d.total}</span></div>))}</div><button onClick={finish} className="btn-primary w-full mt-6 text-base"><Sparkles className="w-5 h-5"/>查看专属计划<ArrowRight className="w-5 h-5"/></button></div></div>);}
-  if(questions.length===0)return<div className="min-h-screen flex items-center justify-center"><p className="text-zinc-500">题目生成中...</p></div>;
-  const q=questions[cur];if(!q)return<div className="min-h-screen flex items-center justify-center"><p className="text-zinc-500">加载失败</p></div>;
+  if(questions.length===0)return<div className="min-h-screen bg-page flex items-center justify-center"><p className="text-zinc-500">题目加载中...</p></div>;
+  const q=questions[cur];if(!q)return<div className="min-h-screen bg-page flex items-center justify-center"><p className="text-zinc-500">加载失败，请刷新重试</p></div>;
   const ca=answers.find(a=>a.questionId===q.id);const isLast=cur>=questions.length-1;const prog=((cur+1)/questions.length)*100;
   const { script, question: questionText } = splitQuestion(q);
   const isListening = q.type === "listening";
 
-  return(<div className="min-h-screen bg-zinc-50 flex items-center justify-center p-4"><div className="w-full max-w-2xl">
+  return(<div className="min-h-screen bg-page flex items-center justify-center p-4"><div className="w-full max-w-2xl">
     <div className="mb-5"><div className="flex justify-between mb-2"><span className="text-sm font-bold text-zinc-500">诊断测验</span><span className="text-sm font-bold">{cur+1}<span className="text-zinc-300">/</span>{questions.length}</span></div><div className="progress-bar"><div className="progress-fill-primary" style={{width:`${prog}%`}}/></div></div>
-    <div className="bg-white rounded-2xl shadow-sm border border-zinc-100 p-8 animate-slide-up" key={cur}>
+    <div className="bg-white/80 backdrop-blur-xl rounded-2xl border border-zinc-200/60 shadow-xl p-8 animate-slide-up" key={cur}>
       <div className="flex items-center gap-2 mb-5">
         <span className={cn("badge",q.difficulty==="easy"?"badge-success":q.difficulty==="medium"?"badge-warning":"badge-danger")}>{q.difficulty==="easy"?"基础":q.difficulty==="medium"?"中等":"困难"}</span>
         {q.type && TYPE_LABELS[q.type] && <span className="text-xs px-2 py-0.5 rounded-full bg-primary-50 text-primary-600 border border-primary-200">{TYPE_LABELS[q.type]}</span>}
@@ -280,7 +280,7 @@ function QuizContent() {
 
       <div className="mt-6">
         {!showExp ? (
-          <div className="h-10"/>
+          <p className="text-center text-xs text-zinc-400 py-3">选择一个选项查看解析</p>
         ) : (
           <button onClick={isLast?finish:next} className="btn-primary w-full text-base flex items-center justify-center gap-2 h-12">
             {isLast?"完成诊断":"下一题"}<ChevronRight className="w-5 h-5"/>
@@ -293,7 +293,7 @@ function QuizContent() {
 
 export default function QuizPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-primary-500"/></div>}>
+    <Suspense fallback={<div className="min-h-screen bg-page flex items-center justify-center"><Loader2 className="w-10 h-10 animate-spin text-primary-500"/></div>}>
       <QuizContent />
     </Suspense>
   );

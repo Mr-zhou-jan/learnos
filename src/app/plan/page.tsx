@@ -1,102 +1,106 @@
 "use client";
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ArrowRight, Brain, CalendarCheck, Loader2 } from "lucide-react";
+import { ArrowRight, Brain, Calendar, CheckCircle2, Loader2, Sparkles } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 function PlanContent() {
   const router = useRouter();
   const sp = useSearchParams();
-  const name = sp.get("name") || "课程";
-  const [quizResult, setQuizResult] = useState<any>(null);
+  const name = sp.get("name")||"课程";
+  const video = sp.get("video")||"";
+  const [plan, setPlan] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [day, setDay] = useState(0);
 
   useEffect(() => {
     const qr = localStorage.getItem("learnos_quiz_results");
-    if (!qr) { router.push("/"); return; }
-    setQuizResult(JSON.parse(qr));
-    setLoading(false);
+    if (!qr){router.push("/");return;}
+    fetch("/api/plan",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({quizResults:JSON.parse(qr),courseName:name,videoUrl:video||null,dailyTime:30})})
+      .then(r=>r.json()).then(d=>{localStorage.setItem("learnos_current_plan", JSON.stringify({ ...d, courseName: name }));setPlan(d);setLoading(false);}).catch(()=>setLoading(false));
   }, []);
 
-  if (loading) return (
-    <div className="min-h-screen flex items-center justify-center">
-      <Loader2 className="w-8 h-8 animate-spin text-primary-500" />
-    </div>
-  );
+  if (loading) return <div className="min-h-screen flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-primary-500"/></div>;
+  if (!plan) return <div className="min-h-screen flex items-center justify-center"><p className="text-zinc-500">生成失败</p></div>;
 
-  if (!quizResult) return (
-    <div className="min-h-screen flex items-center justify-center">
-      <p className="text-zinc-500">诊断结果未找到</p>
-    </div>
-  );
-
-  const totalCorrect = quizResult.totalCorrect || 0;
-  const totalQuestions = quizResult.totalQuestions || 0;
-  const score = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
-  const nodeScores: any[] = quizResult.nodeScores || [];
-  const weakAreas = nodeScores.filter((n: any) => n.score < 50);
-  const strongAreas = nodeScores.filter((n: any) => n.score >= 70);
+  const today = plan.weeklyPlan?.[day];
+  const icons: Record<string,string> = {"vocab-drill":"📝","grammar-drill":"📋","reading-visual":"🖼️","code-build":"💻","debug-challenge":"🐞","feynman-plus":"🗣️","diagram-analysis":"📐","case-feynman":"💼","scenario-sim":"📈","active-recall":"🧠","compress":"📦","review":"🔄","quiz":"✏️"};
 
   return (
-    <div className="min-h-screen bg-zinc-50 flex items-center justify-center p-6">
-      <div className="w-full max-w-lg animate-fade-in">
-        {/* 得分 */}
-        <div className="bg-white rounded-2xl shadow-sm border border-zinc-100 p-8 text-center mb-6">
-          <div className="w-16 h-16 mx-auto rounded-2xl bg-primary-100 flex items-center justify-center mb-4">
-            <Brain className="w-8 h-8 text-primary-500" />
+    <div className="min-h-screen bg-zinc-50">
+      <div className="bg-gradient-to-br from-primary-500 to-indigo-600 text-white p-8">
+        <div className="max-w-3xl mx-auto">
+          <p className="text-primary-100 text-sm mb-1">{video?"🎬 视频提取":"🔍 知识库"} · {name}</p>
+          <h1 className="text-3xl font-bold mb-1">专属学习计划</h1>
+          <p className="text-primary-100/90 text-sm">{plan.summary}</p>
+          <div className="flex gap-3 mt-5">
+            <button onClick={()=>router.push("/cockpit")} className="px-4 py-2 bg-white/20 rounded-xl hover:bg-white/30 text-sm font-medium transition-colors">驾驶舱 <ArrowRight className="w-3.5 h-3.5 inline"/></button>
+            <button onClick={()=>router.push("/training")} className="px-4 py-2 bg-white/15 rounded-xl hover:bg-white/25 text-sm font-medium transition-colors">开始训练 <Sparkles className="w-3.5 h-3.5 inline"/></button>
           </div>
-          <h1 className="text-2xl font-bold mb-2">诊断完成！</h1>
-          <p className="text-zinc-500 mb-6">「{name}」能力评估</p>
-          <div className="w-32 h-32 mx-auto mb-4 rounded-full border-8 border-primary-100 flex items-center justify-center">
-            <div>
-              <span className="text-3xl font-extrabold text-primary-600">{score}</span>
-              <span className="text-sm text-zinc-400">/100</span>
-            </div>
+        </div>
+      </div>
+
+      <div className="max-w-3xl mx-auto px-6 py-6">
+        {plan.focusAreas?.length>0 && (
+          <div className="flex flex-wrap gap-2 mb-6"><span className="text-sm text-zinc-500">🎯 重点攻克:</span>
+            {plan.focusAreas.map((f:string,i:number)=><span key={i} className="badge badge-danger">{f}</span>)}
           </div>
-          <p className="text-sm text-zinc-500">答对 {totalCorrect}/{totalQuestions} 题</p>
+        )}
+
+        {plan.recommendedMethods?.length>0 && (
+          <div className="grid md:grid-cols-3 gap-3 mb-6">
+            {plan.recommendedMethods.slice(0,3).map((m:any)=>
+              <div key={m.id} className="card">
+                <div className="text-lg mb-2">{icons[m.id]||"📚"}</div>
+                <h3 className="font-semibold text-sm">{m.name}</h3>
+                <p className="text-xs text-zinc-500 mt-1">{m.reason}</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        <div className="flex gap-2 mb-6 overflow-x-auto pb-1">
+          {plan.weeklyPlan?.map((d:any,i:number)=>(
+            <button key={i} onClick={()=>setDay(i)}
+              className={cn("shrink-0 px-5 py-3 rounded-xl text-center transition-all border-2 min-w-[72px]",
+                i===day?"border-primary-500 bg-primary-50 text-primary-700 shadow-sm":"border-zinc-100 bg-white text-zinc-500 hover:border-zinc-200")}>
+              <div className="text-xs font-semibold opacity-50">Day</div>
+              <div className="text-lg font-bold">{d.day}</div>
+              <div className="text-[10px] mt-0.5 truncate max-w-[64px]">{d.focus?.slice(0,6)}</div>
+            </button>
+          ))}
         </div>
 
-        {/* 强弱项 */}
-        <div className="grid grid-cols-2 gap-4 mb-6">
-          {weakAreas.length > 0 && (
-            <div className="card border-red-100 bg-red-50/30">
-              <p className="text-xs font-bold text-red-500 mb-2">⚠️ 需要加强</p>
-              {weakAreas.slice(0, 3).map((n: any) => (
-                <div key={n.nodeId} className="flex justify-between text-xs mb-1">
-                  <span className="text-red-700 truncate max-w-[100px]">{n.title}</span>
-                  <span className="text-red-500 font-bold">{n.score}%</span>
+        {today && (
+          <div className="animate-fade-up" key={day}>
+            <div className="flex items-center gap-3 mb-4">
+              <Calendar className="w-5 h-5 text-primary-500"/>
+              <div><h2 className="font-bold text-lg">Day {today.day}</h2><p className="text-sm text-zinc-500">{today.focus}</p></div>
+            </div>
+            <div className="space-y-3">
+              {today.tasks?.map((t:any,i:number)=>(
+                <div key={i} className="card flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-zinc-50 flex items-center justify-center text-lg shrink-0">{icons[t.method]||"📚"}</div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2"><h3 className="font-semibold text-sm">{t.title}</h3><span className="text-xs text-zinc-400">{t.durationMin}min</span></div>
+                    <p className="text-xs text-zinc-500 mt-0.5">{t.description}</p>
+                  </div>
+                  <button onClick={()=>{const m=t.method; if(m.includes("feynman")||m.includes("case")) router.push("/feynman"); else if(m.includes("code")) router.push("/training"); else router.push("/training");}} className="btn-primary text-xs px-3 py-1.5 shrink-0">开始</button>
                 </div>
               ))}
             </div>
-          )}
-          {strongAreas.length > 0 && (
-            <div className="card border-emerald-100 bg-emerald-50/30">
-              <p className="text-xs font-bold text-emerald-500 mb-2">✅ 掌握较好</p>
-              {strongAreas.slice(0, 3).map((n: any) => (
-                <div key={n.nodeId} className="flex justify-between text-xs mb-1">
-                  <span className="text-emerald-700 truncate max-w-[100px]">{n.title}</span>
-                  <span className="text-emerald-500 font-bold">{n.score}%</span>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+          </div>
+        )}
 
-        {/* 引导按钮 */}
-        <button onClick={() => router.push("/today")}
-          className="btn-primary w-full py-4 text-base flex items-center justify-center gap-2 mb-3">
-          <CalendarCheck className="w-5 h-5" /> 进入今日学习路径
-          <ArrowRight className="w-5 h-5" />
-        </button>
-        <p className="text-xs text-zinc-400 text-center">
-          已根据诊断结果生成个性化学习计划，按步骤完成即可
-        </p>
+        {plan.tips?.length>0 && (
+          <div className="mt-8 card border-amber-100 bg-amber-50/50">
+            <h3 className="font-semibold text-amber-800 mb-3 flex items-center gap-2"><Brain className="w-4 h-4"/>学习建议</h3>
+            <ul className="space-y-1.5">{plan.tips.map((t:string,i:number)=><li key={i} className="text-sm text-amber-700 flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 shrink-0 text-amber-500"/>{t}</li>)}</ul>
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
-export default () => (
-  <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin" /></div>}>
-    <PlanContent />
-  </Suspense>
-);
+export default ()=> <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin"/></div>}><PlanContent/></Suspense>;

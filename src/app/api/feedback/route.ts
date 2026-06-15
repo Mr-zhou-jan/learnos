@@ -1,34 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import * as tls from "tls";
 
-// 内存存储验证码（key=email, value={code, expires}）
-const codeStore = new Map<string, { code: string; expires: number }>();
-
-setInterval(() => {
-  const now = Date.now();
-  for (const [k, v] of codeStore) { if (now > v.expires) codeStore.delete(k); }
-}, 60000);
-
-export function verifyCode(email: string, code: string): boolean {
-  const stored = codeStore.get(email.trim().toLowerCase());
-  if (!stored || Date.now() > stored.expires) { codeStore.delete(email); return false; }
-  return stored.code === code;
-}
-
-export function clearCode(email: string): void {
-  codeStore.delete(email.trim().toLowerCase());
-}
-
-function genCode(): string {
-  return String(Math.floor(100000 + Math.random() * 900000));
-}
-
-async function sendSmtp(host: string, port: number, user: string, pass: string, to: string, subject: string, body: string): Promise<boolean> {
+async function sendMail(host: string, port: number, user: string, pass: string, to: string, subject: string, body: string): Promise<boolean> {
   return new Promise((resolve) => {
     let done = false;
     const finish = (ok: boolean) => { if (!done) { done = true; try { s.destroy(); } catch {} resolve(ok); } };
-    const timer = setTimeout(() => finish(false), 15000);
-
+    setTimeout(() => finish(false), 15000);
     const s = tls.connect(port, host, { rejectUnauthorized: false }, () => {
       let step = 0, buf = "";
       s.on("data", (d: Buffer) => {
@@ -61,33 +38,27 @@ async function sendSmtp(host: string, port: number, user: string, pass: string, 
 
 export async function POST(req: NextRequest) {
   try {
-    const { email } = await req.json();
-    if (!email) return NextResponse.json({ success: false, reason: "请输入邮箱" });
-
-    const trimmed = email.trim().toLowerCase();
+    const { content, userName, userEmail } = await req.json();
+    if (!content?.trim()) return NextResponse.json({ success: false, reason: "请输入反馈内容" });
 
     const host = process.env.SMTP_HOST;
     const port = parseInt(process.env.SMTP_PORT || "465");
     const user = process.env.SMTP_USER;
     const pass = process.env.SMTP_PASS;
 
-    if (!host || !user || !pass || user === "your_email@qq.com") {
-      return NextResponse.json({ success: false, reason: "邮件服务未配置，请在 .env.local 设置 SMTP" });
+    if (!host || !user || !pass) {
+      console.log("[反馈]", userName, userEmail, content.slice(0, 200));
+      return NextResponse.json({ success: true, devMode: true, message: "SMTP未配置，反馈已记录到服务器日志" });
     }
 
-    const code = genCode();
-    codeStore.set(trimmed, { code, expires: Date.now() + 5 * 60 * 1000 });
-
-    const ok = await sendSmtp(host, port, user, pass, trimmed,
-      "LearnOS 邮箱验证码",
-      `您好！\n\n您的 LearnOS 验证码是：${code}\n\n验证码 5 分钟内有效，请勿泄露。\n\n—— LearnOS`
-    );
-
-    if (ok) return NextResponse.json({ success: true });
-    // SMTP 发送失败时，直接返回验证码作为兜底
-    console.error("[SMTP] 发送失败，返回明文验证码作为兜底");
-    return NextResponse.json({ success: true, devCode: code });
+    // 尝试发送邮件，失败也不影响用户——内容已记录到日志
+    sendMail(host, port, user, pass, user,
+      `[LearnOS反馈] ${(userName||"用户").slice(0, 20)}`,
+      `来自：${userName||"匿名"}\n邮箱：${userEmail||"未知"}\n\n${content}`
+    ).catch(() => {});
+    console.log("[反馈]", userName, userEmail, content.slice(0, 300));
+    return NextResponse.json({ success: true });
   } catch {
-    return NextResponse.json({ success: false, reason: "发送失败，请稍后重试" });
+    return NextResponse.json({ success: false, reason: "提交失败" });
   }
 }

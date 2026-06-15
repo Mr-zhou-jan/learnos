@@ -27,41 +27,6 @@ export default function VocabPage() {
   const [showCard, setShowCard] = useTrainingMemory<boolean>("vocab_showCard", false);
   const [currentMode, setCurrentMode] = useState<Mode>("handwrite");
   const [speaking, setSpeaking] = useState(false);
-  // 词源过滤
-  type WordSource = "all" | "enriched" | "errors";
-  const [wordSource, setWordSource] = useState<WordSource>("all");
-
-  // 根据词源过滤词表
-  const getFilteredWordList = (): string[] => {
-    if (wordSource === "all") return wordList;
-    if (wordSource === "enriched") {
-      // 只保留有丰富释义的高频词（有同义词/短语）
-      return wordList.filter(w => {
-        const entry = settings.bank === "cet4" ? lookupCET4Word(w) : lookupCET6Word(w);
-        return entry && (entry.synonyms.length > 0 || entry.phrases.length > 0);
-      });
-    }
-    if (wordSource === "errors") {
-      // 从错题本提取生词
-      try {
-        const records = JSON.parse(localStorage.getItem("learnos_training_records") || "[]");
-        const wrongWords = new Set<string>();
-        for (const r of records) {
-          if (!r.isCorrect && r.correctAnswer) {
-            // 从正确答案中提取单个英文词
-            const words = r.correctAnswer.match(/\b[a-zA-Z]{3,}\b/g) || [];
-            words.forEach((w: string) => {
-              if (wordList.includes(w.toLowerCase())) wrongWords.add(w.toLowerCase());
-            });
-          }
-        }
-        return [...wrongWords].slice(0, 200);
-      } catch { return []; }
-    }
-    return wordList;
-  };
-  const filteredWordList = getFilteredWordList();
-
   // 生词本
   const [pageTab, setPageTab] = useState<PageTab>("recite");
   const [notebookWords, setNotebookWords] = useState<NotebookWord[]>([]);
@@ -136,14 +101,17 @@ export default function VocabPage() {
     setProgress(p);
     setSettings(p.settings);
     const today = new Date().toDateString();
+    // 使用 queueDateStamp 检测是否跨天：跨天强制刷新队列
     const isNewDay = queueDateStamp !== today;
+    // 同一天且队列已有数据：直接恢复，不重新生成队列
     if (!isNewDay && currentQueue.length > 0) {
       return;
     }
+    // 新的一天 / 首次使用 / 换词库 → 重新生成
     setQueueDateStamp(today);
     refreshQueue(p, isNewDay ? 0 : queueIndex);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [settings.bank, wordSource]);
+  }, [settings.bank]);
 
   // 切换tab/页面时强制保存所有状态（进度 + 当前队列位置）
   useEffect(() => {
@@ -160,15 +128,15 @@ export default function VocabPage() {
   }, [progress]);
 
   const refreshQueue = (p: VocabProgressData, restoreIdx?: number) => {
-    const list = getFilteredWordList();
-    const { newWords, reviewWords } = getTodayQueue(p, list);
+    const { newWords, reviewWords } = getTodayQueue(p, wordList);
     const queue = [...reviewWords, ...newWords];
     if (queue.length === 0) {
-      const remaining = list.filter(w => !p.words[w]);
+      const remaining = wordList.filter(w => !p.words[w]);
       setCurrentQueue(remaining.slice(0, p.settings.dailyNewWords));
-      setQueueIndex(0);
+      setQueueIndex(0); // 空队列重建 → 从头开始
     } else {
       setCurrentQueue(queue);
+      // 恢复进度：同一天用已保存的索引，否则从0开始
       const safeIdx = (restoreIdx !== undefined && restoreIdx >= 0 && restoreIdx < queue.length) ? restoreIdx : 0;
       setQueueIndex(safeIdx);
     }
@@ -536,28 +504,11 @@ export default function VocabPage() {
       <div className="flex items-center justify-between mb-4">
         <div>
           <h1 className="text-2xl font-bold">词汇背诵</h1>
-          <p className="text-sm text-zinc-500">
-            {settings.bank === "cet4" ? "CET-4" : "CET-6"} · {wordSource === "all" ? `${totalWords}词` : wordSource === "enriched" ? `${filteredWordList.length}个高频词` : `${filteredWordList.length}个错题词`}
-          </p>
+          <p className="text-sm text-zinc-500">{settings.bank === "cet4" ? "CET-4" : "CET-6"} · {totalWords} 词</p>
         </div>
         <button onClick={() => setShowSettings(!showSettings)} className="btn-secondary text-xs px-3 py-2 flex items-center gap-1">
           <Settings className="w-4 h-4" /> 学习设置
         </button>
-      </div>
-
-      {/* 词源选择 */}
-      <div className="flex gap-2 mb-4">
-        {([
-          { v: "all" as const, l: "全部词库" },
-          { v: "enriched" as const, l: "高频词" },
-          { v: "errors" as const, l: "错题生词" },
-        ]).map(s => (
-          <button key={s.v} onClick={() => setWordSource(s.v)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
-              wordSource === s.v ? "border-primary-500 bg-primary-50 text-primary-700" : "border-zinc-200 text-zinc-500 hover:border-zinc-300"}`}>
-            {s.l}
-          </button>
-        ))}
       </div>
 
       {/* 统计条 */}

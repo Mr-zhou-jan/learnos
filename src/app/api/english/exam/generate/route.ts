@@ -43,56 +43,14 @@ async function generateTranslation(key: string, baseUrl: string, level: string, 
   return null;
 }
 
-// 内存缓存：同级别试卷缓存30分钟，避免重复等待
-const examCache = new Map<string, { data: any; timestamp: number }>();
-const CACHE_TTL = 30 * 60 * 1000; // 30分钟
-
-/** GET: 预生成试卷（页面加载时调用，后台静默生成） */
-export async function GET(req: NextRequest) {
-  const level = req.nextUrl.searchParams.get("level") || "cet4";
-  const cacheKey = `exam_${level}`;
-  const cached = examCache.get(cacheKey);
-  if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
-    return NextResponse.json({ success: true, cached: true, level, sections: cached.data });
-  }
-  // 异步生成，不阻塞返回
-  generateExamSections(level).then(data => {
-    examCache.set(cacheKey, { data, timestamp: Date.now() });
-  });
-  return NextResponse.json({ success: true, cached: false, preheating: true });
-}
-
 export async function POST(req: NextRequest) {
   try {
     const { level, real, writing: realWriting, translation: realTrans } = await req.json();
-    const cacheKey = `exam_${level}`;
-
-    // 检查缓存
-    if (!real) {
-      const cached = examCache.get(cacheKey);
-      if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
-        return NextResponse.json({ success: true, cached: true, level, sections: cached.data });
-      }
-    }
-
-    const sections = await generateExamSections(level, realWriting, realTrans);
-
-    // 写入缓存
-    if (!real) {
-      examCache.set(cacheKey, { data: sections, timestamp: Date.now() });
-    }
-
-    return NextResponse.json({ success: true, level, sections });
-  } catch { return NextResponse.json({ error: "生成失败" }, { status: 500 }); }
-}
-
-/** 实际生成逻辑（可被 GET/POST 复用） */
-async function generateExamSections(level: string, realWriting?: string, realTrans?: string): Promise<Record<string, any>> {
-  const isCet4 = level === "cet4";
-  const key = process.env.DEEPSEEK_API_KEY;
-  const base = process.env.DEEPSEEK_BASE_URL || "https://api.deepseek.com/v1";
-  const sections: Record<string, any> = {};
-  const TO = 30000;
+    const isCet4 = level === "cet4";
+    const key = process.env.DEEPSEEK_API_KEY;
+    const base = process.env.DEEPSEEK_BASE_URL || "https://api.deepseek.com/v1";
+    const sections: Record<string, any> = {};
+    const TO = 30000;  // 30秒超时，给AI足够时间生成
 
     // --- 写作 ---
     const wTopic = realWriting || WRITING_TOPICS[isCet4 ? "cet4" : "cet6"][Math.floor(Math.random() * 2)];
@@ -169,8 +127,7 @@ async function generateExamSections(level: string, realWriting?: string, realTra
 
     // --- 翻译 ---
     if (realTrans) {
-      const rt = typeof realTrans === "string" ? { cn: realTrans, en: "" } : realTrans;
-      sections.translation = { prompt: rt.cn || realTrans, reference: rt.en || "", timeLimit: 30 * 60, score: 106, userAnswer: "" };
+      sections.translation = { prompt: realTrans.cn || realTrans, reference: realTrans.en || "", timeLimit: 30 * 60, score: 106, userAnswer: "" };
     } else {
       let transPrompt: any = null;
       try { transPrompt = key ? await generateTranslation(key, base, isCet4 ? "cet4" : "cet6", TO) : null; } catch {}
@@ -182,7 +139,8 @@ async function generateExamSections(level: string, realWriting?: string, realTra
       }
     }
 
-    return sections;
+    return NextResponse.json({ success: true, level, sections });
+  } catch { return NextResponse.json({ error: "生成失败" }, { status: 500 }); }
 }
 
 async function aiCall(key: string, baseUrl: string, prompt: string, maxTokens: number, timeout: number): Promise<any> {

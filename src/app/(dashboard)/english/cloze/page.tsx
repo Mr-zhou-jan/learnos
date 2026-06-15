@@ -127,7 +127,7 @@ export default function ClozePage() {
       {showImport && <div className="mb-6"><LinkImporter moduleName="cloze" onContentImported={() => { setShowImport(false); loadCloze(level); }} /></div>}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold">选词填空</h1>
+          <h1 className="text-2xl font-bold">📝 选词填空</h1>
           <p className="text-sm text-zinc-500 mt-1">15选10 · 考查词汇辨析与搭配 · 建议10分钟完成</p>
         </div>
         <div className="flex items-center gap-2">

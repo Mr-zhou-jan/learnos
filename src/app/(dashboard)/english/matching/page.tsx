@@ -152,10 +152,10 @@ export default function MatchingPage() {
   return (
     <div className="p-6 max-w-7xl mx-auto">
       <div className="flex items-center justify-between mb-6">
-        <div><h1 className="text-2xl font-bold">段落匹配训练</h1><p className="text-sm text-zinc-500">主题：{topic} · {paragraphs.length}段 · {questions.length}题</p></div>
+        <div><h1 className="text-2xl font-bold">🔗 段落匹配训练</h1><p className="text-sm text-zinc-500 mt-1">主题：{topic} · {paragraphs.length}段 · {questions.length}题</p></div>
         <div className="flex items-center gap-2">
-          <button onClick={() => router.push("/english/history?tab=matching")} className="btn-secondary text-xs px-3 py-2 flex items-center gap-1"><History className="w-3.5 h-3.5"/>历史</button>
-          <button onClick={() => setShowImport(!showImport)} className="btn-secondary text-xs px-3 py-2 flex items-center gap-1"><Link2 className="w-3.5 h-3.5"/>导入题库</button>
+          <button onClick={() => router.push("/english/history?tab=matching")} className="btn-secondary text-xs px-4 py-2"><History className="w-3.5 h-3.5"/>历史</button>
+          <button onClick={() => setShowImport(!showImport)} className="btn-secondary text-xs px-4 py-2"><Link2 className="w-3.5 h-3.5"/>导入</button>
         </div>
       </div>
       {showImport && <div className="mb-6"><LinkImporter moduleName="matching" onContentImported={() => { setShowImport(false); loadNew(); }} /></div>}
@@ -201,8 +201,8 @@ export default function MatchingPage() {
               {submitted&&<div className={`text-xs space-y-1 mt-2 p-2 rounded-lg ${ok?"bg-emerald-50 text-emerald-700":"bg-red-50 text-red-700"}`}><p><span className="font-bold">答案段：</span>{q.answerLabel}</p><p><span className="font-bold">定位句：</span>"{q.locateSentence}"</p><p><span className="font-bold">同义替换：</span>{q.paraphraseNote}</p></div>}
             </div>);
           })}
-          {!submitted?<button onClick={submit} disabled={!done} className="btn-primary w-full mt-5">{done?"提交答案":`已选${Object.keys(answers).length}/${questions.length}`}</button>:
-          <div className="mt-5 space-y-3"><div className={`rounded-xl p-4 text-center ${score===questions.length?"bg-emerald-50 text-emerald-800":score!>=6?"bg-amber-50 text-amber-800":"bg-red-50 text-red-800"}`}><p className="text-2xl font-bold">{score}/{questions.length}</p></div><button onClick={loadNew} className="btn-secondary w-full"><Shuffle className="w-4 h-4 inline mr-1"/>换一题</button></div>}
+          {!submitted?<button onClick={submit} disabled={!done} className="btn-primary w-full mt-5 py-3">{done?"提交答案":`已选${Object.keys(answers).length}/${questions.length}`}</button>:
+          <div className="mt-5 space-y-3"><div className={`rounded-2xl p-5 text-center ${score===questions.length?"bg-emerald-50 text-emerald-800 border border-emerald-200":score!>=6?"bg-amber-50 text-amber-800 border border-amber-200":"bg-red-50 text-red-800 border border-red-200"}`}><p className="text-3xl font-extrabold">{score}<span className="text-lg font-normal text-zinc-400">/{questions.length}</span></p><p className="text-sm mt-1 font-medium">{score===questions.length?"🎉 全部正确！":score!>=6?"👍 表现不错":"💪 继续努力"}</p></div><button onClick={loadNew} className="btn-secondary w-full py-3"><Shuffle className="w-4 h-4"/>换一题</button></div>}
         </div>
       </div>
       <AiSearchBox moduleName="段落匹配" placeholder="问关于段落匹配技巧、同义替换识别…"/>

@@ -35,7 +35,7 @@ export default function ClickTranslate() {
       const el = e.target as HTMLElement;
       if (el.closest("button,input,textarea,[contenteditable]")) return;
       const sel = window.getSelection()?.toString().trim();
-      if (sel && sel.length > 1) { trans(sel, e.clientX, e.clientY); return; }
+      if (sel && sel.length > 1 && /[a-zA-Z]/.test(sel)) { trans(sel, e.clientX, e.clientY); return; }
       const r = document.caretRangeFromPoint(e.clientX, e.clientY);
       if (!r) return;
       const tn = r.startContainer;

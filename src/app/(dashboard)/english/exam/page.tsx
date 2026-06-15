@@ -20,22 +20,6 @@ function ExamPageInner() {
 
   const [view, setView] = useState<Section>("list");
   const [level, setLevel] = useState<"cet4"|"cet6">("cet4");
-  const [preheating, setPreheating] = useState(false);
-
-  // 页面加载时后台预热缓存（静默预生成）
-  useEffect(() => {
-    if (isReal) return;
-    const preheat = async () => {
-      setPreheating(true);
-      // 同时预热四级和六级
-      await Promise.all([
-        fetch("/api/english/exam/generate?level=cet4").catch(() => {}),
-        fetch("/api/english/exam/generate?level=cet6").catch(() => {}),
-      ]);
-      setPreheating(false);
-    };
-    preheat();
-  }, [isReal]);
   const [exam, setExam] = useState<Record<string,any>>({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");

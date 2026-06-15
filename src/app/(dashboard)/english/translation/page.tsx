@@ -53,34 +53,22 @@ export default function TranslationPage() {
   const submit = async () => {
     if (!answer.trim()) return;
     setLoading(true);
-    setFeedback("");
     try {
-      const resp = await fetch("/api/ai/chat", {
+      const r = await fetch("/api/knowledge/content", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages: [
-            { role: "system", content: "你是CET-4/6翻译批改专家。批改以下汉译英：① 评分(15分制) ② 准确度分析 ③ 语法/用词问题 ④ 更地道的表达 ⑤ 参考译文。中文回复。" },
-            { role: "user", content: `原文：${prompts[current]}\n\n学生译文：${answer}` },
-          ],
-          stream: true,
-        }),
+        body: JSON.stringify({ topic: "翻译批改", paraphrase: `原文：${prompts[current]}\n学生译文：${answer}`, action: "score" }),
       });
-      const reader = resp.body?.getReader();
-      if (!reader) { setFeedback("无法连接AI服务"); setLoading(false); return; }
-      const decoder = new TextDecoder(); let reply = "";
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        const chunk = decoder.decode(value, { stream: true });
-        for (const line of chunk.split("\n").filter(l => l.startsWith("data: "))) {
-          const data = line.slice(6);
-          if (data === "[DONE]") continue;
-          try { const j = JSON.parse(data); reply += j.choices?.[0]?.delta?.content || ""; setFeedback(reply); } catch {}
-        }
+      if (r.ok) {
+        const d = await r.json();
+        setFeedback(d.score?.feedback || "翻译已提交");
+        const rec = saveTrainingRecord({
+          module: "translation", title: prompts[current], question: "汉译英",
+          userAnswer: answer.slice(0, 200), correctAnswer: "参考AI反馈",
+          isCorrect: true, explanation: d.score?.feedback || "",
+        });
+        setTransRecordId(rec.id);
       }
-      const rec = saveTrainingRecord({ module: "translation", title: prompts[current], question: "汉译英", userAnswer: answer.slice(0, 200), correctAnswer: "参考AI反馈", isCorrect: true, explanation: reply.slice(0, 500) });
-      setTransRecordId(rec.id);
-    } catch { if (!feedback) setFeedback("AI批改暂不可用，请稍后重试"); }
+    } catch {}
     setLoading(false);
   };
 
