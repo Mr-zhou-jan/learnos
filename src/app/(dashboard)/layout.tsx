@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { BookOpen, BookmarkX, Brain, CalendarCheck, Camera, ChevronDown, Compass, FileText, Globe, GraduationCap, Headphones, Info, Languages, LayoutDashboard, Lightbulb, Link2, LogOut, MessageSquare, PenLine, Send, Shuffle, Smile, Target, User, UserPlus, X, Zap } from "lucide-react";
+import { BookOpen, BookmarkX, Brain, CalendarCheck, Camera, ChevronDown, Compass, FileText, Globe, GraduationCap, Headphones, Info, Languages, LayoutDashboard, Lightbulb, Link2, LogOut, Menu, MessageSquare, PenLine, Send, Shuffle, Smile, Target, User, UserPlus, X, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ClickTranslate from "@/components/english/ClickTranslate";
 import AvatarCropper from "@/components/shared/AvatarCropper";
@@ -64,7 +64,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [feedbackSent, setFeedbackSent] = useState(false);
   const [feedbackLoading, setFeedbackLoading] = useState(false);
   const [cropperOpen, setCropperOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => { setSidebarOpen(false); }, [pathname]); // 路由变化关闭移动端侧边栏
 
   useEffect(() => {
     if (user) {
@@ -126,7 +129,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="flex h-screen bg-zinc-50">
-      <aside className="w-60 bg-white border-r border-zinc-200 flex flex-col">
+      {/* 桌面端侧边栏 */}
+      <aside className="hidden lg:flex w-60 bg-white border-r border-zinc-200 flex-col shrink-0">
         <Link href="/cockpit" className="flex items-center gap-3 px-5 py-4 border-b border-zinc-100 hover:bg-zinc-50 transition-colors">
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
             <Compass className="w-5 h-5 text-white" />
@@ -172,7 +176,40 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </div>
       </aside>
 
-      <main className="flex-1 overflow-auto bg-page"><div className="animate-fade-in">{children}</div></main>
+      {/* 移动端汉堡菜单按钮 + 标题 */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-30 bg-white/90 backdrop-blur border-b border-zinc-200/60 px-4 py-3 flex items-center gap-3">
+        <button onClick={() => setSidebarOpen(true)} className="p-2 -ml-1 rounded-lg hover:bg-zinc-100"><Menu className="w-5 h-5 text-zinc-600"/></button>
+        <span className="font-bold text-zinc-900">LearnOS</span>
+        <div className="flex-1" />
+        <button onClick={() => { logout(); router.push("/"); }} className="text-xs text-zinc-400"><LogOut className="w-4 h-4"/></button>
+      </div>
+
+      {/* 移动端侧边栏（滑入覆盖层） */}
+      {sidebarOpen && (
+        <div className="lg:hidden fixed inset-0 z-40">
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setSidebarOpen(false)} />
+          <div className="absolute left-0 top-0 bottom-0 w-64 bg-white shadow-2xl flex flex-col animate-slide-up overflow-y-auto">
+            <div className="flex items-center justify-between p-4 border-b"><span className="font-bold text-lg">LearnOS</span><button onClick={() => setSidebarOpen(false)} className="p-1.5 rounded-lg hover:bg-zinc-100"><X className="w-5 h-5"/></button></div>
+            <nav className="flex-1 px-3 py-4"><NavGroup title="核心" items={MAIN_NAV} /><NavGroup title="学习" items={LEARN_NAV} /><NavGroup title="复习" items={REVIEW_NAV} /></nav>
+            <div className="border-t p-3 space-y-1">
+              <button onClick={() => { setSidebarOpen(false); setCropperOpen(true); }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-zinc-50"><Camera className="w-4 h-4 text-zinc-400"/>更换头像</button>
+              <button onClick={() => { setSidebarOpen(false); setModalSwitch(true); }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-zinc-50"><Shuffle className="w-4 h-4 text-zinc-400"/>切换账号</button>
+              <button onClick={() => { setSidebarOpen(false); setModalAbout(true); }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-zinc-50"><Info className="w-4 h-4 text-zinc-400"/>关于我们</button>
+              <button onClick={() => { setSidebarOpen(false); setModalFeedback(true); }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-zinc-50"><Smile className="w-4 h-4 text-zinc-400"/>意见反馈</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 移动端底部导航栏 */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white/90 backdrop-blur border-t border-zinc-200/60 px-2 py-1.5 flex items-center justify-around safe-area-bottom">
+        {[{ href:"/cockpit", icon:LayoutDashboard, label:"驾驶舱" },{ href:"/today", icon:CalendarCheck, label:"今日" },{ href:"/english", icon:Globe, label:"英语" },{ href:"/knowledge", icon:Brain, label:"知识" }].map(t=>{
+          const act = pathname === t.href || pathname.startsWith(t.href+"/");
+          return <Link key={t.href} href={t.href} className={cn("flex flex-col items-center gap-0.5 px-3 py-1 rounded-xl text-[10px] font-medium transition-colors",act?"text-primary-600":"text-zinc-400")}><t.icon className="w-5 h-5"/>{t.label}</Link>;
+        })}
+      </div>
+
+      <main className="flex-1 overflow-auto bg-page pt-14 pb-16 lg:pt-0 lg:pb-0"><div className="animate-fade-in">{children}</div></main>
       <ClickTranslate />
 
       {/* 关于我们 */}
