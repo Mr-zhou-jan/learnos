@@ -507,27 +507,6 @@ export default function LandingPage() {
                 </div>
               )}
 
-              {/* 数据导入 */}
-              <div className="mt-4 pt-4 border-t border-zinc-100">
-                <label className="text-xs text-zinc-400 cursor-pointer hover:text-primary-500 transition-colors flex items-center gap-1 justify-center">
-                  <Download className="w-3 h-3" /> 导入备份数据
-                  <input type="file" accept=".json" className="hidden" onChange={async (e) => {
-                    const file = e.target.files?.[0];
-                    if (!file) return;
-                    try {
-                      const text = await file.text();
-                      const backup = JSON.parse(text);
-                      if (backup.data) {
-                        for (const [key, value] of Object.entries(backup.data)) {
-                          localStorage.setItem(key, typeof value === "string" ? value : JSON.stringify(value));
-                        }
-                        alert("数据导入成功！请刷新页面。");
-                        window.location.reload();
-                      } else { setAuthError("无效的备份文件格式"); }
-                    } catch { setAuthError("文件解析失败"); }
-                  }} />
-                </label>
-              </div>
             </div>
 
             <p className="text-center text-xs text-zinc-400 mt-5">

@@ -76,7 +76,7 @@ export default function ReadingList() {
     <div className="p-6 max-w-3xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold">阅读理解</h1>
+          <h1 className="text-2xl font-bold">📖 阅读理解</h1>
           <p className="text-sm text-zinc-500 mt-1">限时做题 · AI解析 · 原文定位 · 全文翻译 · 长难句分析</p>
         </div>
         <div className="flex items-center gap-2">

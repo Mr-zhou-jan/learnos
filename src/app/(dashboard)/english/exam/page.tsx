@@ -166,7 +166,7 @@ function ExamPageInner() {
     return (
     <div className="p-6 max-w-3xl mx-auto">
       <div className="flex items-center justify-between mb-2">
-        <h1 className="text-2xl font-bold">整卷练习</h1>
+        <h1 className="text-2xl font-bold">📝 整卷练习</h1>
         <button onClick={() => router.push("/english/history?tab=exam")}
           className="btn-secondary text-xs px-3 py-2 flex items-center gap-1">
           <History className="w-3.5 h-3.5" /> 历史
@@ -234,23 +234,23 @@ function ExamPageInner() {
   // ===== RESULT =====
   if (view==="result") return (
     <div className="p-6 max-w-2xl mx-auto text-center">
-      <CheckCircle2 className="w-20 h-20 text-emerald-400 mx-auto mb-4"/>
+      <div className="w-20 h-20 mx-auto rounded-full bg-emerald-100 flex items-center justify-center mb-4"><CheckCircle2 className="w-10 h-10 text-emerald-500"/></div>
       <h1 className="text-3xl font-bold mb-2">考试完成</h1>
-      <div className="grid grid-cols-3 gap-2 mb-4 text-xs">{Object.entries(times).map(([k,v])=><div key={k} className="p-2 bg-zinc-50 rounded"><span className="font-medium">{LABELS[k]?.split("(")[0]||k}</span><br/>{fmt(v as number)}</div>)}</div>
-      <div className="mb-6"><span className={cn("text-6xl font-extrabold",totalScore>=425?"text-emerald-600":totalScore>=380?"text-amber-600":"text-red-600")}>{totalScore}</span><span className="text-zinc-300 text-2xl ml-1">/710</span>{totalScore>=425&&<p className="text-emerald-500 font-bold mt-1">🎉 通过！</p>}</div>
-      <div className="grid grid-cols-3 gap-3 mb-6">{Object.entries(breakdown).map(([k,v])=><div key={k} className="card p-3"><p className="text-xs text-zinc-400">{k}</p><p className="text-xl font-bold text-primary-600">{v}</p></div>)}</div>
-      <div className="flex gap-3 justify-center"><button onClick={()=>{setView("list");setExam({});}} className="btn-secondary px-6">再做一套</button><button onClick={()=>router.push("/cockpit")} className="btn-primary px-6">去驾驶舱</button></div>
+      <div className="flex flex-wrap justify-center gap-2 mb-5 text-xs">{Object.entries(times).map(([k,v])=><div key={k} className="px-3 py-1.5 bg-zinc-100 rounded-full font-medium">{LABELS[k]?.split("(")[0]||k} {fmt(v as number)}</div>)}</div>
+      <div className="card-glass p-8 mb-6"><span className={cn("text-7xl font-extrabold",totalScore>=425?"text-emerald-600":totalScore>=380?"text-amber-600":"text-red-600")}>{totalScore}</span><span className="text-zinc-300 text-2xl ml-2">/710</span>{totalScore>=425&&<p className="text-emerald-500 font-bold mt-1">🎉 恭喜通过！</p>}{totalScore<425&&<p className="text-zinc-400 text-sm mt-1">425分通过线</p>}</div>
+      <div className="grid grid-cols-3 gap-3 mb-6">{Object.entries(breakdown).map(([k,v])=><div key={k} className="card p-4"><p className="text-xs text-zinc-400 mb-1">{k}</p><p className="text-2xl font-bold text-primary-600">{v}</p></div>)}</div>
+      <div className="flex gap-3 justify-center"><button onClick={()=>{setView("list");setExam({});}} className="btn-secondary px-6 py-3">再做一套</button><button onClick={()=>router.push("/cockpit")} className="btn-primary px-6 py-3">去驾驶舱</button></div>
     </div>
   );
 
   // ===== MCQ子组件 =====
   const MCQ = ({q,onAns,hideQuestion}:{q:any;onAns:(id:string,ans:string)=>void;hideQuestion?:boolean}) => (
-    <div className="mb-3 p-3 border rounded-lg">
-      {!hideQuestion && <p className="text-sm mb-2">{q.question}</p>}
-      <div className="space-y-1.5">
+    <div className="mb-4 p-4 card">
+      {!hideQuestion && <p className="text-sm font-medium mb-3 leading-relaxed">{q.question}</p>}
+      <div className="space-y-2">
         {q.options?.map((opt:string,j:number)=>{const L=String.fromCharCode(65+j);return(
-          <button key={j} onClick={()=>onAns(q.id,L)} className={cn("w-full text-left px-3 py-2 rounded border text-sm",q.userAnswer===L?"border-primary-500 bg-primary-50 text-primary-700":"border-zinc-200")}>
-            <span className="font-bold mr-2">{L}.</span>{opt.replace(/^[A-D][.、．\s]+/,"")}
+          <button key={j} onClick={()=>onAns(q.id,L)} className={cn("w-full text-left px-4 py-3 rounded-xl border-2 text-sm font-medium transition-all duration-200",q.userAnswer===L?"border-primary-400 bg-primary-50 text-primary-700 shadow-sm":"border-zinc-100 hover:border-zinc-300 hover:bg-zinc-50")}>
+            <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-zinc-100 text-xs font-bold mr-3">{L}</span>{opt.replace(/^[A-D][.、．\s]+/,"")}
           </button>
         );})}
       </div>
@@ -260,16 +260,16 @@ function ExamPageInner() {
   // ===== EXAM CONTENT =====
   return (
     <div className="p-4 max-w-3xl mx-auto">
-      <div className="flex items-center justify-between mb-4 sticky top-0 bg-zinc-50 py-2 z-10">
-        <button onClick={()=>{if(timerRef.current)clearInterval(timerRef.current);setView("list");}} className="text-sm text-zinc-500 flex items-center gap-1"><ArrowLeft className="w-4 h-4"/>退出</button>
+      <div className="flex items-center justify-between mb-4 sticky top-0 bg-zinc-50/90 backdrop-blur-sm py-3 px-4 -mx-4 rounded-b-2xl border-b border-zinc-200/60 z-10">
+        <button onClick={()=>{if(timerRef.current)clearInterval(timerRef.current);setView("list");}} className="text-sm text-zinc-500 hover:text-zinc-700 flex items-center gap-1 font-medium"><ArrowLeft className="w-4 h-4"/>退出</button>
         <div className="flex items-center gap-3">
-          <span className="text-sm">本部分: <Clock className="w-3.5 h-3.5 inline"/>{fmt(currentTime)}</span>
-          <button onClick={submitExam} className="btn-primary text-xs px-3 py-1.5"><Send className="w-3.5 h-3.5 inline mr-1"/>交卷</button>
+          <span className="text-sm font-medium text-zinc-600 bg-zinc-100 px-3 py-1.5 rounded-full"><Clock className="w-3.5 h-3.5 inline mr-1"/>{fmt(currentTime)}</span>
+          <button onClick={submitExam} className="btn-primary text-xs px-4 py-2"><Send className="w-3.5 h-3.5 inline mr-1"/>交卷</button>
         </div>
       </div>
-      <div className="flex gap-1 mb-6 overflow-x-auto">
+      <div className="flex gap-1.5 mb-6 bg-zinc-100 p-1 rounded-xl">
         {ORDER.map(s=>{const I=ICONS[s];return(
-          <button key={s} onClick={()=>switchTo(s)} className={cn("flex-1 py-1.5 rounded-lg text-xs font-medium flex items-center justify-center gap-0.5 whitespace-nowrap",view===s?"bg-primary-500 text-white":"bg-zinc-100 text-zinc-500")}>
+          <button key={s} onClick={()=>switchTo(s)} className={cn("flex-1 py-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-1 whitespace-nowrap transition-all duration-200",view===s?"bg-white text-zinc-900 shadow-sm":"text-zinc-500 hover:text-zinc-700")}>
             <I className="w-3 h-3"/>{LABELS[s]?.split("(")[0]}
           </button>
         );})}

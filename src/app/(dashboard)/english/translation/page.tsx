@@ -102,7 +102,7 @@ export default function TranslationPage() {
   if (!category) return (
     <div className="p-6 max-w-2xl mx-auto">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">翻译训练</h1>
+        <h1 className="text-2xl font-bold">🌐 翻译训练</h1>
         <div className="flex items-center gap-2">
           <button onClick={() => router.push("/english/history?tab=translation")}
             className="btn-secondary text-xs px-3 py-2 flex items-center gap-1">

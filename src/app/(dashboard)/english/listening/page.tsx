@@ -48,7 +48,7 @@ export default function ListeningPage() {
     <div className="p-6 max-w-4xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold">听力训练</h1>
+          <h1 className="text-2xl font-bold">🎧 听力训练</h1>
           <p className="text-sm text-zinc-500 mt-1">四六级标准听力 · Section A/B/C · 25题 · 约30分钟</p>
         </div>
         <button onClick={() => router.push("/english/history?tab=listening")}
