@@ -50,7 +50,7 @@ export default function CockpitPage() {
   return (
     <div className="p-8 space-y-8 max-w-4xl mx-auto">
       <div className="flex items-center justify-between">
-        <div><h1 className="text-2xl font-bold">学习驾驶舱</h1><p className="text-zinc-500 mt-1">{userState.selectedCourseNames?.[0]||"课程"} 进行中</p></div>
+        <div><h1 className="text-2xl font-bold">🖥️ 学习驾驶舱</h1><p className="text-zinc-500 mt-1">{userState.selectedCourseNames?.[0]||"课程"} 进行中</p></div>
         <div className="flex items-center gap-3">
           <button onClick={()=>{localStorage.removeItem("learnos_quiz_results");router.push("/");}} className="btn-outline text-sm">切换学科</button>
           {hasQuiz && <span className="badge badge-primary text-sm font-semibold">诊断 {score} 分</span>}

@@ -172,7 +172,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </div>
       </aside>
 
-      <main className="flex-1 overflow-auto"><div className="animate-fade-in">{children}</div></main>
+      <main className="flex-1 overflow-auto bg-page"><div className="animate-fade-in">{children}</div></main>
       <ClickTranslate />
 
       {/* 关于我们 */}
