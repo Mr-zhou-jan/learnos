@@ -159,7 +159,7 @@ export default function MatchingPage() {
         </div>
       </div>
       {showImport && <div className="mb-6"><LinkImporter moduleName="matching" onContentImported={() => { setShowImport(false); loadNew(); }} /></div>}
-      <div className="grid lg:grid-cols-[1fr_500px] gap-6">
+      <div className="grid lg:grid-cols-[1fr_420px] gap-5">
         <div className="card max-h-[calc(100vh-220px)] overflow-y-auto">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-bold text-lg">📄 {title}</h2>

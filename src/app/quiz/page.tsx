@@ -209,13 +209,13 @@ function QuizContent() {
           {q.options.map((o,i)=>{
             const sel=ca?.selectedIndex===i;
             const cor=i===q.correctIndex;
-            let cls="quiz-option";
-            if(showExp&&ca){if(cor)cls="quiz-option-correct";else if(sel&&!cor)cls="quiz-option-wrong";}else if(sel)cls="quiz-option-selected";
+            let cls="quiz-option"; let extra="";
+            if(showExp&&ca){if(cor){cls="quiz-option-correct"; extra="animate-success-pulse";}else if(sel&&!cor){cls="quiz-option-wrong"; extra="animate-shake";}}else if(sel)cls="quiz-option-selected";
             const label = String.fromCharCode(65+i);
             const text = o.replace(/^[A-D][.、．\s]+/, "");
             return(
               <button key={i} onClick={()=>select(i)}
-                className={cn(cls, "w-full text-left px-5 py-4 rounded-xl border-2 transition-all flex items-center gap-4 animate-slide-up")}
+                className={cn(cls, extra, "w-full text-left px-5 py-4 rounded-xl border-2 transition-all flex items-center gap-4 animate-slide-up")}
                 style={{animationDelay:`${i*60}ms`}}>
                 <span className={cn(
                   "w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold shrink-0 transition-colors",

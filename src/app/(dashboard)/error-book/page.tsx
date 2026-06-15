@@ -34,7 +34,7 @@ function ErrorBookInner() {
     <div className="p-6 max-w-3xl mx-auto">
       <div className="flex items-center gap-3 mb-6">
         <button onClick={() => router.back()} className="p-2 rounded-lg hover:bg-zinc-100"><ArrowLeft className="w-5 h-5" /></button>
-        <div><h1 className="text-2xl font-bold">错题集</h1><p className="text-sm text-zinc-500">{all.length} 道错题</p></div>
+        <div><h1 className="text-2xl font-bold">📋 错题集</h1><p className="text-sm text-zinc-500">{all.length} 道错题</p></div>
       </div>
       <div className="flex flex-wrap gap-2 mb-6">
         <button onClick={() => setTab("all")} className={`px-3 py-1.5 rounded-lg text-xs font-medium ${tab==="all"?"bg-primary-500 text-white":"bg-zinc-100"}`}>全部({all.length})</button>

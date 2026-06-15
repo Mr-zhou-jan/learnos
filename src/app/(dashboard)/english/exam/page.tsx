@@ -275,6 +275,7 @@ function ExamPageInner() {
         );})}
       </div>
       <h2 className="font-bold text-lg mb-4">{LABELS[view]||""}</h2>
+      <div key={view} className="animate-fade-in">
 
       {/* WRITING */}
       {view==="writing"&&(
@@ -358,6 +359,7 @@ function ExamPageInner() {
             className="w-full px-4 py-3 border rounded-xl text-sm min-h-[300px]" placeholder="在此翻译…"/>
         </div>
       )}
+      </div>{/* animate-fade-in wrapper */}
     </div>
   );
 }

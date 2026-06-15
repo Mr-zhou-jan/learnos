@@ -100,7 +100,7 @@ export default function ScoreTargetPage() {
           <ArrowLeft className="w-5 h-5" />
         </button>
         <div>
-          <h1 className="text-2xl font-bold">分数目标</h1>
+          <h1 className="text-2xl font-bold">🎯 分数目标</h1>
           <p className="text-sm text-zinc-500">设定目标分数与强弱项，让 AI 为你定制学习路径</p>
         </div>
       </div>

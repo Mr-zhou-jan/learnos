@@ -88,7 +88,7 @@ export default function MemoryPage() {
   return (
     <div className="p-6 max-w-2xl mx-auto">
       <div className="flex items-center justify-between mb-6">
-        <div><h1 className="text-2xl font-bold">记忆卡片</h1><p className="text-zinc-500">基于学习数据的智能复习提醒</p></div>
+        <div><h1 className="text-2xl font-bold">🧠 记忆卡片</h1><p className="text-zinc-500">基于学习数据的智能复习提醒</p></div>
         <div className="text-right"><span className="text-2xl font-bold text-primary-600">{due}</span><p className="text-xs text-zinc-400">张待复习</p></div>
       </div>
 

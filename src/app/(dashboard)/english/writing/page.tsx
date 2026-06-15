@@ -192,22 +192,22 @@ export default function WritingPage() {
           </div>
         </div>
       ) : (
-        <div className="mt-6 space-y-4">
-          <div className="card bg-emerald-50 border-emerald-200">
-            <div className="flex items-start justify-between gap-2">
-              <h3 className="font-bold text-emerald-800 mb-2">✅ AI批改反馈</h3>
+        <div className="mt-6 space-y-5 animate-fade-in">
+          <div className="card-glass p-6 border-emerald-200/60 bg-emerald-50/30">
+            <div className="flex items-start justify-between gap-2 mb-3">
+              <h3 className="font-bold text-emerald-800 text-lg flex items-center gap-2">✨ AI 批改反馈</h3>
               {writeRecordId && (
                 <button onClick={() => { import("@/lib/use-training-memory").then(m => m.toggleErrorBook(writeRecordId!)); }}
-                  className="shrink-0 text-xs text-amber-500 hover:text-amber-700 flex items-center gap-0.5">
+                  className="shrink-0 text-xs text-amber-500 hover:text-amber-700 flex items-center gap-0.5 font-medium">
                   <BookmarkPlus className="w-3 h-3" /> 加入错题本
                 </button>
               )}
             </div>
-            <p className="text-sm text-emerald-700 leading-relaxed">{feedback}</p>
+            <div className="prose prose-sm max-w-none text-emerald-800 leading-relaxed whitespace-pre-wrap">{feedback}</div>
           </div>
-          <div className="card">
-            <h3 className="font-bold mb-2">📝 你的原文</h3>
-            <p className="text-sm whitespace-pre-wrap">{essay}</p>
+          <div className="card p-5">
+            <h3 className="font-bold mb-3 text-zinc-700">📝 你的原文</h3>
+            <p className="text-sm text-zinc-600 whitespace-pre-wrap leading-relaxed bg-zinc-50 rounded-xl p-4">{essay}</p>
           </div>
           <div className="flex gap-3">
             <button onClick={() => { setPrompt(""); setEssay(""); setFeedback(""); clearTrainingState("writing"); }} className="btn-primary">重选题目</button>

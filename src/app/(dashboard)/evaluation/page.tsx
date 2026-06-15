@@ -61,7 +61,7 @@ export default function EvaluationPage() {
   return (
     <div className="p-6 max-w-4xl mx-auto">
       <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3"><GraduationCap className="w-7 h-7 text-primary-500"/><div><h1 className="text-2xl font-bold">掌握度评估</h1><p className="text-zinc-500">基于做题数据+诊断结果</p></div></div>
+        <div className="flex items-center gap-3"><GraduationCap className="w-7 h-7 text-primary-500"/><div><h1 className="text-2xl font-bold">📊 掌握度评估</h1><p className="text-zinc-500">基于做题数据+诊断结果</p></div></div>
         {scoreTarget && <span className="badge badge-primary text-sm">{scoreTarget.level==="cet4"?"四级":"六级"}目标 {scoreTarget.targetScore}分</span>}
       </div>
       <div className="card mb-6 p-6 text-center bg-gradient-to-r from-primary-50 to-indigo-50">
