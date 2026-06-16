@@ -96,10 +96,7 @@ export default function EnglishHome() {
               <h3 className="font-bold">{s.name}</h3>
               <p className="text-sm text-zinc-500">{s.desc}</p>
             </div>
-            <div className="text-right">
-              <span className="text-lg font-bold text-primary-600">{s.count}</span>
-              <p className="text-xs text-zinc-400">道题</p>
-            </div>
+            <span className="text-xs text-zinc-400 shrink-0">∞ AI 生成</span>
             <ArrowRight className="w-5 h-5 text-zinc-300"/>
           </button>
         ))}
