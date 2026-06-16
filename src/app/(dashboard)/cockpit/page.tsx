@@ -6,8 +6,10 @@ import { cn } from "@/lib/utils";
 import { getAllCourses, getKnowledgeTree, getNodeCount, type CourseData, type KnowledgeNode } from "@/lib/knowledge-loader";
 import { getScoreTarget, type ScoreTargetData } from "@/lib/use-training-memory";
 import { computeTrainingPlan } from "@/lib/training-plan";
+import { getStreak, checkIn, isCheckedInToday } from "@/lib/checkin-store";
 
 export default function CockpitPage() {
+  const [streak, setStreak] = useState(getStreak());
   const router = useRouter();
   const [userState, setUserState] = useState<any>(null);
   const [quizResult, setQuizResult] = useState<any>(null);
@@ -51,6 +53,17 @@ export default function CockpitPage() {
     <div className="p-8 space-y-8 max-w-4xl mx-auto">
       <div className="flex items-center justify-between">
         <div><h1 className="text-2xl font-bold">🖥️ 学习驾驶舱</h1><p className="text-zinc-500 mt-1">{userState.selectedCourseNames?.[0]||"课程"} 进行中</p></div>
+        <div className="flex items-center gap-3">
+          {!isCheckedInToday() ? (
+            <button onClick={() => setStreak(checkIn())} className="btn-primary text-sm px-4 py-2 animate-bounce-in">
+              🔥 今日打卡
+            </button>
+          ) : (
+            <span className="text-sm font-semibold text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200">
+              🔥 已打卡 · 连续 {streak.current} 天
+            </span>
+          )}
+        </div>
         <div className="flex items-center gap-3">
           <button onClick={()=>{localStorage.removeItem("learnos_quiz_results");router.push("/");}} className="btn-outline text-sm">切换学科</button>
           {hasQuiz && <span className="badge badge-primary text-sm font-semibold">诊断 {score} 分</span>}

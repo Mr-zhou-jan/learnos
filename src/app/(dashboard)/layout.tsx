@@ -2,12 +2,13 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { BookOpen, BookmarkX, Brain, CalendarCheck, Camera, ChevronDown, Compass, FileText, Globe, GraduationCap, Headphones, Info, Languages, LayoutDashboard, Lightbulb, Link2, LogOut, Menu, MessageSquare, PenLine, Send, Shuffle, Smile, Target, User, UserPlus, X, Zap } from "lucide-react";
+import { BookOpen, BookmarkX, Brain, CalendarCheck, Camera, ChevronDown, Compass, FileText, Globe, GraduationCap, Headphones, Info, Languages, LayoutDashboard, Lightbulb, Link2, LogOut, Menu, MessageSquare, Moon, PenLine, Send, Shuffle, Smile, Sun, Target, User, UserPlus, X, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ClickTranslate from "@/components/english/ClickTranslate";
 import AvatarCropper from "@/components/shared/AvatarCropper";
 import { getCurrentUser, getAllUsers, switchUser, logout } from "@/lib/user-store";
 import { syncAllToCloud } from "@/lib/cloud-store";
+import { useTheme } from "@/components/shared/ThemeProvider";
 
 const MAIN_NAV = [
   { href: "/cockpit", label: "驾驶舱", icon: LayoutDashboard },
@@ -54,6 +55,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const pathname = usePathname();
   const router = useRouter();
   const user = getCurrentUser();
+  const { dark, toggle: toggleTheme } = useTheme();
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
   const [menuOpen, setMenuOpen] = useState(false);
   const [avatar, setAvatar] = useState("");
@@ -117,7 +119,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           {items.map(item => {
             const active = pathname === item.href || pathname.startsWith(item.href + "/");
             return (
-              <Link key={item.href} href={item.href} className={cn("flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200", active ? "bg-primary-50 text-primary-700 shadow-sm" : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900")}>
+              <Link key={item.href} href={item.href} prefetch className={cn("flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200", active ? "bg-primary-50 text-primary-700 shadow-sm" : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900")}>
                 <item.icon className={cn("w-5 h-5 transition-colors", active ? "text-primary-500" : "text-zinc-400")} />{item.label}
               </Link>
             );
@@ -169,6 +171,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <button onClick={() => { setMenuOpen(false); setModalSwitch(true); }} className="w-full flex items-center gap-3 px-4 py-3 text-sm text-zinc-700 hover:bg-zinc-50 transition-colors"><Shuffle className="w-4 h-4 text-zinc-400" />切换账号</button>
               <button onClick={() => { setMenuOpen(false); setModalAbout(true); }} className="w-full flex items-center gap-3 px-4 py-3 text-sm text-zinc-700 hover:bg-zinc-50 transition-colors"><Info className="w-4 h-4 text-zinc-400" />关于我们</button>
               <button onClick={() => { setMenuOpen(false); setModalFeedback(true); }} className="w-full flex items-center gap-3 px-4 py-3 text-sm text-zinc-700 hover:bg-zinc-50 transition-colors"><Smile className="w-4 h-4 text-zinc-400" />意见反馈</button>
+              <button onClick={() => { setMenuOpen(false); toggleTheme(); }} className="w-full flex items-center gap-3 px-4 py-3 text-sm text-zinc-700 hover:bg-zinc-50 transition-colors">{dark ? <><Sun className="w-4 h-4 text-amber-400"/>浅色模式</> : <><Moon className="w-4 h-4 text-zinc-400"/>暗色模式</>}</button>
               <div className="border-t border-zinc-100" />
               <button onClick={() => { logout(); router.push("/"); }} className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors"><LogOut className="w-4 h-4" />退出登录</button>
             </div>
@@ -205,7 +208,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white/90 backdrop-blur border-t border-zinc-200/60 px-2 py-1.5 flex items-center justify-around safe-area-bottom">
         {[{ href:"/cockpit", icon:LayoutDashboard, label:"驾驶舱" },{ href:"/today", icon:CalendarCheck, label:"今日" },{ href:"/english", icon:Globe, label:"英语" },{ href:"/knowledge", icon:Brain, label:"知识" }].map(t=>{
           const act = pathname === t.href || pathname.startsWith(t.href+"/");
-          return <Link key={t.href} href={t.href} className={cn("flex flex-col items-center gap-0.5 px-3 py-1 rounded-xl text-[10px] font-medium transition-colors",act?"text-primary-600":"text-zinc-400")}><t.icon className="w-5 h-5"/>{t.label}</Link>;
+          return <Link key={t.href} href={t.href} prefetch className={cn("flex flex-col items-center gap-0.5 px-3 py-1 rounded-xl text-[10px] font-medium transition-colors",act?"text-primary-600":"text-zinc-400")}><t.icon className="w-5 h-5"/>{t.label}</Link>;
         })}
       </div>
 

@@ -73,15 +73,13 @@ export default function EnglishHome() {
         ))}
       </div>
 
-      {/* Tab description */}
+      <div key={activeTab} className="animate-fade-in">
       {tab && (
-        <div className="flex items-center gap-3 mb-6 p-4 bg-primary-50 rounded-xl">
+        <div className="flex items-center gap-3 mb-6 p-4 bg-primary-50 rounded-xl transition-all duration-200">
           <tab.icon className="w-6 h-6 text-primary-500"/>
           <div><h2 className="font-bold text-lg">{tab.label}</h2><p className="text-sm text-zinc-600">{tab.desc}</p></div>
         </div>
       )}
-
-      {/* Sections */}
       <div className="grid grid-cols-1 gap-3">
         {cat.sections.map((s, i) => (
           <button key={i} onClick={() => {
@@ -114,6 +112,7 @@ export default function EnglishHome() {
         <p className="text-sm text-primary-600 mb-3">所有训练数据会自动汇总到知识图谱，追踪每个题型的掌握百分比。</p>
         <button onClick={() => router.push("/knowledge")} className="btn-primary text-sm">查看知识图谱 →</button>
       </div>
+      </div>{/* animate-fade-in */}
     </div>
   );
 }
