@@ -129,3 +129,13 @@
 [data-theme="dark"] .text-zinc-400 { color: #71717a; }
 [data-theme="dark"] input, [data-theme="dark"] textarea, [data-theme="dark"] select { background: #27272a; border-color: #3f3f46; color: #e4e4e7; }
 [data-theme="dark"] aside { background: #09090b; border-color: #27272a; }
+/* 暗色模式彩色背景——半透明暗底保留色调 */
+[data-theme="dark"] .bg-red-50, [data-theme="dark"] .bg-red-100 { background: rgba(127,29,29,0.3); }
+[data-theme="dark"] .bg-amber-50, [data-theme="dark"] .bg-amber-100 { background: rgba(120,53,15,0.3); }
+[data-theme="dark"] .bg-emerald-50, [data-theme="dark"] .bg-emerald-100 { background: rgba(6,78,59,0.3); }
+[data-theme="dark"] .bg-primary-50, [data-theme="dark"] .bg-primary-100, [data-theme="dark"] .bg-indigo-50 { background: rgba(49,46,129,0.3); }
+[data-theme="dark"] .bg-blue-50 { background: rgba(30,58,138,0.3); }
+[data-theme="dark"] .text-red-600, [data-theme="dark"] .text-red-700, [data-theme="dark"] .text-red-800 { color: #fca5a5; }
+[data-theme="dark"] .text-amber-600, [data-theme="dark"] .text-amber-700, [data-theme="dark"] .text-amber-800 { color: #fcd34d; }
+[data-theme="dark"] .text-emerald-600, [data-theme="dark"] .text-emerald-700, [data-theme="dark"] .text-emerald-800 { color: #6ee7b7; }
+[data-theme="dark"] .text-primary-600, [data-theme="dark"] .text-primary-700, [data-theme="dark"] .text-primary-800 { color: #a5b4fc; }
