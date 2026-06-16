@@ -99,10 +99,15 @@ export default function LandingPage() {
       setUserName(user.name);
       setAllUsers(getAllUsers());
       setPassword("");
-      setStep("input");
-      // 从云端恢复所有学习数据
-      restoreFromCloud(user.id).then(n => { if (n > 0) console.log(`已从云端恢复 ${n} 条数据`); });
-      // 同步本地数据到云端
+      // 等待云端数据恢复后再判断去向
+      restoreFromCloud(user.id).then(n => {
+        if (n > 0) console.log(`已从云端恢复 ${n} 条数据`);
+        if (localStorage.getItem("learnos_diagnosed") === "true") {
+          router.push("/cockpit");
+        } else {
+          setStep("input");
+        }
+      });
       setTimeout(() => syncAllToCloud(user.id), 2000);
     } catch { setAuthError("登录失败，请重试"); }
     setAuthLoading(false);
