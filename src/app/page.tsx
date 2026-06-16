@@ -38,7 +38,8 @@ export default function LandingPage() {
     if (user) {
       setEmail(user.email || "");
       setUserName(user.name || "");
-      setStep("input");
+      if (localStorage.getItem("learnos_diagnosed") === "true") { router.push("/cockpit"); }
+      else { setStep("input"); }
     }
   }, []);
 
@@ -194,9 +195,10 @@ export default function LandingPage() {
   };
 
   // ============ 开始诊断 ============
-  const handleStart = async () => {
-    if (!subject.trim()) return;
-    setError(""); setStep("extracting"); setLogs([]);
+  const handleStart = async (sub?: string) => {
+    const subj = sub || subject;
+    if (!subj.trim()) return;
+    setSubject(subj); setError(""); setStep("extracting"); setLogs([]);
     const cid = "custom-" + Date.now();
     let url = videoUrl.trim();
     if (url && url.includes("b23.tv")) {
@@ -210,7 +212,7 @@ export default function LandingPage() {
     try {
       const r = await fetch("/api/knowledge/from-video", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ videoUrl: url || undefined, courseName: subject, courseId: cid }),
+        body: JSON.stringify({ videoUrl: url || undefined, courseName: subj, courseId: cid }),
       });
       const d = await r.json();
       if (r.ok && d.course) {
@@ -545,38 +547,48 @@ export default function LandingPage() {
         </div>
 
         <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl shadow-zinc-200/50 border border-zinc-200/60 p-6 sm:p-8">
-          <div className="space-y-5">
-            <div>
-              <label className="text-sm font-semibold text-zinc-700 mb-2 block">你想学什么？</label>
-              <input type="text" value={subject} onChange={e => setSubject(e.target.value)}
-                placeholder="例如：四级英语、Python编程、大学物理…"
-                className="w-full px-5 py-4 bg-zinc-50 border border-zinc-200 rounded-2xl text-sm outline-none transition-all duration-300 focus:bg-white focus:border-primary-400 focus:ring-4 focus:ring-primary-50"
-                autoFocus />
-            </div>
+          <h3 className="text-sm font-semibold text-zinc-700 mb-4">选择学科开始诊断</h3>
 
-            <div className={showVideo ? "" : "hidden"}>
-              <label className="text-sm font-semibold text-zinc-700 mb-2 block">
-                视频链接（可选）
-                <button type="button" onClick={() => { setShowVideo(false); setVideoUrl(""); }}
-                  className="ml-2 text-xs text-zinc-400 underline font-normal cursor-pointer hover:text-zinc-600">移除</button>
-              </label>
-              <input type="text" value={videoUrl} onChange={e => setVideoUrl(e.target.value)}
-                placeholder="粘贴 B站 / YouTube 链接…"
-                className="w-full px-5 py-4 bg-zinc-50 border border-zinc-200 rounded-2xl text-sm outline-none transition-all duration-300 focus:bg-white focus:border-primary-400 focus:ring-4 focus:ring-primary-50" />
+          {/* 英语专区 */}
+          <div className="mb-6">
+            <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">📖 英语</p>
+            <div className="grid grid-cols-2 gap-3">
+              {[
+                { id: "四级英语", label: "CET-4", sub: "大学英语四级", icon: "📘" },
+                { id: "六级英语", label: "CET-6", sub: "大学英语六级", icon: "📙" },
+                { id: "考研英语", label: "考研英语", sub: "硕士研究生入学", icon: "📕" },
+                { id: "雅思英语", label: "雅思 IELTS", sub: "国际英语测试", icon: "🌍" },
+              ].map(s => (
+                <button key={s.id} onClick={() => { setSubject(s.id); handleStart(); }}
+                  className="card-hover text-left p-4 space-y-1">
+                  <span className="text-2xl">{s.icon}</span>
+                  <p className="font-bold text-sm">{s.label}</p>
+                  <p className="text-xs text-zinc-400">{s.sub}</p>
+                </button>
+              ))}
             </div>
-
-            <button type="button" onClick={() => setShowVideo(true)}
-              className={showVideo ? "hidden" : "flex items-center gap-2 text-sm text-primary-600 font-semibold hover:text-primary-700 transition-colors"}>
-              <Link2 className="w-4 h-4" /> 添加视频链接（可选）
-            </button>
           </div>
 
-          <button onClick={handleStart} disabled={!subject.trim()}
-            className={"w-full mt-6 py-4 rounded-2xl font-bold text-lg transition-all duration-200 " + (subject.trim()
-              ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-purple-200 hover:shadow-xl hover:-translate-y-0.5"
-              : "bg-zinc-100 text-zinc-400 cursor-not-allowed")}>
-            {subject.trim() ? "开始诊断 →" : "输入学科开始学习"}
-          </button>
+          {/* 其他学科 - 即将上线 */}
+          <div>
+            <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">🚀 即将上线</p>
+            <div className="grid grid-cols-3 gap-2">
+              {[
+                { label: "高等数学", icon: "📐" },
+                { label: "C++", icon: "💻" },
+                { label: "Python", icon: "🐍" },
+                { label: "大学物理", icon: "⚛️" },
+                { label: "ROS机器人", icon: "🤖" },
+                { label: "工程测量", icon: "📏" },
+              ].map(s => (
+                <div key={s.label} className="p-3 rounded-xl bg-zinc-50 border border-zinc-100 text-center opacity-50 cursor-not-allowed">
+                  <span className="text-lg">{s.icon}</span>
+                  <p className="text-xs font-medium text-zinc-500 mt-1">{s.label}</p>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-zinc-400 text-center mt-4">更多学科陆续开放中，敬请期待</p>
+          </div>
 
           {error && (
             <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-2xl text-sm text-red-700 flex items-start gap-2">
