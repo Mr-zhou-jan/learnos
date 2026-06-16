@@ -149,8 +149,9 @@ export async function registerWithEmail(email: string, name: string, password: s
   const localUsers = getLocalUsers().filter(u => u.id !== user.id);
   localUsers.unshift(user);
   saveLocalUsers(localUsers);
-  // 云端（后台同步）
-  saveUserToCloud(user, hash).catch(() => {});
+  // 云端同步
+  const cloudOk = await saveUserToCloud(user, hash);
+  if (!cloudOk) console.warn("[注册] Supabase同步失败");
   return user;
 }
 
