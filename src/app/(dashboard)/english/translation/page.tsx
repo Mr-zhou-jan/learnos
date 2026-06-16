@@ -124,7 +124,7 @@ export default function TranslationPage() {
               <span className="text-2xl">{val.icon}</span>
               <div>
                 <h3 className="font-bold">{val.name}</h3>
-                <p className="text-sm text-zinc-500">{getAllPrompts(key as keyof typeof CATEGORIES).length} 道题</p>
+                <p className="text-sm text-zinc-500">AI 生成不限量</p>
               </div>
             </div>
           </button>
