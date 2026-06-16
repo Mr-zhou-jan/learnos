@@ -550,24 +550,38 @@ export default function LandingPage() {
           <h3 className="text-sm font-semibold text-zinc-700 mb-4">选择学科开始诊断</h3>
 
           {/* 英语专区 */}
-          <div className="mb-6">
-            <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">📖 英语</p>
-            <div className="grid grid-cols-2 gap-3">
-              {[
-                { id: "四级英语", label: "CET-4", sub: "大学英语四级", icon: "📘" },
-                { id: "六级英语", label: "CET-6", sub: "大学英语六级", icon: "📙" },
-                { id: "考研英语", label: "考研英语", sub: "硕士研究生入学", icon: "📕" },
-                { id: "雅思英语", label: "雅思 IELTS", sub: "国际英语测试", icon: "🌍" },
-              ].map(s => (
-                <button key={s.id} onClick={() => { setSubject(s.id); handleStart(); }}
-                  className="card-hover text-left p-4 space-y-1">
-                  <span className="text-2xl">{s.icon}</span>
-                  <p className="font-bold text-sm">{s.label}</p>
-                  <p className="text-xs text-zinc-400">{s.sub}</p>
-                </button>
-              ))}
-            </div>
+          <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">📖 英语四六级</p>
+          <div className="grid grid-cols-2 gap-3 mb-5">
+            {[
+              { id: "四级英语", label: "CET-4", sub: "大学英语四级", icon: "📘" },
+              { id: "六级英语", label: "CET-6", sub: "大学英语六级", icon: "📙" },
+            ].map(s => (
+              <button key={s.id} onClick={() => handleStart(s.id)}
+                className="card-hover text-left p-4 space-y-1">
+                <span className="text-2xl">{s.icon}</span>
+                <p className="font-bold text-sm">{s.label}</p>
+                <p className="text-xs text-zinc-400">{s.sub}</p>
+              </button>
+            ))}
           </div>
+
+          {/* 视频链接 */}
+          {showVideo ? (
+            <div className="mb-5">
+              <label className="text-xs font-semibold text-zinc-700 mb-1.5 block">
+                📹 视频链接（可选）
+                <button type="button" onClick={() => { setShowVideo(false); setVideoUrl(""); }} className="ml-2 text-xs text-zinc-400 underline hover:text-zinc-600">移除</button>
+              </label>
+              <input type="text" value={videoUrl} onChange={e => setVideoUrl(e.target.value)}
+                placeholder="粘贴 B站 / YouTube 链接，AI 将从视频提取知识点…"
+                className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-2xl text-sm outline-none transition-all focus:bg-white focus:border-primary-400 focus:ring-4 focus:ring-primary-50" />
+            </div>
+          ) : (
+            <button onClick={() => setShowVideo(true)}
+              className="flex items-center gap-2 text-sm text-primary-600 font-semibold hover:text-primary-700 transition-colors mb-5">
+              <Link2 className="w-4 h-4" /> 添加视频链接（AI提取知识点）
+            </button>
+          )}
 
           {/* 其他学科 - 即将上线 */}
           <div>
