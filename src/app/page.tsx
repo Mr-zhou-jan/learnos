@@ -550,20 +550,15 @@ export default function LandingPage() {
           <h3 className="text-sm font-semibold text-zinc-700 mb-4">选择学科开始诊断</h3>
 
           {/* 英语专区 */}
-          <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">📖 英语四六级</p>
-          <div className="grid grid-cols-2 gap-3 mb-5">
-            {[
-              { id: "四级英语", label: "CET-4", sub: "大学英语四级", icon: "📘" },
-              { id: "六级英语", label: "CET-6", sub: "大学英语六级", icon: "📙" },
-            ].map(s => (
-              <button key={s.id} onClick={() => handleStart(s.id)}
-                className="card-hover text-left p-4 space-y-1">
-                <span className="text-2xl">{s.icon}</span>
-                <p className="font-bold text-sm">{s.label}</p>
-                <p className="text-xs text-zinc-400">{s.sub}</p>
-              </button>
-            ))}
-          </div>
+          <button onClick={() => handleStart("大学英语")}
+            className="card-hover w-full text-left p-5 mb-5 flex items-center gap-4">
+            <span className="text-3xl">📖</span>
+            <div className="flex-1">
+              <p className="font-bold text-base">大学英语四六级</p>
+              <p className="text-sm text-zinc-500">AI诊断 · 阅读理解 · 听力 · 写作 · 翻译 · 选词填空 · 段落匹配</p>
+            </div>
+            <ArrowRight className="w-5 h-5 text-zinc-300" />
+          </button>
 
           {/* 视频链接 */}
           {showVideo ? (
