@@ -11,7 +11,7 @@ export default function DifficultyPicker({ value, onChange }: { value: string; o
   return (
     <div className="flex gap-2">
       {OPTIONS.map(d => (
-        <button key={d.id} onClick={() => onChange(d.id)}
+        <button key={d.id} onClick={() => { onChange(d.id); localStorage.setItem("learnos_quiz_difficulty", d.id); }}
           className={"flex-1 py-2.5 rounded-xl text-xs font-semibold border-2 transition-all " +
             (value === d.id ? "border-primary-500 bg-primary-50 text-primary-700 shadow-sm" : "border-zinc-200 text-zinc-500 hover:border-zinc-300")}>
           <span className="block">{d.icon} {d.label}</span>
