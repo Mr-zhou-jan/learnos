@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { saveTrainingRecord } from "@/lib/use-training-memory";
 import { saveTrainingState, loadTrainingState, clearTrainingState } from "@/lib/training-memory";
 import { userKey } from "@/lib/user-store";
+import { DiffBadge } from "@/components/english/DiffBadge";
 
 export default function ReadingPage() {
   const { articleId } = useParams() as { articleId: string };

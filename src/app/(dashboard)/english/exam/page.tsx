@@ -7,6 +7,7 @@ import { speakDialogue, speakText, stopSpeaking } from "@/lib/tts";
 import ListeningPlayer from "@/components/english/ListeningPlayer";
 import { saveTrainingStateDirect, loadTrainingState, clearTrainingState } from "@/lib/training-memory";
 import DifficultyPicker from "@/components/english/DifficultyPicker";
+import { DiffBadge } from "@/components/english/DiffBadge";
 
 type Section = "list" | "writing" | "listening" | "cloze" | "matching" | "reading" | "translation" | "result";
 const ORDER: Section[] = ["writing","listening","cloze","matching","reading","translation"];
@@ -249,7 +250,7 @@ function ExamPageInner() {
   // ===== MCQ子组件 =====
   const MCQ = ({q,onAns,hideQuestion}:{q:any;onAns:(id:string,ans:string)=>void;hideQuestion?:boolean}) => (
     <div className="mb-4 p-4 card">
-      {!hideQuestion && <p className="text-sm font-medium mb-3 leading-relaxed">{q.question}</p>}
+      {!hideQuestion && <div className="flex items-center gap-2 mb-3"><DiffBadge /><p className="text-sm font-medium leading-relaxed">{q.question}</p></div>}
       <div className="space-y-2">
         {q.options?.map((opt:string,j:number)=>{const L=String.fromCharCode(65+j);return(
           <button key={j} onClick={()=>onAns(q.id,L)} className={cn("w-full text-left px-4 py-3 rounded-xl border-2 text-sm font-medium transition-all duration-200",q.userAnswer===L?"border-primary-400 bg-primary-50 text-primary-700 shadow-sm":"border-zinc-100 hover:border-zinc-300 hover:bg-zinc-50")}>
