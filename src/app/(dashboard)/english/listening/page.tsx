@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { Headphones, ChevronRight, Loader2, Sparkles, Clock, BookOpen, BarChart3, History } from "lucide-react";
 import { getAvailableLevels } from "@/data/listening-sets";
 import AiSearchBox from "@/components/english/AiSearchBox";
+import DifficultyPicker from "@/components/english/DifficultyPicker";
 
 interface TestHistoryItem {
   id: string; level: string; title: string; score: number; total: number; date: string;

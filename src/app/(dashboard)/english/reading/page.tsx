@@ -3,12 +3,14 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Loader2, Sparkles, RefreshCw, Clock, History } from "lucide-react";
 import AiSearchBox from "@/components/english/AiSearchBox";
+import DifficultyPicker from "@/components/english/DifficultyPicker";
 import LinkImporter from "@/components/english/LinkImporter";
 import { loadTrainingState } from "@/lib/training-memory";
 
 export default function ReadingList() {
   const router = useRouter();
   const [articles, setArticles] = useState<any[]>([]);
+  const [difficulty, setDifficulty] = useState("mixed");
   const [filter, setFilter] = useState("all");
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);

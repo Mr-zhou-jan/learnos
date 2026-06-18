@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Loader2, Send, RefreshCw, BookmarkPlus, History } from "lucide-react";
 import AiSearchBox from "@/components/english/AiSearchBox";
+import DifficultyPicker from "@/components/english/DifficultyPicker";
 import LinkImporter from "@/components/english/LinkImporter";
 import { saveTrainingRecord } from "@/lib/use-training-memory";
 import { loadTrainingState, clearTrainingState } from "@/lib/training-memory";
@@ -37,6 +38,7 @@ const TOPICS = {
 
 export default function WritingPage() {
   const router = useRouter();
+  const [difficulty, setDifficulty] = useState("mixed");
   const [category, setCategory] = useState<keyof typeof TOPICS | null>(null);
   const [prompt, setPrompt] = useState("");
   const [essay, setEssay] = useState("");
