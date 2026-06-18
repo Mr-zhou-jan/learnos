@@ -105,6 +105,7 @@ export default function TranslationPage() {
     <div className="p-6 max-w-2xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">🌐 翻译训练</h1>
+        <p className="text-xs text-zinc-500 mb-3">选卷难度：{difficulty==="easy"?"🟢 基础":difficulty==="medium"?"🟡 中等":difficulty==="hard"?"🔴 困难":"🔀 综合"}</p>
         <div className="flex items-center gap-2">
           <button onClick={() => router.push("/english/history?tab=translation")}
             className="btn-secondary text-xs px-3 py-2 flex items-center gap-1">
