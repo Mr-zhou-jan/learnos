@@ -24,7 +24,6 @@ export default function ClozePage() {
   const [loading, setLoading] = useState(true);
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [submitted, setSubmitted] = useState(false);
-  const [difficulty, setDifficulty] = useState("mixed");
   const [level, setLevel] = useState("cet4");
   const [showImport, setShowImport] = useState(false);
   const [clozeRecordIds, setClozeRecordIds] = useState<Record<number, string>>({});

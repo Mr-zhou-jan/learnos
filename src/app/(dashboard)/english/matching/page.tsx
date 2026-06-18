@@ -154,7 +154,7 @@ export default function MatchingPage() {
   return (
     <div className="p-6 max-w-7xl mx-auto">
       <div className="flex items-center justify-between mb-6">
-        <div><h1 className="text-2xl font-bold">🔗 段落匹配训练</h1><p className="text-sm text-zinc-500 mt-1"><DifficultyPicker value={difficulty} onChange={setDifficulty} />
+        <div><h1 className="text-2xl font-bold">🔗 段落匹配训练</h1><DifficultyPicker value={difficulty} onChange={setDifficulty} />
           <p className="text-sm text-zinc-500 mt-2">主题：{topic} · {paragraphs.length}段 · {questions.length}题</p></div>
         <div className="flex items-center gap-2">
           <button onClick={() => router.push("/english/history?tab=matching")} className="btn-secondary text-xs px-4 py-2"><History className="w-3.5 h-3.5"/>历史</button>
