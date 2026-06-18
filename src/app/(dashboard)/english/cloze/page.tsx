@@ -19,6 +19,7 @@ const LEVELS: Record<string, string> = { cet4: "四级", cet6: "六级" };
 
 export default function ClozePage() {
   const router = useRouter();
+  const [difficulty, setDifficulty] = useState("mixed");
   const [cloze, setCloze] = useState<ClozeData | null>(null);
   const [loading, setLoading] = useState(true);
   const [answers, setAnswers] = useState<Record<number, number>>({});
@@ -131,6 +132,7 @@ export default function ClozePage() {
         <div>
           <h1 className="text-2xl font-bold">📝 选词填空</h1>
           <p className="text-sm text-zinc-500 mt-1">15选10 · 考查词汇辨析与搭配 · 建议10分钟完成</p>
+          <div className="mt-3"><DifficultyPicker value={difficulty} onChange={setDifficulty} /></div>
         </div>
         <div className="flex items-center gap-2">
           <button onClick={() => router.push("/english/history?tab=cloze")} className="btn-secondary text-xs px-3 py-2 flex items-center gap-1"><History className="w-3.5 h-3.5"/>历史</button>

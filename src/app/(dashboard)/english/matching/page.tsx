@@ -46,6 +46,7 @@ export default function MatchingPage() {
   const [topic, setTopic] = useState("职场趋势");
   const [paragraphs, setParagraphs] = useState<Paragraph[]>(dPara);
   const [questions, setQuestions] = useState<MatchQuestion[]>(dQs);
+  const [difficulty, setDifficulty] = useState("mixed");
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
