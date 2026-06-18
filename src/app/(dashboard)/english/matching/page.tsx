@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { CheckCircle2, Loader2, XCircle, Languages, Link2, BookmarkPlus, Shuffle, History } from "lucide-react";
 import AiSearchBox from "@/components/english/AiSearchBox";
 import DifficultyPicker from "@/components/english/DifficultyPicker";
+import { DiffBadge } from "@/components/english/DiffBadge";
 import LinkImporter from "@/components/english/LinkImporter";
 import { saveTrainingRecord } from "@/lib/use-training-memory";
 import { saveTrainingState, loadTrainingState, clearTrainingState } from "@/lib/training-memory";
@@ -181,6 +182,7 @@ export default function MatchingPage() {
         </div>
         <div className="card max-h-[calc(100vh-220px)] overflow-y-auto">
           <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2 mb-1"><DiffBadge /></div>
             <h2 className="font-bold text-lg">📋 匹配题（{questions.length}题）</h2>
             <button onClick={loadNew} disabled={loading} className="btn-secondary text-xs px-3 py-2 flex items-center gap-1">{loading?<Loader2 className="w-3.5 h-3.5 animate-spin"/>:<Shuffle className="w-3.5 h-3.5"/>}换一题</button>
           </div>

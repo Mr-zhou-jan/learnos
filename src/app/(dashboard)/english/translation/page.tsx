@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, Loader2, RefreshCw, BookmarkPlus, History } from "lucide-react";
 import AiSearchBox from "@/components/english/AiSearchBox";
 import DifficultyPicker from "@/components/english/DifficultyPicker";
+import { DiffBadge } from "@/components/english/DiffBadge";
 import LinkImporter from "@/components/english/LinkImporter";
 import { saveTrainingRecord } from "@/lib/use-training-memory";
 import { saveTrainingStateDirect, loadTrainingState, clearTrainingState } from "@/lib/training-memory";
@@ -151,7 +152,7 @@ export default function TranslationPage() {
         <span className="text-sm text-zinc-500">{current + 1}/{prompts.length}</span>
       </div>
       <div className="card bg-primary-50 border-primary-200 mb-4">
-        <p className="font-bold text-primary-700 mb-1">📝 请翻译</p>
+        <div className="flex items-center gap-2 mb-1"><DiffBadge /><p className="font-bold text-primary-700">📝 请翻译</p></div>
         <p className="text-sm">{prompts[current]}</p>
         {current >= CATEGORIES[category].prompts.length && (
           <span className="badge badge-primary mt-2 text-xs">新题</span>

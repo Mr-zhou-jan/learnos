@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { Loader2, Check, RefreshCw, RotateCcw, Link2, BookmarkPlus, History } from "lucide-react";
 import AiSearchBox from "@/components/english/AiSearchBox";
 import DifficultyPicker from "@/components/english/DifficultyPicker";
+import { DiffBadge } from "@/components/english/DiffBadge";
 import LinkImporter from "@/components/english/LinkImporter";
 import { saveTrainingRecord } from "@/lib/use-training-memory";
 import { saveTrainingState, loadTrainingState, clearTrainingState } from "@/lib/training-memory";
@@ -160,7 +161,7 @@ export default function ClozePage() {
 
       {/* 短文填空区 */}
       <div className="card mb-6">
-        <h2 className="font-bold mb-3">{cloze.title}</h2>
+        <div className="flex items-center gap-2 mb-3"><DiffBadge /><h2 className="font-bold">{cloze.title}</h2></div>
         <div className="text-sm leading-loose">
           {parts.map((part, i) => (
             <span key={i}>

@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, Loader2, Send, RefreshCw, BookmarkPlus, History } from "lucide-react";
 import AiSearchBox from "@/components/english/AiSearchBox";
 import DifficultyPicker from "@/components/english/DifficultyPicker";
+import { DiffBadge } from "@/components/english/DiffBadge";
 import LinkImporter from "@/components/english/LinkImporter";
 import { saveTrainingRecord } from "@/lib/use-training-memory";
 import { loadTrainingState, clearTrainingState } from "@/lib/training-memory";
@@ -183,7 +184,7 @@ export default function WritingPage() {
       ) : !feedback ? (
         <div className="mt-6 space-y-4">
           <div className="card bg-primary-50 border-primary-200">
-            <p className="font-bold text-primary-700 mb-1">📝 作文题目</p>
+            <div className="flex items-center gap-2 mb-1"><DiffBadge /><p className="font-bold text-primary-700">📝 作文题目</p></div>
             <p className="text-sm">{prompt}</p>
           </div>
           <textarea value={essay} onChange={e => { setEssay(e.target.value); doSave(); }}

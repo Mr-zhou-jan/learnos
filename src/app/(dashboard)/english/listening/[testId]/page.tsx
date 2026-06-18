@@ -4,6 +4,7 @@ import { useRouter, useParams } from "next/navigation";
 import { ArrowLeft, ChevronRight, Clock, Flag, Eye, EyeOff, AlertTriangle } from "lucide-react";
 import AudioPlayer from "@/components/english/AudioPlayer";
 import type { ListeningTestData } from "@/data/listening-sets";
+import { DiffBadge } from "@/components/english/DiffBadge";
 import { saveTrainingState, loadTrainingState, clearTrainingState } from "@/lib/training-memory";
 import { userKey } from "@/lib/user-store";
 
