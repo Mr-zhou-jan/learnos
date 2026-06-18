@@ -34,7 +34,7 @@ export default function ReadingList() {
     const resp = await fetch("/api/english/reading/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ level: filter === "cet6" ? "cet6" : "cet4", topic: "education and technology" }),
+      body: JSON.stringify({ level: filter === "cet6" ? "cet6" : "cet4", topic: "education and technology", difficulty }),
     });
     const article = await resp.json();
     const saved = JSON.parse(localStorage.getItem("learnos_ai_articles") || "[]");
@@ -49,7 +49,7 @@ export default function ReadingList() {
       const resp = await fetch("/api/english/refresh", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ module: "reading", level: filter === "cet6" ? "cet6" : "cet4", count: 2 }),
+        body: JSON.stringify({ module: "reading", level: filter === "cet6" ? "cet6" : "cet4", count: 2, difficulty }),
       });
       const data = await resp.json();
       if (data.success && data.articles?.length) {

@@ -31,7 +31,7 @@ export default function ListeningPage() {
       const resp = await fetch("/api/english/listening", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ level: selectedLevel }),
+        body: JSON.stringify({ level: selectedLevel, difficulty }),
       });
       const data = await resp.json();
       if (data.success && data.test) {
