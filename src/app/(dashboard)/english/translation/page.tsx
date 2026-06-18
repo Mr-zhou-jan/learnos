@@ -79,7 +79,7 @@ export default function TranslationPage() {
     try {
       const resp = await fetch("/api/english/refresh", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ module: "translation", level: "cet4", count: 3 }),
+        body: JSON.stringify({ module: "translation", level: "cet4", count: 3, difficulty }),
       });
       const data = await resp.json();
       if (data.success && data.prompts?.length) {

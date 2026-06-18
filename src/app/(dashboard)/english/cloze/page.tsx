@@ -57,7 +57,7 @@ export default function ClozePage() {
       const resp = await fetch("/api/english/cloze/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ level: lvl || level, topic }),
+        body: JSON.stringify({ level: lvl || level, topic, difficulty }),
       });
       const data = await resp.json();
       if (data.passage) {

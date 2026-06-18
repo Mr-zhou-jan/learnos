@@ -87,7 +87,7 @@ export default function MatchingPage() {
     setLoading(true); setAnswers({}); setSubmitted(false); setScore(null);
     setTransQ(new Set()); setPassageZh(""); setShowPassageZh(false);
     try {
-      const resp = await fetch("/api/english/refresh", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ module: "matching", level: "cet4" }) });
+      const resp = await fetch("/api/english/refresh", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ module: "matching", level: "cet4", difficulty }) });
       const data = await resp.json();
       if (data.success && data.paragraphs?.length >= 10 && data.questions?.length >= 8 && data.paragraphs.length > data.questions.length) {
         setTitle(data.title || "段落匹配"); setTopic(data.topic || "综合");
