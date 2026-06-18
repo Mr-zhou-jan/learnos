@@ -169,6 +169,7 @@ export default function WritingPage() {
 
       {!prompt ? (
         <div className="space-y-3 mt-6">
+          <div className="mb-3"><DifficultyPicker value={difficulty} onChange={setDifficulty} /></div>
           <p className="text-sm text-zinc-500">选择作文题目：</p>
           {allPrompts.map((p, i) => (
             <button key={i} onClick={() => { setPrompt(p); doSave(); }}
