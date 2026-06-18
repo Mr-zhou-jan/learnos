@@ -16,6 +16,7 @@ function loadHistory(): TestHistoryItem[] {
 
 export default function ListeningPage() {
   const router = useRouter();
+  const [difficulty, setDifficulty] = useState("mixed");
   const [selectedLevel, setSelectedLevel] = useState<"cet4" | "cet6" | null>(null);
   const [generating, setGenerating] = useState(false);
   const [error, setError] = useState("");
@@ -58,6 +59,7 @@ export default function ListeningPage() {
         </button>
       </div>
 
+      <div className="mb-4"><DifficultyPicker value={difficulty} onChange={setDifficulty} /></div>
       <h2 className="font-semibold mb-3 flex items-center gap-2">
         <BookOpen className="w-5 h-5 text-primary-500" /> 选择级别
       </h2>

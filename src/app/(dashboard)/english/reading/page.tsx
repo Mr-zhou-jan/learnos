@@ -81,7 +81,8 @@ export default function ReadingList() {
           <h1 className="text-2xl font-bold">📖 阅读理解</h1>
           <p className="text-sm text-zinc-500 mt-1">限时做题 · AI解析 · 原文定位 · 全文翻译 · 长难句分析</p>
         </div>
-        <div className="flex items-center gap-2">
+        <DifficultyPicker value={difficulty} onChange={setDifficulty} />
+        <div className="flex items-center gap-2 mt-3">
           <LinkImporter moduleName="阅读训练" onContentImported={handleContentImported} />
           <button onClick={handleRefresh} disabled={refreshing}
             className="btn-secondary text-xs px-3 py-2 flex items-center gap-1">
