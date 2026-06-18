@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Loader2, RefreshCw, BookmarkPlus, History } from "lucide-react";
 import AiSearchBox from "@/components/english/AiSearchBox";
+import DifficultyPicker from "@/components/english/DifficultyPicker";
 import LinkImporter from "@/components/english/LinkImporter";
 import { saveTrainingRecord } from "@/lib/use-training-memory";
 import { saveTrainingStateDirect, loadTrainingState, clearTrainingState } from "@/lib/training-memory";
@@ -24,6 +25,7 @@ const CATEGORIES = {
 
 export default function TranslationPage() {
   const router = useRouter();
+  const [difficulty, setDifficulty] = useState("mixed");
   const [category, setCategory] = useState<keyof typeof CATEGORIES | null>(null);
   const [current, setCurrent] = useState(0);
   const [answer, setAnswer] = useState("");

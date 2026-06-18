@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2, Check, RefreshCw, RotateCcw, Link2, BookmarkPlus, History } from "lucide-react";
 import AiSearchBox from "@/components/english/AiSearchBox";
+import DifficultyPicker from "@/components/english/DifficultyPicker";
 import LinkImporter from "@/components/english/LinkImporter";
 import { saveTrainingRecord } from "@/lib/use-training-memory";
 import { saveTrainingState, loadTrainingState, clearTrainingState } from "@/lib/training-memory";
@@ -22,6 +23,7 @@ export default function ClozePage() {
   const [loading, setLoading] = useState(true);
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [difficulty, setDifficulty] = useState("mixed");
   const [level, setLevel] = useState("cet4");
   const [showImport, setShowImport] = useState(false);
   const [clozeRecordIds, setClozeRecordIds] = useState<Record<number, string>>({});

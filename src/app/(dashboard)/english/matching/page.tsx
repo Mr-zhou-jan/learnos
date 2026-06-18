@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { CheckCircle2, Loader2, XCircle, Languages, Link2, BookmarkPlus, Shuffle, History } from "lucide-react";
 import AiSearchBox from "@/components/english/AiSearchBox";
+import DifficultyPicker from "@/components/english/DifficultyPicker";
 import LinkImporter from "@/components/english/LinkImporter";
 import { saveTrainingRecord } from "@/lib/use-training-memory";
 import { saveTrainingState, loadTrainingState, clearTrainingState } from "@/lib/training-memory";
