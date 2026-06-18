@@ -1,6 +1,6 @@
 "use client";
 
-const LABS: Record<string, string> = { easy: "🟢 基础", medium: "🟡 中等", hard: "🔴 困难", mixed: "🔀 综合" };
+const LABS: Record<string, string> = { easy: "🟢 基础 ~1min", medium: "🟡 中等 ~2min", hard: "🔴 困难 ~3min", mixed: "🔀 综合 ~1-3min" };
 
 export function getStoredDiff(): string {
   if (typeof window === "undefined") return "mixed";
