@@ -184,7 +184,7 @@ export default function ReadingPage() {
         <button onClick={()=>router.push("/english/reading")} className="text-sm text-zinc-500 mb-4 flex items-center gap-1"><ArrowLeft className="w-4 h-4"/>返回</button>
         <div className="flex items-start justify-between gap-4 mb-6">
           <div>
-            <h1 className="text-xl font-bold">{article.title}</h1>
+            <div className="flex items-center gap-2 mb-1"><DiffBadge /><h1 className="text-xl font-bold">{article.title}</h1></div>
             <p className="text-sm text-zinc-500 mt-1">{article.wordCount} 词 · 建议 9 分钟内完成</p>
           </div>
           <div className="grid grid-cols-2 gap-2 shrink-0">
