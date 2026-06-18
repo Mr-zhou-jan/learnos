@@ -112,7 +112,7 @@ function QuizContent() {
 
   useEffect(() => { if(fetched.current)return; fetched.current=true; if(courses.length===0){router.push("/");return;}
     let en=null; try{en=JSON.parse(localStorage.getItem("learnos_extracted_knowledge")||"{}").nodes||null;}catch{}
-    fetch("/api/quiz",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({courseIds:courses,extractedNodes:en,courseName:names[0]||""})}).then(r=>r.json()).then(d=>{if(d.questions)setQuestions(d.questions);setLoading(false);}).catch(()=>setLoading(false));
+    fetch("/api/quiz",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({courseIds:courses,extractedNodes:en,courseName:names[0]||"",difficulty:localStorage.getItem("learnos_quiz_difficulty")||"mixed"})}).then(r=>r.json()).then(d=>{if(d.questions)setQuestions(d.questions);setLoading(false);}).catch(()=>setLoading(false));
   },[]);
   useEffect(() => () => { stopSpeaking(); }, []);
 

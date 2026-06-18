@@ -23,6 +23,7 @@ export default function LandingPage() {
   const [currentUser, setCurrentUserState] = useState<UserInfo | null>(null);
   const [allUsers, setAllUsers] = useState<UserInfo[]>([]);
   const [subject, setSubject] = useState("");
+  const [difficulty, setDifficulty] = useState("mixed");
   const [videoUrl, setVideoUrl] = useState("");
   const [showVideo, setShowVideo] = useState(false);
   const [logs, setLogs] = useState<string[]>([]);
@@ -204,6 +205,7 @@ export default function LandingPage() {
     const subj = sub || subject;
     if (!subj.trim()) return;
     setSubject(subj); setError(""); setStep("extracting"); setLogs([]);
+    localStorage.setItem("learnos_quiz_difficulty", difficulty);
     const cid = "custom-" + Date.now();
     let url = videoUrl.trim();
     if (url && url.includes("b23.tv")) {
@@ -552,7 +554,24 @@ export default function LandingPage() {
         </div>
 
         <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl shadow-zinc-200/50 border border-zinc-200/60 p-6 sm:p-8">
-          <h3 className="text-sm font-semibold text-zinc-700 mb-4">选择学科开始诊断</h3>
+          <h3 className="text-sm font-semibold text-zinc-700 mb-4">选择学科与难度</h3>
+
+          {/* 难度选择 */}
+          <div className="flex gap-2 mb-5">
+            {[
+              { id: "easy", label: "基础", sub: "约5min", icon: "🟢" },
+              { id: "medium", label: "中等", sub: "约10min", icon: "🟡" },
+              { id: "hard", label: "困难", sub: "约15min", icon: "🔴" },
+              { id: "mixed", label: "综合", sub: "混合难度", icon: "🔀" },
+            ].map(d => (
+              <button key={d.id} onClick={() => setDifficulty(d.id)}
+                className={"flex-1 py-2.5 rounded-xl text-xs font-semibold border-2 transition-all " +
+                  (difficulty === d.id ? "border-primary-500 bg-primary-50 text-primary-700" : "border-zinc-200 text-zinc-500 hover:border-zinc-300")}>
+                <span className="block">{d.icon} {d.label}</span>
+                <span className="text-[10px] opacity-60">{d.sub}</span>
+              </button>
+            ))}
+          </div>
 
           {/* 英语专区 */}
           <button onClick={() => handleStart("大学英语")}

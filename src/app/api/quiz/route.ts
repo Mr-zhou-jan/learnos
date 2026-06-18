@@ -20,16 +20,16 @@ function detectEnglishQuestionType(nodeTitle: string, nodeDescription: string): 
 function buildEnglishPrompt(node: { title: string; description: string }, difficulty: string): string {
   const type = detectEnglishQuestionType(node.title, node.description || "");
 
-  const langRule = "题目正文和所有选项必须是纯英文，不要混入中文。解释部分可以用中文。";
+  const langRule = "题目正文和所有选项必须是纯英文。不要出教学说明类问题（如'议论文怎么写''作文格式是什么'），只出真实的四六级考题。解释部分用中文。";
 
   const prompts: Record<string, string> = {
     listening: `CET4听力。${langRule} 生成1题：30-60词纯英文对话(M:/W:标注)，4个纯英文选项。JSON:{"question":"📻\\n[English dialogue]\\n❓[English question]","options":["A. English","B. English","C. English","D. English"],"correctIndex":0,"difficulty":"${difficulty}","explanation":"中文解析","type":"listening","extraData":{"audioScript":"[全文英文原文]"}}`,
     matching: `CET4段落匹配。${langRule} 1题：60-100词纯英文段落，4个纯英文选项。JSON:{"question":"📄\\n[English paragraph]\\n❓[English question]","options":["A. English","B. English","C. English","D. English"],"correctIndex":0,"difficulty":"${difficulty}","explanation":"中文解析","type":"matching","extraData":{"paragraph":"[英文原文]"}}`,
     cloze: `CET4选词填空。${langRule} 含___的纯英文句子(30-50词)，4个同词性纯英文选项。JSON:{"question":"📝\\n[English sentence]\\n❓Choose the best word","options":["A. word","B. word","C. word","D. word"],"correctIndex":0,"difficulty":"${difficulty}","explanation":"中文解析","type":"cloze"}`,
     reading: `CET4阅读。${langRule} 1题：60-80词纯英文段落，4个纯英文选项。JSON:{"question":"📖\\n[English passage]\\n❓[English question]","options":["A. English","B. English","C. English","D. English"],"correctIndex":0,"difficulty":"${difficulty}","explanation":"中文解析","type":"reading","extraData":{"passage":"[英文原文]"}}`,
-    writing: `CET4写作。题目要求用中文说明，评分标准用中文。JSON:{"question":"[中文写作题目+字数要求]","options":[],"difficulty":"${difficulty}","explanation":"中文写作要点+范文片段","type":"writing","extraData":{"rubric":"评分标准"}}`,
-    translation: `CET4翻译。中文段落（30-60字），参考译文纯英文。JSON:{"question":"[中文段落30-60字]","options":[],"difficulty":"${difficulty}","explanation":"参考译文(纯英文)+翻译要点(中文)","type":"translation","extraData":{"reference":"[英文参考译文]"}}`,
-    grammar: `英语语法。"${node.title}"。${langRule} 4个纯英文选项。JSON:{"question":"[English question]","options":["A. English","B. English","C. English","D. English"],"correctIndex":0,"difficulty":"${difficulty}","explanation":"中文解析","type":"grammar"}`,
+    writing: `CET4写作。出一道真实的英语作文题，例如议论文、书信、图表描述等。不要出"怎么写议论文"这类教学题。JSON:{"question":"[具体的写作题目+字数要求]","options":[],"difficulty":"${difficulty}","explanation":"范文参考要点","type":"writing","extraData":{"rubric":"评分标准"}}`,
+    translation: `CET4翻译。出一道真实的汉译英题，30-60字中文段落。JSON:{"question":"[中文段落30-60字]","options":[],"difficulty":"${difficulty}","explanation":"参考译文+翻译要点","type":"translation","extraData":{"reference":"[英文参考译文]"}}`,
+    grammar: `英语语法。"${node.title}"。${langRule} 4个纯英文选项。JSON:{"question":"[English question - real exam style]","options":["A. English","B. English","C. English","D. English"],"correctIndex":0,"difficulty":"${difficulty}","explanation":"中文解析","type":"grammar"}`,
     vocab: `CET4词汇。**词**双星号标注，4中文释义。JSON:{"question":"[含**词**的句]\\n❓含义","options":["A.","B.","C.","D."],"correctIndex":0,"difficulty":"${difficulty}","explanation":"解析","type":"vocab"}`,
   };
 
@@ -38,7 +38,8 @@ function buildEnglishPrompt(node: { title: string; description: string }, diffic
 
 export async function POST(req: NextRequest) {
   try {
-    const { courseIds, extractedNodes, courseName } = await req.json();
+    const { courseIds, extractedNodes, courseName, difficulty } = await req.json();
+    const diff = difficulty || "mixed";
     let nodes: any[] = extractedNodes || [];
     const displayName = courseName || "课程";
     const isEnglishCourse = classifySubject(displayName) === "language" && /英语|英文|cet|四级|六级/i.test(displayName);
@@ -61,7 +62,7 @@ export async function POST(req: NextRequest) {
     // 并行生成所有题目（每道题独立调用 AI，15 秒超时，失败则用回退题）
     // 之前是串行 for 循环导致 10 题需要 100+ 秒，现在并行最多 15 秒完成
     const questionPromises = selectedNodes.map(async (node, i) => {
-      const difficulty = difficulties[i % 3];
+      const difficulty = diff === "mixed" ? difficulties[i % 3] : diff;
       const eqType = isEnglishCourse ? detectEnglishQuestionType(node.title, node.description || "") : "mcq";
 
       if (apiKey) {
