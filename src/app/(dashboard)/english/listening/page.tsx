@@ -60,6 +60,7 @@ export default function ListeningPage() {
       </div>
 
       <div className="mb-4"><DifficultyPicker value={difficulty} onChange={setDifficulty} /></div>
+      <p className="text-xs text-zinc-500 mb-2">当前难度：{difficulty==="easy"?"🟢 基础 ~1min/题":difficulty==="medium"?"🟡 中等 ~2min/题":difficulty==="hard"?"🔴 困难 ~3min/题":"🔀 综合难度"}</p>
       <h2 className="font-semibold mb-3 flex items-center gap-2">
         <BookOpen className="w-5 h-5 text-primary-500" /> 选择级别
       </h2>

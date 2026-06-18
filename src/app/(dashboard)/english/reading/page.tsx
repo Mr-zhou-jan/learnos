@@ -147,6 +147,7 @@ export default function ReadingList() {
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <span className={colors[a.difficulty] || "badge"}>{levels[a.difficulty] || a.difficulty}</span>
+                    <span className={cn("text-xs font-semibold px-1.5 py-0.5 rounded", difficulty==="easy"?"text-emerald-600 bg-emerald-50":difficulty==="medium"?"text-amber-600 bg-amber-50":difficulty==="hard"?"text-red-600 bg-red-50":"text-zinc-500 bg-zinc-100")}>{difficulty==="easy"?"🟢基础":difficulty==="medium"?"🟡中等":difficulty==="hard"?"🔴困难":"🔀综合"}</span>
                     <span className="text-xs text-zinc-400">{a.topic}</span>
                     {a.id?.startsWith("ai-") && <span className="badge badge-primary">AI原创</span>}
                     {a.id?.startsWith("refreshed-") && <span className="badge badge-success">新题</span>}
