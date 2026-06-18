@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { speakDialogue, speakText, stopSpeaking } from "@/lib/tts";
 import ListeningPlayer from "@/components/english/ListeningPlayer";
 import { saveTrainingStateDirect, loadTrainingState, clearTrainingState } from "@/lib/training-memory";
+import DifficultyPicker from "@/components/english/DifficultyPicker";
 
 type Section = "list" | "writing" | "listening" | "cloze" | "matching" | "reading" | "translation" | "result";
 const ORDER: Section[] = ["writing","listening","cloze","matching","reading","translation"];
@@ -20,6 +21,7 @@ function ExamPageInner() {
 
   const [view, setView] = useState<Section>("list");
   const [level, setLevel] = useState<"cet4"|"cet6">("cet4");
+  const [difficulty, setDifficulty] = useState("mixed");
   const [exam, setExam] = useState<Record<string,any>>({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -117,7 +119,7 @@ function ExamPageInner() {
   const generateExam = async () => {
     setLoading(true); setError("");
     try {
-      const r = await fetch("/api/english/exam/generate", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({level}) });
+      const r = await fetch("/api/english/exam/generate", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({level,difficulty}) });
       const d = await r.json();
       if (d.success) { setExam(d.sections); timesRef.current = {}; setCurrentTime(0); switchTo("writing"); }
       else setError(d.error||"失败");
@@ -194,7 +196,8 @@ function ExamPageInner() {
       </div>
       <div className="card p-6">
         <h2 className="font-bold text-lg mb-4">模拟考试</h2>
-        <div className="flex gap-3 mb-4">{(["cet4","cet6"]as const).map(l=><button key={l} onClick={()=>setLevel(l)} disabled={loading} className={cn("flex-1 py-3 rounded-xl border-2 font-bold transition-all duration-200",level===l?"border-primary-500 bg-primary-50 text-primary-700":"border-zinc-200 hover:border-zinc-300")}>{l==="cet4"?"CET-4":"CET-6"}</button>)}</div>
+        <div className="flex gap-3 mb-3">{(["cet4","cet6"]as const).map(l=><button key={l} onClick={()=>setLevel(l)} disabled={loading} className={cn("flex-1 py-3 rounded-xl border-2 font-bold transition-all duration-200",level===l?"border-primary-500 bg-primary-50 text-primary-700":"border-zinc-200 hover:border-zinc-300")}>{l==="cet4"?"CET-4":"CET-6"}</button>)}</div>
+        <div className="mb-4"><DifficultyPicker value={difficulty} onChange={setDifficulty} /></div>
         {!loading ? (
           <button onClick={generateExam} className="btn-primary w-full py-3.5 text-base">
             开始考试 <ChevronRight className="w-5 h-5" />

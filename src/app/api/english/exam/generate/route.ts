@@ -45,7 +45,8 @@ async function generateTranslation(key: string, baseUrl: string, level: string, 
 
 export async function POST(req: NextRequest) {
   try {
-    const { level, real, writing: realWriting, translation: realTrans } = await req.json();
+    const { level, real, writing: realWriting, translation: realTrans, difficulty } = await req.json();
+    const diff = difficulty || "mixed";
     const isCet4 = level === "cet4";
     const key = process.env.DEEPSEEK_API_KEY;
     const base = process.env.DEEPSEEK_BASE_URL || "https://api.deepseek.com/v1";
