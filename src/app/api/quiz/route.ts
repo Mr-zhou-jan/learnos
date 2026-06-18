@@ -20,14 +20,16 @@ function detectEnglishQuestionType(nodeTitle: string, nodeDescription: string): 
 function buildEnglishPrompt(node: { title: string; description: string }, difficulty: string): string {
   const type = detectEnglishQuestionType(node.title, node.description || "");
 
+  const langRule = "题目正文和所有选项必须是纯英文，不要混入中文。解释部分可以用中文。";
+
   const prompts: Record<string, string> = {
-    listening: `CET4听力。生成1题：30-60词英文对话(M:/W:标注)，4选项。JSON:{"question":"📻\\n[对话]\\n❓[题目]","options":["A.","B.","C.","D."],"correctIndex":0,"difficulty":"${difficulty}","explanation":"解析","type":"listening","extraData":{"audioScript":"[原文]"}}`,
-    matching: `CET4段落匹配。1题：60-100词英文段落，4选项。JSON:{"question":"📄\\n[段落]\\n❓[题目]","options":["A.","B.","C.","D."],"correctIndex":0,"difficulty":"${difficulty}","explanation":"解析","type":"matching","extraData":{"paragraph":"[原文]"}}`,
-    cloze: `CET4选词填空。含___英文句(30-50词)，4同词性选项。JSON:{"question":"📝\\n[句子]\\n❓选词","options":["A.","B.","C.","D."],"correctIndex":0,"difficulty":"${difficulty}","explanation":"解析","type":"cloze"}`,
-    reading: `CET4阅读。1题：60-80词段落，4选项。JSON:{"question":"📖\\n[段落]\\n❓[题目]","options":["A.","B.","C.","D."],"correctIndex":0,"difficulty":"${difficulty}","explanation":"解析","type":"reading","extraData":{"passage":"[原文]"}}`,
-    writing: `CET4写作诊断。"${node.title}"。出一道写作题，含评分标准。JSON:{"question":"写作题目（含字数、格式要求）","options":[],"difficulty":"${difficulty}","explanation":"写作要点提示和范文片段","type":"writing","extraData":{"rubric":"评分标准"}}`,
-    translation: `CET4翻译诊断。"${node.title}"。出一道汉译英题。JSON:{"question":"中文段落（30-60字）","options":[],"difficulty":"${difficulty}","explanation":"参考译文和翻译要点","type":"translation","extraData":{"reference":"参考译文"}}`,
-    grammar: `英语语法。"${node.title}"。4选项。JSON:{"question":"[题]","options":["A.","B.","C.","D."],"correctIndex":0,"difficulty":"${difficulty}","explanation":"解析","type":"grammar"}`,
+    listening: `CET4听力。${langRule} 生成1题：30-60词纯英文对话(M:/W:标注)，4个纯英文选项。JSON:{"question":"📻\\n[English dialogue]\\n❓[English question]","options":["A. English","B. English","C. English","D. English"],"correctIndex":0,"difficulty":"${difficulty}","explanation":"中文解析","type":"listening","extraData":{"audioScript":"[全文英文原文]"}}`,
+    matching: `CET4段落匹配。${langRule} 1题：60-100词纯英文段落，4个纯英文选项。JSON:{"question":"📄\\n[English paragraph]\\n❓[English question]","options":["A. English","B. English","C. English","D. English"],"correctIndex":0,"difficulty":"${difficulty}","explanation":"中文解析","type":"matching","extraData":{"paragraph":"[英文原文]"}}`,
+    cloze: `CET4选词填空。${langRule} 含___的纯英文句子(30-50词)，4个同词性纯英文选项。JSON:{"question":"📝\\n[English sentence]\\n❓Choose the best word","options":["A. word","B. word","C. word","D. word"],"correctIndex":0,"difficulty":"${difficulty}","explanation":"中文解析","type":"cloze"}`,
+    reading: `CET4阅读。${langRule} 1题：60-80词纯英文段落，4个纯英文选项。JSON:{"question":"📖\\n[English passage]\\n❓[English question]","options":["A. English","B. English","C. English","D. English"],"correctIndex":0,"difficulty":"${difficulty}","explanation":"中文解析","type":"reading","extraData":{"passage":"[英文原文]"}}`,
+    writing: `CET4写作。题目要求用中文说明，评分标准用中文。JSON:{"question":"[中文写作题目+字数要求]","options":[],"difficulty":"${difficulty}","explanation":"中文写作要点+范文片段","type":"writing","extraData":{"rubric":"评分标准"}}`,
+    translation: `CET4翻译。中文段落（30-60字），参考译文纯英文。JSON:{"question":"[中文段落30-60字]","options":[],"difficulty":"${difficulty}","explanation":"参考译文(纯英文)+翻译要点(中文)","type":"translation","extraData":{"reference":"[英文参考译文]"}}`,
+    grammar: `英语语法。"${node.title}"。${langRule} 4个纯英文选项。JSON:{"question":"[English question]","options":["A. English","B. English","C. English","D. English"],"correctIndex":0,"difficulty":"${difficulty}","explanation":"中文解析","type":"grammar"}`,
     vocab: `CET4词汇。**词**双星号标注，4中文释义。JSON:{"question":"[含**词**的句]\\n❓含义","options":["A.","B.","C.","D."],"correctIndex":0,"difficulty":"${difficulty}","explanation":"解析","type":"vocab"}`,
   };
 

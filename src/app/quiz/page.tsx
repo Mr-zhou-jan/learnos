@@ -148,7 +148,7 @@ function QuizContent() {
     <div className="mb-5"><div className="flex justify-between mb-2"><span className="text-sm font-bold text-zinc-500">诊断测验</span><span className="text-sm font-bold">{cur+1}<span className="text-zinc-300">/</span>{questions.length}</span></div><div className="progress-bar"><div className="progress-fill-primary" style={{width:`${prog}%`}}/></div></div>
     <div className="bg-white/80 backdrop-blur-xl rounded-2xl border border-zinc-200/60 shadow-xl p-8 animate-slide-up" key={cur}>
       <div className="flex items-center gap-2 mb-5">
-        <span className={cn("badge",q.difficulty==="easy"?"badge-success":q.difficulty==="medium"?"badge-warning":"badge-danger")}>{q.difficulty==="easy"?"基础":q.difficulty==="medium"?"中等":"困难"}</span>
+        <span className={cn("badge",q.difficulty==="easy"?"badge-success":q.difficulty==="medium"?"badge-warning":"badge-danger")}>{q.difficulty==="easy"?"🟢 基础 ~1min":q.difficulty==="medium"?"🟡 中等 ~2min":"🔴 困难 ~3min"}</span>
         {q.type && TYPE_LABELS[q.type] && <span className="text-xs px-2 py-0.5 rounded-full bg-primary-50 text-primary-600 border border-primary-200">{TYPE_LABELS[q.type]}</span>}
         <span className="text-xs text-zinc-400 ml-auto">{q.nodeTitle}</span>
       </div>
