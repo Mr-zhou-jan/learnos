@@ -105,10 +105,8 @@ function saveLocalPassword(email: string, hash: string): void {
 export function isValidEmail(email: string): string {
   const trimmed = email.trim();
   if (!trimmed) return "请输入邮箱地址";
-  if (!/^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/.test(trimmed)) return "邮箱格式不正确";
-  const domain = trimmed.slice(trimmed.lastIndexOf("@") + 1).toLowerCase();
-  if (ALLOWED_EMAIL_DOMAINS.has(domain) || domain.endsWith(".edu.cn")) return "";
-  return `不支持该邮箱域名（${domain}），请使用 QQ、163、Gmail 等主流邮箱`;
+  if (!/^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/.test(trimmed)) return "邮箱格式不正确，请输入完整邮箱地址";
+  return ""; // 不限制域名，任何合法邮箱均可注册
 }
 
 export function isValidPassword(password: string): { valid: boolean; reason: string } {

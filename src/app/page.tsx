@@ -517,7 +517,7 @@ export default function LandingPage() {
             </div>
 
             <p className="text-center text-xs text-zinc-400 mt-5">
-              支持 QQ邮箱 · 163邮箱 · Gmail · 数据本地加密存储
+              支持所有邮箱注册 · 云端数据同步 · 加密存储
             </p>
           </div>
         </div>
