@@ -65,6 +65,7 @@ export default function CockpitPage() {
           )}
         </div>
         <div className="flex items-center gap-3">
+          <button onClick={()=>router.push("/")} className="btn-secondary text-sm px-3 py-2">选择学科</button>
           <button onClick={()=>{localStorage.removeItem("learnos_quiz_results");localStorage.removeItem("learnos_diagnosed");router.push("/");}} className="btn-outline text-sm">重新诊断</button>
           {hasQuiz && <span className="badge badge-primary text-sm font-semibold">诊断 {score} 分</span>}
         </div>
