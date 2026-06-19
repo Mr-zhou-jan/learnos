@@ -10,14 +10,12 @@ import { getCurrentUser, getAllUsers, switchUser, logout } from "@/lib/user-stor
 import { syncAllToCloud } from "@/lib/cloud-store";
 import { useTheme } from "@/components/shared/ThemeProvider";
 
-const MAIN_NAV = [
+const COMMON_NAV = [
   { href: "/cockpit", label: "驾驶舱", icon: LayoutDashboard },
-  { href: "/goals", label: "学习目标", icon: Target },
-  { href: "/today", label: "今日任务", icon: CalendarCheck },
   { href: "/knowledge", label: "知识图谱", icon: Brain },
-  { href: "/score-target", label: "分数目标", icon: GraduationCap },
+  { href: "/error-book", label: "错题集", icon: BookmarkX },
 ];
-const LEARN_NAV = [
+const ENGLISH_NAV = [
   { href: "/english", label: "英语总览", icon: Globe },
   { href: "/english/exam", label: "整卷练习", icon: FileText },
   { href: "/english/reading", label: "阅读训练", icon: BookOpen },
@@ -28,12 +26,27 @@ const LEARN_NAV = [
   { href: "/english/cloze", label: "选词填空", icon: FileText },
   { href: "/english/vocab", label: "词汇语法", icon: Zap },
 ];
-const REVIEW_NAV = [
-  { href: "/error-book", label: "错题集", icon: BookmarkX },
-  { href: "/memory", label: "记忆卡片", icon: Lightbulb },
-  { href: "/evaluation", label: "掌握度评估", icon: GraduationCap },
-  { href: "/coach", label: "AI教练", icon: MessageSquare },
-];
+const SUBJECT_NAVS: Record<string, { href: string; label: string; icon: any }[]> = {
+  "高等数学": [
+    { href: "/subjects/高等数学/函数与极限", label: "函数与极限", icon: Target },
+    { href: "/subjects/高等数学/导数与微分", label: "导数与微分", icon: Target },
+    { href: "/subjects/高等数学/中值定理与导数应用", label: "中值定理", icon: Target },
+    { href: "/subjects/高等数学/不定积分", label: "不定积分", icon: Target },
+    { href: "/subjects/高等数学/定积分", label: "定积分", icon: Target },
+    { href: "/subjects/高等数学/微分方程", label: "微分方程", icon: Target },
+  ],
+  "大学物理": [
+    { href: "/subjects/大学物理/质点运动学", label: "质点运动学", icon: Target },
+    { href: "/subjects/大学物理/牛顿定律", label: "牛顿定律", icon: Target },
+    { href: "/subjects/大学物理/动量与能量", label: "动量与能量", icon: Target },
+    { href: "/subjects/大学物理/刚体转动", label: "刚体转动", icon: Target },
+  ],
+  "工程力学": [
+    { href: "/subjects/工程力学/静力学基础", label: "静力学基础", icon: Target },
+    { href: "/subjects/工程力学/平面力系", label: "平面力系", icon: Target },
+    { href: "/subjects/工程力学/材料力学基础", label: "材料力学基础", icon: Target },
+  ],
+};
 
 function Modal({ open, onClose, title, children }: { open: boolean; onClose: () => void; title: string; children: React.ReactNode }) {
   if (!open) return null;
@@ -108,7 +121,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   const toggleGroup = (title: string) => setCollapsed(prev => ({ ...prev, [title]: !prev[title] }));
 
-  const NavGroup = ({ title, items }: { title: string; items: typeof MAIN_NAV }) => {
+  const NavGroup = ({ title, items }: { title: string; items: { href: string; label: string; icon: any }[] }) => {
     const isCollapsed = collapsed[title] || false;
     return (
       <div className="mb-3">
@@ -140,7 +153,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <span className="font-bold text-lg text-zinc-900">LearnOS</span>
         </Link>
         <nav className="flex-1 px-3 py-4 overflow-y-auto">
-          <NavGroup title="核心" items={MAIN_NAV} /><NavGroup title="学习" items={LEARN_NAV} /><NavGroup title="复习" items={REVIEW_NAV} />
+          {(pathname.startsWith("/subjects/") ? (() => {
+            const subj = decodeURIComponent(pathname.split("/")[2] || "");
+            const chapters = SUBJECT_NAVS[subj] || [{ href: `/subjects/${encodeURIComponent(subj)}`, label: "章节列表", icon: BookOpen }];
+            return <NavGroup title={subj || "学科"} items={chapters} />;
+          })() : pathname.startsWith("/english") ? (
+            <NavGroup title="英语训练" items={ENGLISH_NAV} />
+          ) : null)}
+          <NavGroup title="通用" items={COMMON_NAV} />
         </nav>
 
         {/* ===== 用户区 ===== */}
@@ -193,7 +213,16 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setSidebarOpen(false)} />
           <div className="absolute left-0 top-0 bottom-0 w-64 bg-white shadow-2xl flex flex-col animate-slide-up overflow-y-auto">
             <div className="flex items-center justify-between p-4 border-b"><span className="font-bold text-lg">LearnOS</span><button onClick={() => setSidebarOpen(false)} className="p-1.5 rounded-lg hover:bg-zinc-100"><X className="w-5 h-5"/></button></div>
-            <nav className="flex-1 px-3 py-4"><NavGroup title="核心" items={MAIN_NAV} /><NavGroup title="学习" items={LEARN_NAV} /><NavGroup title="复习" items={REVIEW_NAV} /></nav>
+            <nav className="flex-1 px-3 py-4">
+              {(pathname.startsWith("/subjects/") ? (() => {
+                const subj = decodeURIComponent(pathname.split("/")[2] || "");
+                const chapters = SUBJECT_NAVS[subj] || [{ href: `/subjects/${encodeURIComponent(subj)}`, label: "章节列表", icon: BookOpen }];
+                return <NavGroup title={subj || "学科"} items={chapters} />;
+              })() : pathname.startsWith("/english") ? (
+                <NavGroup title="英语训练" items={ENGLISH_NAV} />
+              ) : null)}
+              <NavGroup title="通用" items={COMMON_NAV} />
+            </nav>
             <div className="border-t p-3 space-y-1">
               <button onClick={() => { setSidebarOpen(false); setCropperOpen(true); }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-zinc-50"><Camera className="w-4 h-4 text-zinc-400"/>更换头像</button>
               <button onClick={() => { setSidebarOpen(false); setModalSwitch(true); }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-zinc-50"><Shuffle className="w-4 h-4 text-zinc-400"/>切换账号</button>
