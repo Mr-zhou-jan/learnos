@@ -39,8 +39,7 @@ export default function LandingPage() {
     if (user) {
       setEmail(user.email || "");
       setUserName(user.name || "");
-      if (localStorage.getItem("learnos_diagnosed") === "true") { router.push("/cockpit"); }
-      else { setStep("input"); }
+      setStep("input"); // 始终展示学科选择页
     }
   }, []);
 
@@ -576,7 +575,7 @@ export default function LandingPage() {
           {/* 所有学科统一网格 */}
           <div className="grid grid-cols-2 gap-2 mb-4">
             {[
-              { id:"大学英语", icon:"📖", mode:"语言类·诊断+练习", sub:"四六级·阅读听力写作翻译", action:"diagnose" },
+              { id:"大学英语", icon:"📖", mode:"语言类·诊断+练习", sub:"四六级·阅读听力写作翻译", action: localStorage.getItem("learnos_diagnosed") === "true" ? "done" : "diagnose" },
               { id:"高等数学", icon:"📐", mode:"计算型·题型闯关", sub:"概念→例题→刷题→测试", action:"speedrun" },
               { id:"大学物理", icon:"⚛️", mode:"理解型·题型分类", sub:"识别题型→套解题模板", action:"speedrun" },
               { id:"C++", icon:"💻", mode:"技能型·项目驱动", sub:"学→写→AI批改→再写", action:"speedrun" },
@@ -584,7 +583,7 @@ export default function LandingPage() {
               { id:"Python", icon:"🐍", mode:"技能型·项目驱动", sub:"学→写→AI批改→再写", action:"speedrun" },
               { id:"互换性测量", icon:"📏", mode:"记忆型·闪卡模式", sub:"AI闪卡→遗忘曲线→测验", action:"speedrun" },
             ].map(s => (
-              <button key={s.id} onClick={() => s.action === "diagnose" ? handleStart(s.id) : router.push(`/subjects/${encodeURIComponent(s.id)}`)}
+              <button key={s.id} onClick={() => s.action === "diagnose" ? handleStart(s.id) : s.action === "done" ? router.push("/cockpit") : router.push(`/subjects/${encodeURIComponent(s.id)}`)}
                 className="card-hover text-left p-3 space-y-1">
                 <span className="text-xl">{s.icon}</span>
                 <p className="font-bold text-sm">{s.id}</p>
