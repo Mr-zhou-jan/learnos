@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { classifySubject } from "@/lib/engine/learning-methods";
+import { classifySubject, isCalcSubject, getCalcPrompt } from "@/lib/engine/learning-methods";
 import { safeParseAIJson } from "@/lib/utils";
 
 /** 根据知识点标题/描述检测英语题型 */
@@ -87,7 +87,9 @@ export async function POST(req: NextRequest) {
       if (apiKey) {
         const prompt = isEnglishCourse
           ? buildEnglishPrompt(node, difficulty)
-          : `# Role
+          : isCalcSubject(displayName)
+            ? getCalcPrompt(node, difficulty)
+            : `# Role
 	你是${displayName}出题专家，根据知识点生成诊断选择题。
 
 # 出题要求

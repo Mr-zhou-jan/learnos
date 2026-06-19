@@ -182,23 +182,25 @@ export const LEARNING_METHODS: LearningMethod[] = [
 // ============================================================
 export function classifySubject(name: string): SubjectCategory {
   const lower = name.toLowerCase();
-  
-  // Language
   if (/英语|英文|cet|四级|六级|雅思|托福|日语|韩语|外语/.test(lower)) return "language";
-  
-  // Programming
   if (/c\+\+|python|java|编程|代码|前端|后端|算法|数据结构|rust|go|js|typescript/.test(lower)) return "programming";
-  
-  // Math
   if (/高数|数学|线性代数|概率|微积分|离散/.test(lower)) return "math";
-  
-  // Finance
-  if (/金融|投资|财经|经济|股票|基金|理财|会计|财务/.test(lower)) return "finance";
-  
-  // Theory (physics, mechanics, etc.)
   if (/物理|力学|电磁|光学|热学|化学|生物/.test(lower)) return "theory";
-  
+  if (/互换性|公差|测量|标准|规范/.test(lower)) return "general";
+  if (/金融|投资|财经|经济|股票|基金|理财|会计|财务/.test(lower)) return "finance";
   return "general";
+}
+
+/** 计算型学科出计算题而非概念题 */
+export function isCalcSubject(name: string): boolean {
+  const c = classifySubject(name);
+  return c === "math" || c === "theory";
+}
+
+/** 生成计算型Prompt：题目必须是计算题，不要概念解释 */
+export function getCalcPrompt(node: { title: string; description: string }, difficulty: string): string {
+  const d = difficulty === "easy" ? "基础" : difficulty === "medium" ? "中等" : "困难";
+  return `出1道${d}计算题。必须是计算/应用题（不要出"什么是X"这类概念解释题）。4选项含典型错误答案。解析用中文写详细计算步骤。JSON:{"question":"[题目]","options":["A.","B.","C.","D."],"correctIndex":0,"difficulty":"${difficulty}","explanation":"[详细步骤]"}`;
 }
 
 /**
