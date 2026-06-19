@@ -254,7 +254,23 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <SubjectPanel subject={decodeURIComponent(pathname.split("/")[2] || "")} pathname={pathname} />
           ) : pathname.startsWith("/english") ? (
             <NavGroup title="英语训练" items={ENGLISH_NAV} />
-          ) : null}
+          ) : (() => {
+            // 不在学科页但可能有活跃学科——显示入口
+            const activeSubj = (() => {
+              try { return JSON.parse(localStorage.getItem("learnos_user_state") || "{}").activeSubject; } catch { return null; }
+            })();
+            if (activeSubj) {
+              return (
+                <div className="mb-3 px-1">
+                  <Link href={`/subjects/${encodeURIComponent(activeSubj)}`}
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg bg-primary-50 text-primary-700 text-sm font-medium hover:bg-primary-100 transition-colors">
+                    ← 回到 {activeSubj}
+                  </Link>
+                </div>
+              );
+            }
+            return null;
+          })()}
           <div className="mt-3"><NavGroup title="通用" items={COMMON_NAV} /></div>
         </nav>
 
