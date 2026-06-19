@@ -44,6 +44,11 @@ export default function SubjectPage() {
 
   useEffect(() => {
     try {
+      const state = JSON.parse(localStorage.getItem("learnos_user_state") || "{}");
+      state.activeSubject = decoded;
+      localStorage.setItem("learnos_user_state", JSON.stringify(state));
+    } catch {}
+    try {
       const saved = JSON.parse(localStorage.getItem(`learnos_progress_${decoded}`) || "{}");
       chapters.forEach(ch => { if (saved[ch.name]) ch.progress = saved[ch.name]; });
     } catch {}
