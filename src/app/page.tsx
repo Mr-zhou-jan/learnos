@@ -171,6 +171,9 @@ export default function LandingPage() {
       const d = await r.json();
       if (!d.valid) { setAuthError(d.reason || "验证码错误"); setAuthLoading(false); return; }
       const user = await registerWithEmail(email.trim(), userName.trim(), password);
+      // 新注册清除所有旧标记
+      localStorage.removeItem("learnos_diagnosed");
+      localStorage.removeItem("learnos_active_subject");
       setCurrentUserState(user);
       setAllUsers(getAllUsers());
       setPassword("");
