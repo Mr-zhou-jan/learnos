@@ -257,7 +257,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           ) : (() => {
             // 不在学科页但可能有活跃学科——显示入口
             const activeSubj = (() => {
-              try { return JSON.parse(localStorage.getItem("learnos_user_state") || "{}").activeSubject; } catch { return null; }
+              try { return localStorage.getItem("learnos_active_subject"); } catch { return null; }
             })();
             if (activeSubj) {
               return (

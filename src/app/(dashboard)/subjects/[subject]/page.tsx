@@ -43,15 +43,13 @@ export default function SubjectPage() {
   const chapters = getChapters(decoded);
 
   useEffect(() => {
-    try {
-      const state = JSON.parse(localStorage.getItem("learnos_user_state") || "{}");
-      state.activeSubject = decoded;
-      localStorage.setItem("learnos_user_state", JSON.stringify(state));
-    } catch {}
+    // 学科进度用独立key，不影响英语的learnos_user_state
+    localStorage.setItem("learnos_active_subject", decoded);
     try {
       const saved = JSON.parse(localStorage.getItem(`learnos_progress_${decoded}`) || "{}");
       chapters.forEach(ch => { if (saved[ch.name]) ch.progress = saved[ch.name]; });
     } catch {}
+  }, []);
   }, []);
 
   return (
