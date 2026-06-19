@@ -50,7 +50,6 @@ export default function SubjectPage() {
       chapters.forEach(ch => { if (saved[ch.name]) ch.progress = saved[ch.name]; });
     } catch {}
   }, []);
-  }, []);
 
   return (
     <div className="p-6 max-w-3xl mx-auto">

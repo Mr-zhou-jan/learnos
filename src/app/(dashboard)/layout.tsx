@@ -48,103 +48,6 @@ const SUBJECT_NAVS: Record<string, { href: string; label: string; icon: any }[]>
   ],
 };
 
-// 学科速通侧边栏面板
-function SubjectPanel({ subject, pathname }: { subject: string; pathname: string }) {
-  const router = useRouter();
-  const [progress, setProgress] = useState<Record<string, number>>({});
-  const [currentStage, setCurrentStage] = useState(0);
-  const sections = SUBJECT_NAVS[subject] || [{ href: `/subjects/${encodeURIComponent(subject)}`, label: "章节列表", icon: BookOpen }];
-
-  useEffect(() => {
-    try {
-      const saved = JSON.parse(localStorage.getItem(`learnos_progress_${subject}`) || "{}");
-      setProgress(saved);
-      const completed = Object.values(saved).filter((v: any) => v >= 80).length;
-      setCurrentStage(completed);
-    } catch {}
-  }, [subject]);
-
-  const totalDone = Object.values(progress).filter((v: any) => v >= 80).length;
-  const total = sections.length;
-  const pct = total > 0 ? Math.round((totalDone / total) * 100) : 0;
-  const curSection = pathname.includes("/subjects/") && pathname.split("/").length > 3
-    ? decodeURIComponent(pathname.split("/")[3] || "")
-    : sections[totalDone]?.label || "选择章节";
-  const curProgress = progress[curSection] || 0;
-
-  const STAGES = [
-    { icon: "📖", label: "概念速览", key: "concept" },
-    { icon: "✍️", label: "例题精讲", key: "example" },
-    { icon: "🎯", label: "同类练习", key: "similar" },
-    { icon: "🔄", label: "变式挑战", key: "variation" },
-    { icon: "📋", label: "章节测试", key: "test" },
-  ];
-
-  return (
-    <div className="space-y-3">
-      {/* 头部 */}
-      <div className="px-1">
-        <div className="flex items-center gap-2 mb-1">
-          <span className="text-lg">📐</span>
-          <div className="min-w-0">
-            <p className="text-sm font-bold truncate">{subject}</p>
-            <p className="text-[10px] text-zinc-400">总进度 {totalDone}/{total} · {pct}%</p>
-          </div>
-        </div>
-        <div className="w-full h-1 bg-zinc-100 rounded-full overflow-hidden">
-          <div className="h-full bg-primary-500 rounded-full transition-all" style={{ width: `${pct}%` }} />
-        </div>
-      </div>
-
-      {/* 当前知识点 */}
-      {curSection && (
-        <div className="bg-primary-50 rounded-xl p-2.5 border border-primary-100">
-          <p className="text-[10px] text-primary-500 font-semibold uppercase tracking-wider">当前知识点</p>
-          <p className="text-xs font-bold text-primary-700 truncate">{curSection}</p>
-          {curProgress > 0 && curProgress < 80 && (
-            <div className="mt-1.5 w-full h-1 bg-primary-100 rounded-full overflow-hidden">
-              <div className="h-full bg-primary-500 rounded-full transition-all" style={{ width: `${curProgress}%` }} />
-            </div>
-          )}
-          {/* 5步流程指示器 */}
-          <div className="flex gap-0.5 mt-2">
-            {STAGES.map((s, i) => {
-              const stageDone = curProgress >= 80 && i <= Math.min(Math.floor(curProgress / 20), 4);
-              const stageActive = !stageDone && i === Math.min(Math.floor(curProgress / 20), 4);
-              return (
-                <div key={s.key} className={`flex-1 h-1 rounded-full transition-colors ${
-                  stageDone ? "bg-emerald-500" : stageActive ? "bg-primary-500" : "bg-zinc-200"
-                }`} title={s.label} />
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      {/* 快速工具 */}
-      <div className="space-y-0.5">
-        <p className="text-[10px] font-semibold text-zinc-400 uppercase tracking-wider px-1">快速工具</p>
-        {sections.slice(0, Math.min(totalDone + 2, sections.length)).map(s => {
-          const isActive = curSection === s.label;
-          const isDone = (progress[s.label] || 0) >= 80;
-          return (
-            <button key={s.label}
-              onClick={() => router.push(s.href)}
-              className={`w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs transition-colors ${
-                isActive ? "bg-primary-50 text-primary-700 font-semibold" :
-                isDone ? "text-emerald-600" : "text-zinc-500 hover:bg-zinc-50"
-              }`}>
-              <span className="shrink-0">{isDone ? "✅" : isActive ? "🔵" : "⬜"}</span>
-              <span className="truncate">{s.label}</span>
-              {isDone && <span className="text-[10px] text-emerald-500 ml-auto">{progress[s.label]}%</span>}
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
 function Modal({ open, onClose, title, children }: { open: boolean; onClose: () => void; title: string; children: React.ReactNode }) {
   if (!open) return null;
   return (
@@ -180,10 +83,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => { setSidebarOpen(false); }, [pathname]);
-  // 进入英语页面时自动清除学科状态
-  useEffect(() => {
-    if (pathname.startsWith("/english")) localStorage.removeItem("learnos_active_subject");
-  }, [pathname]);
 
   useEffect(() => {
     if (user) {
@@ -254,11 +153,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <span className="font-bold text-lg text-zinc-900">LearnOS</span><span className="text-[8px] text-zinc-300 ml-1">v2-eng-fix</span>
         </Link>
         <nav className="flex-1 px-3 py-4 overflow-y-auto">
-          {pathname.startsWith("/subjects/") ? (
-            <SubjectPanel subject={decodeURIComponent(pathname.split("/")[2] || "")} pathname={pathname} />
-          ) : pathname.startsWith("/english") ? (
-            <NavGroup title="英语训练" items={ENGLISH_NAV} />
-          ) : null}
+          {pathname.startsWith("/english") ? <NavGroup title="英语训练" items={ENGLISH_NAV} /> : null}
           <div className="mt-3"><NavGroup title="通用" items={COMMON_NAV} /></div>
         </nav>
 
@@ -313,11 +208,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <div className="absolute left-0 top-0 bottom-0 w-64 bg-white shadow-2xl flex flex-col animate-slide-up overflow-y-auto">
             <div className="flex items-center justify-between p-4 border-b"><span className="font-bold text-lg">LearnOS</span><button onClick={() => setSidebarOpen(false)} className="p-1.5 rounded-lg hover:bg-zinc-100"><X className="w-5 h-5"/></button></div>
             <nav className="flex-1 px-3 py-4">
-              {pathname.startsWith("/subjects/") ? (
-                <SubjectPanel subject={decodeURIComponent(pathname.split("/")[2] || "")} pathname={pathname} />
-              ) : pathname.startsWith("/english") ? (
-                <NavGroup title="英语训练" items={ENGLISH_NAV} />
-              ) : null}
+              {pathname.startsWith("/english") ? <NavGroup title="英语训练" items={ENGLISH_NAV} /> : null}
               <div className="mt-3"><NavGroup title="通用" items={COMMON_NAV} /></div>
             </nav>
             <div className="border-t p-3 space-y-1">
