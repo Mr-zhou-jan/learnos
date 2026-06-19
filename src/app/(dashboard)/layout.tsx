@@ -162,7 +162,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </Link>
         <nav className="flex-1 px-3 py-4 overflow-y-auto">
           <NavGroup title="核心" items={COMMON_NAV} />
-          {pathname.startsWith("/english") ? <NavGroup title="学习" items={ENGLISH_NAV} /> : null}
+          <NavGroup title="学习" items={ENGLISH_NAV} />
           <NavGroup title="复习" items={REVIEW_NAV} />
         </nav>
 
@@ -218,7 +218,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <div className="flex items-center justify-between p-4 border-b"><span className="font-bold text-lg">LearnOS</span><button onClick={() => setSidebarOpen(false)} className="p-1.5 rounded-lg hover:bg-zinc-100"><X className="w-5 h-5"/></button></div>
             <nav className="flex-1 px-3 py-4">
               <NavGroup title="核心" items={COMMON_NAV} />
-              {pathname.startsWith("/english") ? <NavGroup title="学习" items={ENGLISH_NAV} /> : null}
+              <NavGroup title="学习" items={ENGLISH_NAV} />
               <NavGroup title="复习" items={REVIEW_NAV} />
             </nav>
             <div className="border-t p-3 space-y-1">
