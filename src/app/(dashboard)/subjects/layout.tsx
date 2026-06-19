@@ -9,6 +9,9 @@ const SUBJECT_NAVS: Record<string, { href: string; label: string }[]> = {
   "高等数学": ["函数与极限","导数与微分","中值定理与导数应用","不定积分","定积分","微分方程"].map(l=>({href:`/subjects/高等数学/${encodeURIComponent(l)}`,label:l})),
   "大学物理": ["质点运动学","牛顿定律","动量与能量","刚体转动"].map(l=>({href:`/subjects/大学物理/${encodeURIComponent(l)}`,label:l})),
   "工程力学": ["静力学基础","平面力系","材料力学基础"].map(l=>({href:`/subjects/工程力学/${encodeURIComponent(l)}`,label:l})),
+  "C++": ["基础语法","类和对象","指针与引用","STL容器","继承与多态"].map(l=>({href:`/subjects/C++/${encodeURIComponent(l)}`,label:l})),
+  "Python": ["基础语法","函数与模块","面向对象","文件操作","常用库"].map(l=>({href:`/subjects/Python/${encodeURIComponent(l)}`,label:l})),
+  "互换性测量": ["公差与配合","形位公差","表面粗糙度","测量技术"].map(l=>({href:`/subjects/互换性测量/${encodeURIComponent(l)}`,label:l})),
 };
 
 export default function SubjectsLayout({ children }: { children: React.ReactNode }) {
