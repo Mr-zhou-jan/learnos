@@ -573,47 +573,18 @@ export default function LandingPage() {
             ))}
           </div>
 
-          {/* 英语专区 */}
-          <button onClick={() => handleStart("大学英语")}
-            className="card-hover w-full text-left p-5 mb-5 flex items-center gap-4">
-            <span className="text-3xl">📖</span>
-            <div className="flex-1">
-              <p className="font-bold text-base">大学英语四六级</p>
-              <p className="text-sm text-zinc-500">AI诊断 · 阅读理解 · 听力 · 写作 · 翻译 · 选词填空 · 段落匹配</p>
-            </div>
-            <ArrowRight className="w-5 h-5 text-zinc-300" />
-          </button>
-
-          {/* 视频链接 */}
-          {showVideo ? (
-            <div className="mb-5">
-              <label className="text-xs font-semibold text-zinc-700 mb-1.5 block">
-                📹 视频链接（可选）
-                <button type="button" onClick={() => { setShowVideo(false); setVideoUrl(""); }} className="ml-2 text-xs text-zinc-400 underline hover:text-zinc-600">移除</button>
-              </label>
-              <input type="text" value={videoUrl} onChange={e => setVideoUrl(e.target.value)}
-                placeholder="粘贴 B站 / YouTube 链接，AI 将从视频提取知识点…"
-                className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-2xl text-sm outline-none transition-all focus:bg-white focus:border-primary-400 focus:ring-4 focus:ring-primary-50" />
-            </div>
-          ) : (
-            <button onClick={() => setShowVideo(true)}
-              className="flex items-center gap-2 text-sm text-primary-600 font-semibold hover:text-primary-700 transition-colors mb-5">
-              <Link2 className="w-4 h-4" /> 添加视频链接（AI提取知识点）
-            </button>
-          )}
-
-          {/* 更多学科 */}
-          <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mt-6 mb-3">🚀 更多学科</p>
-          <div className="grid grid-cols-2 gap-2">
+          {/* 所有学科统一网格 */}
+          <div className="grid grid-cols-2 gap-2 mb-4">
             {[
-              { id:"高等数学", icon:"📐", mode:"计算型·题型闯关", sub:"知识点→例题→刷题→测试" },
-              { id:"大学物理", icon:"⚛️", mode:"理解型·题型分类", sub:"识别题型→套解题模板" },
-              { id:"C++", icon:"💻", mode:"技能型·项目驱动", sub:"学→写→AI批改→再写" },
-              { id:"工程力学", icon:"🔧", mode:"计算型·案例刷题", sub:"案例讲解→分类练习" },
-              { id:"Python", icon:"🐍", mode:"技能型·项目驱动", sub:"学→写→AI批改→再写" },
-              { id:"互换性测量", icon:"📏", mode:"记忆型·闪卡模式", sub:"AI闪卡→遗忘曲线→测验" },
+              { id:"大学英语", icon:"📖", mode:"语言类·诊断+练习", sub:"四六级·阅读听力写作翻译", action:"diagnose" },
+              { id:"高等数学", icon:"📐", mode:"计算型·题型闯关", sub:"概念→例题→刷题→测试", action:"speedrun" },
+              { id:"大学物理", icon:"⚛️", mode:"理解型·题型分类", sub:"识别题型→套解题模板", action:"speedrun" },
+              { id:"C++", icon:"💻", mode:"技能型·项目驱动", sub:"学→写→AI批改→再写", action:"speedrun" },
+              { id:"工程力学", icon:"🔧", mode:"计算型·案例刷题", sub:"案例讲解→分类练习", action:"speedrun" },
+              { id:"Python", icon:"🐍", mode:"技能型·项目驱动", sub:"学→写→AI批改→再写", action:"speedrun" },
+              { id:"互换性测量", icon:"📏", mode:"记忆型·闪卡模式", sub:"AI闪卡→遗忘曲线→测验", action:"speedrun" },
             ].map(s => (
-              <button key={s.id} onClick={() => handleStart(s.id)}
+              <button key={s.id} onClick={() => s.action === "diagnose" ? handleStart(s.id) : router.push(`/subjects/${encodeURIComponent(s.id)}`)}
                 className="card-hover text-left p-3 space-y-1">
                 <span className="text-xl">{s.icon}</span>
                 <p className="font-bold text-sm">{s.id}</p>
@@ -622,6 +593,24 @@ export default function LandingPage() {
               </button>
             ))}
           </div>
+
+          {/* 视频链接 */}
+          {showVideo ? (
+            <div>
+              <label className="text-xs font-semibold text-zinc-700 mb-1.5 block">
+                📹 视频链接（可选，AI提取知识点）
+                <button type="button" onClick={() => { setShowVideo(false); setVideoUrl(""); }} className="ml-2 text-xs text-zinc-400 underline hover:text-zinc-600">移除</button>
+              </label>
+              <input type="text" value={videoUrl} onChange={e => setVideoUrl(e.target.value)}
+                placeholder="粘贴 B站 / YouTube 链接…"
+                className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-2xl text-sm outline-none transition-all focus:bg-white focus:border-primary-400 focus:ring-4 focus:ring-primary-50" />
+            </div>
+          ) : (
+            <button onClick={() => setShowVideo(true)}
+              className="flex items-center gap-2 text-sm text-primary-600 font-semibold hover:text-primary-700 transition-colors">
+              <Link2 className="w-4 h-4" /> 添加视频链接（AI提取知识点）
+            </button>
+          )}
 
           {error && (
             <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-2xl text-sm text-red-700 flex items-start gap-2">
