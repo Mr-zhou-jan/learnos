@@ -254,23 +254,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <SubjectPanel subject={decodeURIComponent(pathname.split("/")[2] || "")} pathname={pathname} />
           ) : pathname.startsWith("/english") ? (
             <NavGroup title="英语训练" items={ENGLISH_NAV} />
-          ) : (() => {
-            // 既不在学科也不在英语——如果有活跃学科就显示入口
-            if (typeof window !== "undefined") {
-              const activeSubj = localStorage.getItem("learnos_active_subject");
-              if (activeSubj && !pathname.startsWith("/english") && !pathname.startsWith("/subjects/")) {
-                return (
-                  <div className="mb-3 px-1">
-                    <Link href={`/subjects/${encodeURIComponent(activeSubj)}`}
-                      className="flex items-center gap-2 px-3 py-2 rounded-lg bg-primary-50 text-primary-700 text-sm font-medium hover:bg-primary-100 transition-colors">
-                      📐 {activeSubj}
-                    </Link>
-                  </div>
-                );
-              }
-            }
-            return null;
-          })()}
+          ) : null}
           <div className="mt-3"><NavGroup title="通用" items={COMMON_NAV} /></div>
         </nav>
 
@@ -329,15 +313,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 <SubjectPanel subject={decodeURIComponent(pathname.split("/")[2] || "")} pathname={pathname} />
               ) : pathname.startsWith("/english") ? (
                 <NavGroup title="英语训练" items={ENGLISH_NAV} />
-              ) : (() => {
-                if (typeof window !== "undefined") {
-                  const as = localStorage.getItem("learnos_active_subject");
-                  if (as && !pathname.startsWith("/english") && !pathname.startsWith("/subjects/")) {
-                    return <div className="mb-3 px-1"><Link href={`/subjects/${encodeURIComponent(as)}`} className="flex items-center gap-2 px-3 py-2 rounded-lg bg-primary-50 text-primary-700 text-sm font-medium">📐 {as}</Link></div>;
-                  }
-                }
-                return null;
-              })()}
+              ) : null}
               <div className="mt-3"><NavGroup title="通用" items={COMMON_NAV} /></div>
             </nav>
             <div className="border-t p-3 space-y-1">
