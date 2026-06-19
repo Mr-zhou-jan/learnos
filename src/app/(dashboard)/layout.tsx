@@ -12,8 +12,16 @@ import { useTheme } from "@/components/shared/ThemeProvider";
 
 const COMMON_NAV = [
   { href: "/cockpit", label: "驾驶舱", icon: LayoutDashboard },
+  { href: "/goals", label: "学习目标", icon: Target },
+  { href: "/today", label: "今日任务", icon: CalendarCheck },
   { href: "/knowledge", label: "知识图谱", icon: Brain },
+  { href: "/score-target", label: "分数目标", icon: GraduationCap },
+];
+const REVIEW_NAV = [
   { href: "/error-book", label: "错题集", icon: BookmarkX },
+  { href: "/memory", label: "记忆卡片", icon: Lightbulb },
+  { href: "/evaluation", label: "掌握度评估", icon: GraduationCap },
+  { href: "/coach", label: "AI教练", icon: MessageSquare },
 ];
 const ENGLISH_NAV = [
   { href: "/english", label: "英语总览", icon: Globe },
@@ -153,8 +161,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <span className="font-bold text-lg text-zinc-900">LearnOS</span><span className="text-[8px] text-zinc-300 ml-1">v2-eng-fix</span>
         </Link>
         <nav className="flex-1 px-3 py-4 overflow-y-auto">
-          {pathname.startsWith("/english") ? <NavGroup title="英语训练" items={ENGLISH_NAV} /> : null}
-          <div className="mt-3"><NavGroup title="通用" items={COMMON_NAV} /></div>
+          <NavGroup title="核心" items={COMMON_NAV} />
+          {pathname.startsWith("/english") ? <NavGroup title="学习" items={ENGLISH_NAV} /> : null}
+          <NavGroup title="复习" items={REVIEW_NAV} />
         </nav>
 
         {/* ===== 用户区 ===== */}
@@ -208,8 +217,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <div className="absolute left-0 top-0 bottom-0 w-64 bg-white shadow-2xl flex flex-col animate-slide-up overflow-y-auto">
             <div className="flex items-center justify-between p-4 border-b"><span className="font-bold text-lg">LearnOS</span><button onClick={() => setSidebarOpen(false)} className="p-1.5 rounded-lg hover:bg-zinc-100"><X className="w-5 h-5"/></button></div>
             <nav className="flex-1 px-3 py-4">
-              {pathname.startsWith("/english") ? <NavGroup title="英语训练" items={ENGLISH_NAV} /> : null}
-              <div className="mt-3"><NavGroup title="通用" items={COMMON_NAV} /></div>
+              <NavGroup title="核心" items={COMMON_NAV} />
+              {pathname.startsWith("/english") ? <NavGroup title="学习" items={ENGLISH_NAV} /> : null}
+              <NavGroup title="复习" items={REVIEW_NAV} />
             </nav>
             <div className="border-t p-3 space-y-1">
               <button onClick={() => { setSidebarOpen(false); setCropperOpen(true); }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-zinc-50"><Camera className="w-4 h-4 text-zinc-400"/>更换头像</button>
