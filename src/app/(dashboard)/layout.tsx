@@ -179,7 +179,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => { setSidebarOpen(false); }, [pathname]); // 路由变化关闭移动端侧边栏
+  useEffect(() => { setSidebarOpen(false); }, [pathname]);
+  // 进入英语页面时自动清除学科状态
+  useEffect(() => {
+    if (pathname.startsWith("/english")) localStorage.removeItem("learnos_active_subject");
+  }, [pathname]);
 
   useEffect(() => {
     if (user) {
