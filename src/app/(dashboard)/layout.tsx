@@ -251,7 +251,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
             <Compass className="w-5 h-5 text-white" />
           </div>
-          <span className="font-bold text-lg text-zinc-900">LearnOS</span>
+          <span className="font-bold text-lg text-zinc-900">LearnOS</span><span className="text-[8px] text-zinc-300 ml-1">v2-eng-fix</span>
         </Link>
         <nav className="flex-1 px-3 py-4 overflow-y-auto">
           {pathname.startsWith("/subjects/") ? (
