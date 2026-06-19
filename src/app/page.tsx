@@ -602,25 +602,25 @@ export default function LandingPage() {
             </button>
           )}
 
-          {/* 其他学科 - 即将上线 */}
-          <div>
-            <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">🚀 即将上线</p>
-            <div className="grid grid-cols-3 gap-2">
-              {[
-                { label: "高等数学", icon: "📐" },
-                { label: "C++", icon: "💻" },
-                { label: "Python", icon: "🐍" },
-                { label: "大学物理", icon: "⚛️" },
-                { label: "ROS机器人", icon: "🤖" },
-                { label: "工程测量", icon: "📏" },
-              ].map(s => (
-                <div key={s.label} className="p-3 rounded-xl bg-zinc-50 border border-zinc-100 text-center opacity-50 cursor-not-allowed">
-                  <span className="text-lg">{s.icon}</span>
-                  <p className="text-xs font-medium text-zinc-500 mt-1">{s.label}</p>
-                </div>
-              ))}
-            </div>
-            <p className="text-xs text-zinc-400 text-center mt-4">更多学科陆续开放中，敬请期待</p>
+          {/* 更多学科 */}
+          <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mt-6 mb-3">🚀 更多学科</p>
+          <div className="grid grid-cols-2 gap-2">
+            {[
+              { id:"高等数学", icon:"📐", mode:"计算型·题型闯关", sub:"知识点→例题→刷题→测试" },
+              { id:"大学物理", icon:"⚛️", mode:"理解型·题型分类", sub:"识别题型→套解题模板" },
+              { id:"C++", icon:"💻", mode:"技能型·项目驱动", sub:"学→写→AI批改→再写" },
+              { id:"工程力学", icon:"🔧", mode:"计算型·案例刷题", sub:"案例讲解→分类练习" },
+              { id:"Python", icon:"🐍", mode:"技能型·项目驱动", sub:"学→写→AI批改→再写" },
+              { id:"互换性测量", icon:"📏", mode:"记忆型·闪卡模式", sub:"AI闪卡→遗忘曲线→测验" },
+            ].map(s => (
+              <button key={s.id} onClick={() => handleStart(s.id)}
+                className="card-hover text-left p-3 space-y-1">
+                <span className="text-xl">{s.icon}</span>
+                <p className="font-bold text-sm">{s.id}</p>
+                <p className="text-[10px] text-primary-500 font-medium">{s.mode}</p>
+                <p className="text-[10px] text-zinc-400">{s.sub}</p>
+              </button>
+            ))}
           </div>
 
           {error && (
