@@ -16,11 +16,30 @@ function detectEnglishQuestionType(nodeTitle: string, nodeDescription: string): 
   return "reading";
 }
 
+/** 校验AI生成的题目一致性：解析不能说明的正确答案与correctIndex矛盾 */
+function fixConsistency(q: any): any {
+  if (!q.explanation || q.options?.length < 2 || q.correctIndex == null) return q;
+  const exp = q.explanation;
+  const letters = q.options.map((_: any, i: number) => String.fromCharCode(65 + i));
+  const correctLetter = letters[q.correctIndex];
+  // 检测解析中"正确/答案"指向的字母
+  const m = exp.match(/(?:正确|答案|应该选|故选)[^A-D]*([A-D])/);
+  if (m && m[1] !== correctLetter) {
+    const statedLetter = m[1];
+    const statedIdx = letters.indexOf(statedLetter);
+    if (statedIdx >= 0 && statedIdx < q.options.length) {
+      q.correctIndex = statedIdx;
+      q.explanation = exp + ` (已自动修正：正确答案为${statedLetter})`;
+    }
+  }
+  return q;
+}
+
 /** 按英语题型生成不同的出题 prompt */
 function buildEnglishPrompt(node: { title: string; description: string }, difficulty: string): string {
   const type = detectEnglishQuestionType(node.title, node.description || "");
 
-  const langRule = "题目正文和所有选项必须是纯英文。不要出教学说明类问题（如'议论文怎么写''作文格式是什么'），只出真实的四六级考题。解释部分用中文。";
+  const langRule = "题目正文和所有选项必须是纯英文。不要出教学说明类问题（如'议论文怎么写''作文格式是什么'），只出真实的四六级考题。解释用中文。**极其重要：correctIndex必须与解析一致，解析中要明确说正确答案为什么对，不能解析说B对但correctIndex标A。**";
 
   const prompts: Record<string, string> = {
     listening: `CET4听力。${langRule} 生成1题：30-60词纯英文对话(M:/W:标注)，4个纯英文选项。JSON:{"question":"📻\\n[English dialogue]\\n❓[English question]","options":["A. English","B. English","C. English","D. English"],"correctIndex":0,"difficulty":"${difficulty}","explanation":"中文解析","type":"listening","extraData":{"audioScript":"[全文英文原文]"}}`,
@@ -110,17 +129,19 @@ export async function POST(req: NextRequest) {
             if (content) {
               try {
                 const q = safeParseAIJson(content);
-                const shuffled = shuffleOptions(q.options, q.correctIndex ?? 0);
+                // 校验并修正 AI 生成的不一致（解析说B对但correctIndex标A）
+                const corrected = fixConsistency(q);
+                const shuffled = shuffleOptions(corrected.options, corrected.correctIndex ?? 0);
                 return {
-                  ...q,
+                  ...corrected,
                   options: shuffled.options,
                   correctIndex: shuffled.newIndex,
                   id: `q-${i}`,
                   nodeId: node.id,
                   nodeTitle: node.title,
                   courseName: displayName,
-                  type: q.type || eqType,
-                  extraData: q.extraData || null,
+                  type: corrected.type || eqType,
+                  extraData: corrected.extraData || null,
                 };
               } catch {}
             }
