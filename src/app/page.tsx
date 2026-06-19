@@ -26,6 +26,7 @@ export default function LandingPage() {
   const [difficulty, setDifficulty] = useState("mixed");
   const [videoUrl, setVideoUrl] = useState("");
   const [showVideo, setShowVideo] = useState(false);
+  const [selectedAction, setSelectedAction] = useState<{id:string;action:string}|null>(null);
   const [logs, setLogs] = useState<string[]>([]);
   const [error, setError] = useState("");
   const [authError, setAuthError] = useState("");
@@ -572,7 +573,7 @@ export default function LandingPage() {
             ))}
           </div>
 
-          {/* 所有学科统一网格 */}
+          {/* 所有学科统一网格——点击选中，再点进入 */}
           <div className="grid grid-cols-2 gap-2 mb-4">
             {[
               { id:"大学英语", icon:"📖", mode:"语言类·诊断+练习", sub:"四六级·阅读听力写作翻译", action: localStorage.getItem("learnos_diagnosed") === "true" ? "done" : "diagnose" },
@@ -582,16 +583,30 @@ export default function LandingPage() {
               { id:"工程力学", icon:"🔧", mode:"计算型·案例刷题", sub:"案例讲解→分类练习", action:"speedrun" },
               { id:"Python", icon:"🐍", mode:"技能型·项目驱动", sub:"学→写→AI批改→再写", action:"speedrun" },
               { id:"互换性测量", icon:"📏", mode:"记忆型·闪卡模式", sub:"AI闪卡→遗忘曲线→测验", action:"speedrun" },
-            ].map(s => (
-              <button key={s.id} onClick={() => s.action === "diagnose" ? handleStart(s.id) : s.action === "done" ? router.push("/cockpit") : router.push(`/subjects/${encodeURIComponent(s.id)}`)}
-                className="card-hover text-left p-3 space-y-1">
-                <span className="text-xl">{s.icon}</span>
+            ].map(s => {
+              const isSel = selectedAction?.id === s.id;
+              return (
+              <button key={s.id} onClick={() => setSelectedAction(isSel ? null : {id:s.id, action:s.action})}
+                className={"text-left p-3 space-y-1 rounded-2xl border-2 transition-all " + (isSel ? "border-primary-500 bg-primary-50 shadow-md scale-[1.02]" : "card-hover border-transparent")}>
+                <div className="flex justify-between items-start"><span className="text-xl">{s.icon}</span>{isSel && <span className="text-primary-500 text-lg">✓</span>}</div>
                 <p className="font-bold text-sm">{s.id}</p>
                 <p className="text-[10px] text-primary-500 font-medium">{s.mode}</p>
                 <p className="text-[10px] text-zinc-400">{s.sub}</p>
               </button>
-            ))}
+            );})}
           </div>
+
+          {/* 进入按钮 */}
+          <button onClick={() => {
+            if (!selectedAction) return;
+            const { id, action } = selectedAction;
+            if (action === "diagnose") handleStart(id);
+            else if (action === "done") router.push("/cockpit");
+            else router.push(`/subjects/${encodeURIComponent(id)}`);
+          }} disabled={!selectedAction}
+            className={"w-full py-3.5 rounded-2xl font-bold text-sm transition-all " + (selectedAction ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-purple-200 hover:shadow-xl hover:-translate-y-0.5" : "bg-zinc-100 text-zinc-400 cursor-not-allowed")}>
+            {selectedAction ? `进入 ${selectedAction.id} →` : "👆 先选择一门学科"}
+          </button>
 
           {/* 视频链接 */}
           {showVideo ? (
