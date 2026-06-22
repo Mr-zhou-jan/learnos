@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { AlertTriangle, BookOpen, CheckCircle2, ChevronDown, ChevronUp, Lightbulb, XCircle, Zap } from "lucide-react";
 import { getChapterContent } from "@/data/math";
+import { addMathError } from "@/lib/math-error-store";
 
 type AnswerState = Record<string, { value: string; revealed: boolean; correct: boolean | null }>;
 
@@ -100,7 +101,7 @@ export default function SectionPage() {
           )}
         </div>
         {!speedRevealed ? (
-          <button onClick={() => { setSpeedRevealed(true); if (speedAns === q.correctIndex) setSpeedScore(s => s + 1); }}
+          <button onClick={() => { setSpeedRevealed(true); if (speedAns === q.correctIndex) setSpeedScore(s => s + 1); else addMathError({ chapter: dsec, question: q.question, options: q.options, correctIndex: q.correctIndex, userAnswer: speedAns!, explanation: q.explanation }); }}
             disabled={speedAns === null} className="btn-primary w-full py-3">确认答案</button>
         ) : (
           <button onClick={() => {
